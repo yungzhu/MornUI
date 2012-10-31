@@ -1,0 +1,7 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" layers="1,1,0">
+  <Image url="png.comp.image2" x="0" y="0" layer="1" width="600" height="400" sizeGrid="4,4,4,4"/>
+  <Button skin="png.comp.btn_close" x="570" y="12" layer="1" name="closeBtn"/>
+  <FrameClip skin="assets.frameclip_Bear" x="488" y="314" layer="1"/>
+  <Image url="png.nav.image 106" x="263" y="35" layer="1"/>
+  <Image url="png.hero.info" x="144" y="140" layer="1"/>
+</Dialog>

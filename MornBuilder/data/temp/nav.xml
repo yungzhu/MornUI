@@ -1,0 +1,20 @@
+<root>
+  <output>../assets/nav.swf</output>
+  <library>
+    <image linkName="png.nav.image 106" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 106.png"/>
+    <image linkName="png.nav.image 120" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 120.png"/>
+    <image linkName="png.nav.image 134" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 134.png"/>
+    <image linkName="png.nav.image 148" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 148.png"/>
+    <image linkName="png.nav.image 16" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 16.png"/>
+    <image linkName="png.nav.image 167" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 167.png"/>
+    <image linkName="png.nav.image 35" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 35.png"/>
+    <image linkName="png.nav.image 54" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 54.png"/>
+    <image linkName="png.nav.image 68" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 68.png"/>
+    <image linkName="png.nav.image 78" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 78.png"/>
+    <image linkName="png.nav.image 92" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\image 92.png"/>
+    <image linkName="png.nav.line" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\line.png"/>
+    <image linkName="png.nav.progress$bar" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\progress$bar.png"/>
+    <image linkName="png.nav.progress" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\progress.png"/>
+    <image linkName="png.nav.导航背景" import="C:\Users\yung\Documents\GitHub\morn\assets\nav\导航背景.png"/>
+  </library>
+</root>

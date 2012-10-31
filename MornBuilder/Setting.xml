@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<asynRes>img,temp,sound</asynRes>
+	<unDealRes>embed</unDealRes>
+	<resTypes>png,jpg,gif</resTypes>
+	<importUIPath>src/game/ui</importUIPath>
+	<importResPath>bin/assets</importResPath>
+	<boxTyps>Box,Container,List,Tab,RadioGroup,ViewStack</boxTyps>
+</config>
