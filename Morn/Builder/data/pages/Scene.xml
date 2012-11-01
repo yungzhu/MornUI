@@ -1,4 +1,4 @@
-<View sceneWidth="1000" sceneHeight="550" sceneColor="0xffffff" layers="5,1,4;4,1,4;3,1,4;2,1,4;1,1,4">
+<View sceneWidth="1000" sceneHeight="550" sceneColor="0xffffff" layers="5,1,0;4,1,0;3,1,0;2,1,0;1,0,0">
   <Image url="jpg.map.map1" x="0" y="0" layer="1"/>
   <Image url="png.map.map1_item" x="0" y="0" layer="1"/>
   <Container layer="2" x="20" y="-10" layers="1,1,0">
@@ -29,7 +29,7 @@
     <Image url="png.hero.奴隶" y="52" layer="1"/>
   </Container>
   <CheckBox label="label" skin="png.comp.checkbox" x="305" y="9" layer="3"/>
-  <RadioButton label="label" skin="png.comp.radio" x="361" y="8" layer="3"/>
+  <RadioButton label="label1" skin="png.comp.radio" x="361" y="8" layer="3"/>
   <Container layer="4" x="5" y="321" bottom="5" left="5" layers="1,1,0">
     <Label text="【系统】每天21:00会开启怪物攻城活动，参与活动可获得天赋石和大量经验，金币，各国30级以上的勇士均可参与。" layer="1" color="0xcccc66" stroke="0x000000,1,2,2" width="250" height="70" wordWrap="true" multiline="false"/>
     <TextArea text="&quot;英国&quot;航空公司和法国航空公司均宣布取消29日美国东部全部或大部分航班。美国航空协会运输顾问哈姆林预计，“桑迪”可能会给航空运输业造成数亿美元的损失。此外，美国零售商最为关键的年底假日销售季即将拉开帷幕，市场人士担心，“桑迪”所经之处可能殃及全美大型零售商10%的门店，这对高度依赖国内消费的美国经济来说也是一大利空。美国东岸沿岸炼油厂实施风暴防范计划，自28日开始削减产量。有分析人士预计，“桑迪”带来的供应中断风险加上全球各地极端天气，可能会显著推高国际油价。\n 奥巴马28日不得不重新部署选战，在履行总统职责和竞选冲刺之间寻找平衡。奥巴马暂时从繁忙竞选途中止步，参与防灾救灾的统筹工作。罗姆尼阵营也取消了原定28日在弗吉尼亚的竞选集会，转向另一重要“摇摆州”俄亥俄州造势。有分析预计，罗姆尼可能会在灾害过后抢在奥巴马之前访问受灾地区。不过，如果奥巴马应对灾情得力，还可以加分。" x="3" y="54" layer="1" scrollBarSkin="png.comp.vscroll" width="275" height="169" var="chatArea"/>
