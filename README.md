@@ -1,4 +1,4 @@
-Morn UI是为游戏开发而生的ui框架，
+Morn UI是为游戏开发而生的ui框架及编辑器
 
 具有以下优势：
 
@@ -14,4 +14,5 @@ Morn UI是为游戏开发而生的ui框架，
 
 6.支持多视图开发，支持代码视图
 
-Feedback yungzhu@gmail.com http://weibo.com/newyung
+目前处于测试版本，问题可能很多，如果遇到问题请反馈
+反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
