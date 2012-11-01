@@ -14,7 +14,9 @@ Morn UI是为游戏开发而生的ui框架及编辑器
 
 6.支持多视图开发，支持代码视图
 
-7.与flex相比，morn针对游戏设计，效率更高，与flash cs相比，morn布局及自定义组件属性更方便
+7.资源完全复用，位图组件效率更好，就是为了游戏开发而设计的，可以放弃flash cs IDE了
+
+8.与flex相比，morn针对游戏设计，效率更高，与flash cs相比，morn布局及自定义组件属性更方便
 
 目前处于测试版本，问题可能很多，如果遇到问题请反馈
 反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
