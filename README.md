@@ -22,3 +22,7 @@ Morn UI是为游戏开发而生的ui框架及编辑器
 反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
 	
 提醒：编辑器需要java环境，没有java的请安装
+
+doc内已更新简单教程
+
+![screenshot](https://github.com/downloads/yungzhu/morn/doc/help/main.jpg "screenshot")
