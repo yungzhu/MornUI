@@ -1,5 +1,5 @@
 /**
- * Version 0.9.9 https://github.com/yungzhu/morn
+ * Version 0.9.0 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  * Copyright 2012, yungzhu. All rights reserved.
  * This program is free software. You can redistribute and/or modify it
@@ -16,8 +16,6 @@ package morn.core.components {
 		//public static const INITIALIZE:String = "initialize";
 		/**更新完毕*/
 		public static const RENDER_COMPLETED:String = "renderCompleted";
-		/**重置大小*/
-		public static const RESIZE:String = "resize";
 		//-----------------Image-----------------
 		/**图片加载完毕*/
 		public static const IMAGE_LOADED:String = "imageLoaded";

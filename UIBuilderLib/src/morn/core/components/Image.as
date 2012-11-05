@@ -1,5 +1,5 @@
 /**
- * Version 0.9.9 https://github.com/yungzhu/morn
+ * Version 0.9.0 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  * Copyright 2012, yungzhu. All rights reserved.
  * This program is free software. You can redistribute and/or modify it
@@ -34,10 +34,11 @@ package morn.core.components {
 		public function set url(value:String):void {
 			if (_url != value && StringUtils.isNotEmpty(value)) {
 				_url = value;
-				if(App.asset.hasClass(_url)){
-					setBitmapData(App.asset.getBitmapData(_url));
-				}else{
-					var fullUrl:String = _url;
+				var bmd:BitmapData = App.asset.getBitmapData(_url);
+				if (bmd) {
+					setBitmapData(bmd);
+				} else {
+					var fullUrl:String = Config.resUrl + _url;
 					App.loader.loadBMD(fullUrl, new Handler(setBitmapData));
 				}
 			}

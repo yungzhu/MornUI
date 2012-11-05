@@ -1,5 +1,5 @@
 /**
- * Version 0.9.9 https://github.com/yungzhu/morn
+ * Version 0.9.0 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  * Copyright 2012, yungzhu. All rights reserved.
  * This program is free software. You can redistribute and/or modify it
@@ -70,7 +70,7 @@ package morn.core.managers {
 					_failRes[resInfo.url] = 1;
 					_resInfos.push(resInfo);
 				} else {
-					trace("load error:", resInfo.url);
+					App.log.warn("load error:", resInfo.url);
 				}
 				return;
 			}

@@ -1,5 +1,5 @@
 /**
- * Version 0.9.9 https://github.com/yungzhu/morn
+ * Version 0.9.0 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  * Copyright 2012, yungzhu. All rights reserved.
  * This program is free software. You can redistribute and/or modify it
@@ -42,6 +42,11 @@ package morn.core.components {
 		
 		override protected function initialize():void {
 			_btnLabel.align = "center";
+			addEventListener(MouseEvent.ROLL_OVER, onMouse);
+			addEventListener(MouseEvent.ROLL_OUT, onMouse);
+			addEventListener(MouseEvent.MOUSE_DOWN, onMouse);
+			addEventListener(MouseEvent.MOUSE_UP, onMouse);
+			addEventListener(MouseEvent.CLICK, onMouse);
 		}
 		
 		override protected function render():void {
