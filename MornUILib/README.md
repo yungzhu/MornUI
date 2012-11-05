@@ -1,3 +1,8 @@
+说明：
+
+这个是编辑器表现lib，完全可以自己修改，实现组件在编辑器里面不同的表现（UI表现及属性等等）
+通过配置可以在编辑器里面使用你自己的组件
+--------------------------------------------
 Morn UI是为游戏开发而生的ui框架及编辑器
 
 具有以下优势：
@@ -22,7 +27,3 @@ Morn UI是为游戏开发而生的ui框架及编辑器
 反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
 	
 提醒：编辑器需要java环境，没有java的请安装
-
-doc内已更新简单教程
-
-![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main.jpg "screenshot")

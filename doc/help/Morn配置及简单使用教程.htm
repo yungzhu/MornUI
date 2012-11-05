@@ -1,67 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>【新提醒】Morn配置及简单使用教程 - ActionScript 3 - 天地会论坛</title>
-<span class="sslct_btn" onclick="extstyle(&#39;&#39;)" title="默认"><i></i></span><span class="sslct_btn" onclick="extstyle(&#39;./template/default/style/t5&#39;)" title="蓝"><i style="background:#0053B9"></i></span>
-<span class="sslct_btn" onclick="extstyle(&#39;./template/default/style/t2&#39;)" title="青"><i style="background:#429296"></i></span>
-<span class="sslct_btn" onclick="extstyle(&#39;./template/default/style/t4&#39;)" title="紫"><i style="background:#9934B7"></i></span>
-<span class="sslct_btn" onclick="extstyle(&#39;./template/default/style/t1&#39;)" title="红"><i style="background:#BA350F"></i></span>
-<span class="sslct_btn" onclick="extstyle(&#39;./template/default/style/t3&#39;)" title="橙"><i style="background:#FE9500"></i></span>
-</div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Morn配置及简单使用教程</title>
 <body>
-<div class="t_fsz">
+<h1>Morn配置及简单使用教程</h1>
+<div>
 <p>1.新建一个空项目，我这里用flashdevlop，用flash builder（注意编译目录改为bin，默认为bin-debug）类同</p>
-<p><img src="./images/a05cf409jw1dyfwuthk25j.jpg" onload="thumbImg(this)" alt="" width="109" height="102"></p>
+<p><img src="./images/a05cf409jw1dyfwuthk25j.jpg" alt="" width="109" height="102"></p>
 <p>2.拷贝编辑器及组件到项目内，其中Builder是编辑器，morn是ui库，app是全局引用类，config是配置类</p>
-<p><img src="./images/a05cf409jw1dyfwza14c8j.jpg" onload="thumbImg(this)" alt="" width="127" height="184"></p>
+<p><img src="./images/a05cf409jw1dyfwza14c8j.jpg" alt="" width="127" height="184"></p>
 <p>3.初始化组件，编辑Main.as，调用初始化函数</p>
-<p><img src="./images/a05cf409jw1dyfx3wo6h2j.jpg" onload="thumbImg(this)" alt="" width="389" height="270">
+<p><img src="./images/a05cf409jw1dyfx3wo6h2j.jpg" alt="" width="389" height="270">
 <br>到此就完成了配置工作，很简单吧<br>
 </p>
 <br>
 <p><strong>下面开始制作界面</strong></p>
 <p>1.打开编辑器Builder/Main.exe</p>
-<p>2.在项目内建立assets目录，然后在里面放将要使用到的图片（图片即组件）</p>
-<p><img src="./images/a05cf409jw1dyfxbk0ao9j.jpg" onload="thumbImg(this)" alt="" width="178" height="199"></p>
+<p>2.在项目内建立assets目录，然后在里面放将要使用到的图片（图片即组件，命名规则请参看高级教程）</p>
+<p><img src="./images/a05cf409jw1dyfxbk0ao9j.jpg" alt="" width="178" height="199"></p>
 <p>3.点击编辑器，F4刷新资源，就能看到刚才放的资源了（builder会根据名称自动识别）</p>
-<p><img src="./images/a05cf409jw1dyfxde85xsj.jpg" onload="thumbImg(this)" alt="" width="196" height="242"></p>
+<p><img src="./images/a05cf409jw1dyfxde85xsj.jpg" alt="" width="196" height="242"></p>
 <p>4.在编辑器内，使用快捷键Ctrl+N新建一个界面，起名叫Page1</p>
-<p><img src="./images/a05cf409jw1dyfxfovs30j.jpg" onload="thumbImg(this)" alt="" width="424" height="270"></p>
-<p><img src="./images/a05cf409jw1dyfxisxg90j.jpg" onload="thumbImg(this)" alt="" width="600" height="451"></p>
+<p><img src="./images/a05cf409jw1dyfxfovs30j.jpg" alt="" width="424" height="270"></p>
+<p><img src="./images/a05cf409jw1dyfxisxg90j.jpg" alt="" width="600" height="451"></p>
 <p>5.拖拽右面组件，就可以直接使用了，我放置了一个button，并且定义为btn</p>
-<p><img src="./images/a05cf409jw1dyfxmh4ys0j.jpg" onload="thumbImg(this)" alt="" width="589" height="380"></p>
-<p>6.Ctrl+S保存，然后F5发布代码，UI代码会生成到项目game/ui下，资源生成到了bin/assets下</p>
-<p><img src="./images/a05cf409jw1dyfxty2kkfj.jpg" onload="thumbImg(this)" alt="" width="190" height="219"></p>
+<p><img src="./images/a05cf409jw1dyfxmh4ys0j.jpg" alt="" width="589" height="380"></p>
+<p>6.Ctrl+S保存，然后F5发布代码，UI代码会生成到项目game/ui下，资源生成到了bin/assets下（可配置，请参考Builder/Setting.xml）</p>
+<p><img src="./images/a05cf409jw1dyfxty2kkfj.jpg" alt="" width="190" height="219"></p>
 <p>7.现在要使用这个UI，那么我们新建一个类，继承至这个UI类，就可以随意控制它了(ui和逻辑也是分离的)</p>
-<p><img src="./images/a05cf409jw1dyfxwkhf0ij.jpg" onload="thumbImg(this)" alt="" width="600" height="321"></p>
+<p><img src="./images/a05cf409jw1dyfxwkhf0ij.jpg" alt="" width="600" height="321"></p>
 <p>8.在Main.as里面，加载资源，并实例化这个页面</p>
-<p><img src="./images/a05cf409jw1dyfxzuautij.jpg" onload="thumbImg(this)" alt="" width="600" height="318"></p>
+<p><img src="./images/a05cf409jw1dyfxzuautij.jpg" alt="" width="600" height="318"></p>
 <p>9.编译项目，至此就能正确的运行了</p>
-<p><img src="./images/a05cf409jw1dyfy1uvmkcj.jpg" onload="thumbImg(this)" alt="" width="405" height="345"></p>
+<p><img src="./images/a05cf409jw1dyfy1uvmkcj.jpg" alt="" width="405" height="345"></p>
 <br>
-<p><strong>Morn简介：</strong></p>
-<p>Morn UI是为游戏开发而生的ui框架及编辑器，具有以下优势：<br>
-<br>
-1.可视化编辑UI。组织UI完全可视化<br>
-<br>
-2.自定义组件。可以自定义扩充组件及编辑器表现，甚至用你自己写的组件（flash及flex都不够灵活）<br>
-<br>
-3.并自动生成UI代码，自动打包资源（jpg+alpha最优化方式）<br>
-<br>
-4.同时支持位图及矢量图组件<br>
-<br>
-5.强大的编辑功能，支持拖拽，图层，多层嵌套，恢复，对齐，放大等等<br>
-<br>
-6.支持多视图开发，支持代码视图<br>
-<br>
-7.资源完全复用，位图组件效率更好，就是为了游戏开发而设计的，可以放弃flash cs IDE了<br>
-<br>
-8.与flex相比，morn针对游戏设计，效率更高，与flash cs相比，morn布局及自定义组件属性更方便<br>
-<br>
-目前处于测试版本，问题可能很多，如果遇到问题请反馈 反馈方式: yungzhu<font style="color:rgb(0, 120, 182)"><a href="http://weiba.weibo.com/n/gmail" target="_blank">@gmail</a></font>.com 微博:<font style="color:rgb(0, 120, 182)"><a href="http://weibo.com/newyung" target="_blank">http://weibo.com/newyung</a></font> QQ群:51451081<br>
-<br>
-开源项目地址：<a href="https://github.com/yungzhu/morn" target="_blank">https://github.com/yungzhu/morn</a><br>
-</p>
 <br>
 </td></tr></tbody></table>
-
-</body></html>
+</body>
+</html>

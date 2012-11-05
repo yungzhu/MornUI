@@ -1,7 +1,0 @@
-<root>
-  <output>../assets/map.swf</output>
-  <library>
-    <image linkName="jpg.map.map1" import="C:\Users\yung\Documents\GitHub\morn\assets\map\map1.jpg"/>
-    <image linkName="png.map.map1_item" import="C:\Users\yung\Documents\GitHub\morn\assets\map\map1_item.png"/>
-  </library>
-</root>
