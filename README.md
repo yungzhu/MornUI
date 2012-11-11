@@ -25,6 +25,10 @@ Morn UI是为游戏开发而生的ui框架及编辑器
 	
 提醒：编辑器需要java环境，没有java的请安装
 
-doc内已更新简单教程
+目录结构:
+Builder-------UI编辑器
+MornTest------测试用例
+MornUILib-----UI库源码
+doc-----------文档及教程
 
 ![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main.jpg "screenshot")
