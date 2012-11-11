@@ -1,4 +1,4 @@
-已更新至0.9.1 2012.11.5 修正已知bug，下载有问题的同学可以用网盘下载：http://pan.baidu.com/share/link?shareid=117164&uk=2250392397
+已更新至0.9.2.11.11 修正列表参考updateList，下载有问题的同学可以用网盘下载：http://pan.baidu.com/share/link?shareid=120946&uk=2250392397
 
 Morn UI是为游戏开发而生的ui框架及编辑器
 
