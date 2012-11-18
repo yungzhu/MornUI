@@ -37,7 +37,7 @@ package morn.core.components {
 				if (App.asset.hasClass(_url)) {
 					setBitmapData(App.asset.getBitmapData(_url));
 				} else {
-					var fullUrl:String = Config.resUrl + _url;
+					var fullUrl:String = Config.resPath + _url;
 					App.loader.loadBMD(fullUrl, new Handler(setBitmapData));
 				}
 			}

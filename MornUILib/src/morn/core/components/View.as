@@ -6,9 +6,12 @@
  * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
+	import morn.core.handlers.Handler;
 	
 	/**视图*/
 	public class View extends Box {
+		/**加载模式使用，存储uixml*/
+		public static var xmlMap:Object = {};
 		private static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider};
 		protected var viewClassMap:Object = {};
 		
@@ -46,6 +49,14 @@ package morn.core.components {
 				IItems(comp).initItems();
 			}
 			return comp;
+		}
+		
+		/**加载UI*/
+		protected function loadUI(path:String):void {
+			var xml:XML = xmlMap[path];
+			if (xml) {
+				createView(xml);
+			}
 		}
 	}
 }

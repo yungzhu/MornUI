@@ -65,7 +65,7 @@ package morn.core.components {
 				_height = _height == 0 ? _bitmap.bitmapData.height : _height;
 				changeSize();
 			} else {
-				var fullUrl:String = Config.resUrl + _url;
+				var fullUrl:String = Config.resPath + _url;
 				App.loader.loadBMD(fullUrl, new Handler(loadComplete));
 			}
 		}

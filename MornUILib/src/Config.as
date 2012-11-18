@@ -21,7 +21,9 @@ package {
 		public static var gameWidth:int = 1000;
 		/**游戏高度*/
 		public static var gameHeight:int = 550;
-		/**资源地址*/
-		public static var resUrl:String = "";
+		/**资源路径*/
+		public static var resPath:String = "";
+		/**UI路径(UI加载模式可用)*/
+		public static var uiPath:String = "ui.swf";
 	}
 }

@@ -26,8 +26,6 @@ package morn.core.components {
 		protected var _toggle:Boolean;
 		protected var _selected:Boolean;
 		protected var _skin:String;
-		protected var _skinW:int = 1;
-		protected var _skinH:int = 3;
 		
 		public function Button(skin:String = null, label:String = "") {
 			this.skin = skin;
@@ -64,11 +62,12 @@ package morn.core.components {
 				}
 				if (_toggle) {
 					selected = !_selected;
-					state = 1;
 				}
 				return;
 			}
-			state = _stateMap[e.type];
+			if (_selected == false) {
+				state = _stateMap[e.type];
+			}
 		}
 		
 		/**按钮标签*/
@@ -93,7 +92,7 @@ package morn.core.components {
 				_skin = value;
 				var bmd:BitmapData = App.asset.getBitmapData(_skin);
 				if (bmd != null) {
-					_clips = App.asset.getClips(_skin, _skinW, _skinH);
+					_clips = App.asset.getClips(_skin, 1, 3);
 					callLater(changeState);
 					callLater(changeLabelSize);
 				}
@@ -118,11 +117,7 @@ package morn.core.components {
 		public function set selected(value:Boolean):void {
 			if (_selected != value) {
 				_selected = value;
-				if (_selected) {
-					state = _skinW == 1 ? _stateMap["selected"] : _stateMap["rollOut"];
-				} else {
-					state = _stateMap["rollOut"];
-				}
+				state = _selected ? _stateMap["selected"] : _stateMap["rollOut"];
 			}
 		}
 		
@@ -137,11 +132,7 @@ package morn.core.components {
 		
 		protected function changeState():void {
 			if (_clips != null) {
-				var index:int = _state;
-				if (_skinW == 2 && _selected) {
-					index += _skinH;
-				}
-				_bitmap.bitmapData = _clips[index];
+				_bitmap.bitmapData = _clips[_state];
 			}
 			_btnLabel.color = _labelColors[_state];
 		}

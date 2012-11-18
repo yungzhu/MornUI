@@ -11,7 +11,7 @@ package morn.core.managers {
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
-	/**时钟管理器[同一函数多次计时，会被后者覆盖,delay<1会立即执行]*/
+	/**时钟管理器[同一函数多次计时，会被后者覆盖,delay小于1会立即执行]*/
 	public class TimerManager {
 		private var _shape:Shape = new Shape();
 		private var _pool:Vector.<TimerHandler> = new Vector.<TimerHandler>();

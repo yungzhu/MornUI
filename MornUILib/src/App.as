@@ -11,11 +11,14 @@ package {
 	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import morn.core.components.View;
+	import morn.core.handlers.Handler;
 	import morn.core.managers.AssetManager;
 	import morn.core.managers.DialogManager;
 	import morn.core.managers.LoaderManager;
 	import morn.core.managers.LogManager;
 	import morn.core.managers.TimerManager;
+	import morn.core.utils.StringUtils;
 	
 	/**全局引用入口*/
 	public class App {
@@ -51,6 +54,15 @@ package {
 			
 			stage.addChild(dialog);
 			stage.addChild(log);
+			
+			//如果UI视图是加载模式，则进行整体加载
+			if (StringUtils.isNotEmpty(Config.uiPath)) {
+				App.loader.loadDB(Config.uiPath, new Handler(onUIloadComplete));
+			}		
+		}
+		
+		private static function onUIloadComplete(content:*):void {
+			View.xmlMap = content;
 		}
 	}
 }

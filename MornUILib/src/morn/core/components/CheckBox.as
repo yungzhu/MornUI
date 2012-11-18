@@ -16,7 +16,6 @@ package morn.core.components {
 		
 		override protected function preinitialize():void {
 			super.preinitialize();
-			_skinW = 2;
 			_toggle = true;
 		}
 		

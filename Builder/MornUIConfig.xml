@@ -101,8 +101,8 @@
 	<Slider className="morn.core.components.Slider" inherit="Component" skinLabel="skin">
 		<prop name="skin" tips="皮肤" type="string" default="" />		
 		<prop name="value" tips="当前值" type="number" default="" />
-		<prop name="min" tips="滑块上允许的最小值" type="Number" default="" />
-		<prop name="max" tips="滑块上允许的最大值" type="Number" default="" />
+		<prop name="min" tips="滑块上允许的最小值" type="number" default="" />
+		<prop name="max" tips="滑块上允许的最大值" type="number" default="" />
 		<prop name="tick" tips="刻度值" type="number" default="" />
 		<prop name="showLabel" tips="是否显示标签" type="bool" default="true" />
 		<prop name="sizeGrid" tips="九宫格信息" type="string" default="" />
@@ -113,14 +113,16 @@
 	<ScrollBar className="morn.core.components.ScrollBar" inherit="Component" skinLabel="skin">
 		<prop name="skin" tips="皮肤" type="string" default="" />	
 		<prop name="value" tips="当前值" type="number" default="" />
-		<prop name="min" tips="最小滚动位置" type="Number" default="" />
-		<prop name="max" tips="最大滚动位置" type="Number" default="" />
+		<prop name="min" tips="最小滚动位置" type="number" default="" />
+		<prop name="max" tips="最大滚动位置" type="number" default="" />
 		<prop name="scrollSize" tips="点击按钮滚动量" type="number" default="" />
 		<prop name="sizeGrid" tips="九宫格信息" type="string" default="" />
 	</ScrollBar>
 	<VScrollBar className="morn.core.components.VScrollBar" inherit="ScrollBar" skinLabel="skin" resName="vscroll" icon="VScrollBar" drag="2" />
 	<HScrollBar className="morn.core.components.HScrollBar" inherit="ScrollBar" skinLabel="skin" resName="hscroll" icon="HScrollBar" drag="1"/>
-	<UIView inherit="Component" />
+	<UIView inherit="Component" >
+		<prop name="runtime" tips="运行时的逻辑类" type="string" default="" />
+	</UIView>
 	<FrameClip className="morn.core.components.FrameClip" inherit="Component" skinLabel="skin" resName="frame" icon="VideoDisplay" drag="3">
 		<prop name="skin" tips="皮肤" type="string" default="" />	
 		<prop name="autoPlay" tips="自动播放" type="bool" default="false" />
