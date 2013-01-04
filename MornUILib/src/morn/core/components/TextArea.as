@@ -1,9 +1,6 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -42,11 +39,11 @@ package morn.core.components {
 			_scrollBar.x = _width - _scrollBar.width;
 		}
 		
-		private function onScrollBarChange(e:Event):void {
+		protected function onScrollBarChange(e:Event):void {
 			_textField.scrollV = Math.round(_scrollBar.value);
 		}
 		
-		private function onTextFieldScroll(e:Event):void {
+		protected function onTextFieldScroll(e:Event):void {
 			_scrollBar.setScroll(1, _textField.maxScrollV, _textField.scrollV);
 		}
 		

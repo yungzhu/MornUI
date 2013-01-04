@@ -10,12 +10,12 @@ package morn.editor {
 		public static var stage:Stage;
 		
 		/**加载资源*/
-		public static function loadRes(url:String, loaded:Function=null):void {
-			
+		public static function loadRes(url:String, loaded:Function = null):void {
+		
 		}
 		
 		/**资源是否存在*/
-		public static function hasRes(name:String):Boolean{
+		public static function hasRes(name:String):Boolean {
 			return false;
 		}
 		

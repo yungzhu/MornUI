@@ -1,21 +1,22 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
+	import flash.events.Event;
 	import morn.core.handlers.Handler;
 	import morn.core.utils.StringUtils;
 	
+	/**选择项改变后触发*/
+	[Event(name="select",type="flash.events.Event")]
+	
 	/**单选按钮组*/
-	public class RadioGroup extends Box implements IItems {
-		private var _items:Vector.<RadioButton>;
-		private var _selection:RadioButton;
-		private var _changeHandler:Handler;
-		private var _skin:String;
-		private var _labels:String;
+	public class RadioGroup extends Box implements IItem {
+		protected var _items:Vector.<RadioButton>;
+		protected var _selectHandler:Handler;
+		protected var _selectedIndex:int = -1;
+		protected var _skin:String;
+		protected var _labels:String;
 		
 		public function RadioGroup(labels:String = null, skin:String = null) {
 			this.skin = skin;
@@ -31,57 +32,45 @@ package morn.core.components {
 					break;
 				}
 				_items.push(item);
-				item.selected = false;
-				item.clickHandler = new Handler(itemClick, [item]);
+				item.selected = (i == _selectedIndex);
+				item.clickHandler = new Handler(itemClick, [i]);
 			}
 		}
 		
-		private function itemClick(item:RadioButton):void {
-			selection = item;
-			if (_changeHandler != null) {
-				_changeHandler.executeWith([_selection.value]);
+		protected function itemClick(index:int):void {
+			selectedIndex = index;
+			if (_selectHandler != null) {
+				_selectHandler.executeWith([index]);
 			}
 		}
 		
-		/**被选择的单选按钮*/
-		public function get selection():RadioButton {
-			return _selection;
+		/**所选按钮的索引*/
+		public function get selectedIndex():int {
+			return _selectedIndex;
 		}
 		
-		public function set selection(value:RadioButton):void {
-			if (_selection != value) {
-				if (_selection != null) {
-					_selection.selected = false;
-				}
-				_selection = value;
-				_selection.selected = true;
+		public function set selectedIndex(value:int):void {
+			if (_selectedIndex != value) {
+				setSelect(_selectedIndex, false);
+				_selectedIndex = value;
+				setSelect(_selectedIndex, true);
+				sendEvent(Event.SELECT);
 			}
 		}
 		
-		/**被选择单选按钮的值*/
-		public function get selectedValue():Object {
-			return selection.value;
-		}
-		
-		public function set selectedValue(value:Object):void {
-			if (_items) {
-				for (var i:int = 0, n:int = _items.length; i < n; i++) {
-					var item:RadioButton = _items[i];
-					if (item.value == value) {
-						selection = item;
-						break;
-					}
-				}
+		protected function setSelect(index:int, selected:Boolean):void {
+			if (_items != null && index > -1 && index < _items.length) {
+				_items[index].selected = selected;
 			}
 		}
 		
-		/**选择被改变时执行的处理器*/
-		public function get changeHandler():Handler {
-			return _changeHandler;
+		/**选择被改变时执行的处理器(默认返回参数index:int)*/
+		public function get selectHandler():Handler {
+			return _selectHandler;
 		}
 		
-		public function set changeHandler(value:Handler):void {
-			_changeHandler = value;
+		public function set selectHandler(value:Handler):void {
+			_selectHandler = value;
 		}
 		
 		/**RadioButton皮肤*/
@@ -115,7 +104,7 @@ package morn.core.components {
 				var right:int = 0
 				for (var i:int = 0, n:int = a.length; i < n; i++) {
 					var item:String = a[i];
-					var radio:RadioButton = new RadioButton(_skin,item);
+					var radio:RadioButton = new RadioButton(_skin, item);
 					radio.name = "item" + i;
 					addElement(radio, right, 0);
 					right += radio.width;
@@ -127,6 +116,45 @@ package morn.core.components {
 		/**按钮集合*/
 		public function get items():Vector.<RadioButton> {
 			return _items;
+		}
+		
+		/**选择项*/
+		public function get selection():RadioButton {
+			return _selectedIndex > -1 && _selectedIndex < _items.length ? _items[_selectedIndex] : null;
+		}
+		
+		public function set selection(value:RadioButton):void {
+			selectedIndex = _items.indexOf(value);
+		}
+		
+		/**被选择单选按钮的值*/
+		public function get selectedValue():Object {
+			return _selectedIndex > -1 && _selectedIndex < _items.length ? _items[_selectedIndex].value : null;
+		}
+		
+		public function set selectedValue(value:Object):void {
+			if (_items) {
+				for (var i:int = 0, n:int = _items.length; i < n; i++) {
+					var item:RadioButton = _items[i];
+					if (item.value == value) {
+						selectedIndex = i;
+						break;
+					}
+				}
+			}
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is int) {
+				selectedIndex = value as int;
+			} else {
+				_dataSource = value;
+				for (var prop:String in _dataSource) {
+					if (hasOwnProperty(prop)) {
+						this[prop] = _dataSource[prop];
+					}
+				}
+			}
 		}
 	}
 }

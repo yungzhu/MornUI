@@ -1,18 +1,18 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import morn.core.handlers.Handler;
+	
+	/**视图创建完成后触发*/
+	[Event(name="viewCreated",type="morn.core.components.UIEvent")]
 	
 	/**视图*/
 	public class View extends Box {
 		/**加载模式使用，存储uixml*/
 		public static var xmlMap:Object = {};
-		private static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider};
+		protected static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "ComboBox": ComboBox, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "Panel": Panel, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider};
 		protected var viewClassMap:Object = {};
 		
 		protected function createView(xml:XML):void {
@@ -20,7 +20,7 @@ package morn.core.components {
 			sendEvent(UIEvent.VIEW_CREATED);
 		}
 		
-		private function getCompsInstance(name:String):Component {
+		protected function getCompsInstance(name:String):Component {
 			var compClass:Class = viewClassMap[name] || uiClassMap[name];
 			if (compClass != null) {
 				return new compClass();
@@ -45,9 +45,10 @@ package morn.core.components {
 					comp.addChild(child);
 				}
 			}
-			if (comp is IItems) {
-				IItems(comp).initItems();
+			if (comp is IItem) {
+				IItem(comp).initItems();
 			}
+			//comp.showBorder();
 			return comp;
 		}
 		

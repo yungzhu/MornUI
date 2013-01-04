@@ -1,17 +1,21 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.core.utils.ObjectUtils;
-	import morn.core.utils.StringUtils;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.events.Event;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import morn.core.utils.BitmapUtils;
+	import morn.core.utils.ObjectUtils;
+	import morn.core.utils.StringUtils;
+	
+	/**文本发生改变后触发*/
+	[Event(name="change",type="flash.events.Event")]
 	
 	/**文字标签*/
 	public class Label extends Component {
@@ -20,17 +24,23 @@ package morn.core.components {
 		protected var _text:String = "";
 		protected var _isHtml:Boolean;
 		protected var _stroke:String;
+		protected var _skin:String;
+		protected var _bitmap:Bitmap;
+		protected var _sizeGrid:Array = [2, 2, 2, 2];
 		
-		public function Label(text:String = "") {
+		public function Label(text:String = "", skin:String = null) {
 			this.text = text;
+			this.skin = skin;
 		}
 		
 		override protected function preinitialize():void {
 			mouseEnabled = false;
+			mouseChildren = true;
 			_format = new TextFormat(Styles.fontName, Styles.fontSize, Styles.labelColor);
 		}
 		
 		override protected function createChildren():void {
+			addChild(_bitmap = new Bitmap());
 			addChild(_textField = new TextField());
 		}
 		
@@ -48,6 +58,7 @@ package morn.core.components {
 			if (_text != value) {
 				_text = value || "";
 				callLater(changeText);
+				sendEvent(Event.CHANGE);
 			}
 		}
 		
@@ -80,7 +91,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**描边*/
+		/**描边(格式:color,alpha,blurX,blurY,strength,quality)*/
 		public function get stroke():String {
 			return _stroke;
 		}
@@ -139,7 +150,25 @@ package morn.core.components {
 		
 		public function set selectable(value:Boolean):void {
 			_textField.selectable = value;
-			mouseEnabled = mouseChildren = value;
+			mouseEnabled = value;
+		}
+		
+		/**是否具有背景填充*/
+		public function get background():Boolean {
+			return _textField.background;
+		}
+		
+		public function set background(value:Boolean):void {
+			_textField.background = value;
+		}
+		
+		/**文本字段背景的颜色*/
+		public function get backgroundColor():uint {
+			return _textField.backgroundColor;
+		}
+		
+		public function set backgroundColor(value:uint):void {
+			_textField.backgroundColor = value;
 		}
 		
 		/**字体颜色*/
@@ -244,6 +273,16 @@ package morn.core.components {
 			callLater(changeText);
 		}
 		
+		/**格式*/
+		public function get format():TextFormat {
+			return _format;
+		}
+		
+		public function set format(value:TextFormat):void {
+			_format = value;
+			callLater(changeText);
+		}
+		
 		/**文本控件*/
 		public function get textField():TextField {
 			return _textField;
@@ -253,6 +292,55 @@ package morn.core.components {
 		public function appendText(newText:String):void {
 			_text += newText;
 			callLater(changeText);
+		}
+		
+		/**皮肤*/
+		public function get skin():String {
+			return _skin;
+		}
+		
+		public function set skin(value:String):void {
+			if (_skin != value) {
+				_skin = value;
+				callLater(changeBitmap);
+			}
+		}
+		
+		protected function changeBitmap():void {
+			if (StringUtils.isNotEmpty(_skin) && App.asset.hasClass(_skin)) {
+				var bmd:BitmapData = App.asset.getBitmapData(_skin);
+				_width = _width == 0 ? bmd.width : _width;
+				_height = _height == 0 ? bmd.height : _height;
+				_bitmap.bitmapData = BitmapUtils.scale9Bmd(bmd, _sizeGrid, _width, _height);
+			}
+		}
+		
+		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		public function get sizeGrid():String {
+			return _sizeGrid.toString();
+		}
+		
+		public function set sizeGrid(value:String):void {
+			_sizeGrid = StringUtils.fillArray([4, 4, 4, 4], value);
+			callLater(changeBitmap);
+		}
+		
+		override public function set width(value:Number):void {
+			super.width = value;
+			callLater(changeBitmap);
+		}
+		
+		override public function set height(value:Number):void {
+			super.height = value;
+			callLater(changeBitmap);
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is String) {
+				text = value as String;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

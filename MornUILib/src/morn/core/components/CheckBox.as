@@ -1,11 +1,9 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
+	import flash.events.Event;
 	
 	/**多选按钮*/
 	public class CheckBox extends Button {
@@ -17,6 +15,7 @@ package morn.core.components {
 		override protected function preinitialize():void {
 			super.preinitialize();
 			_toggle = true;
+			_autoSize = false;
 		}
 		
 		override protected function initialize():void {
@@ -26,7 +25,15 @@ package morn.core.components {
 		
 		override protected function changeLabelSize():void {
 			_btnLabel.x = _bitmap.width + _labelMargin[0];
-			_btnLabel.y = (_bitmap.height - _btnLabel.height) / 2 + _labelMargin[1];
+			_btnLabel.y = (_bitmap.height - _btnLabel.height) * 0.5 + _labelMargin[1];
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is Boolean) {
+				selected = value;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

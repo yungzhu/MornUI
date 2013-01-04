@@ -1,16 +1,14 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.editor.core.IBox;
 	import flash.display.DisplayObject;
+	import morn.editor.core.IBox;
 	
 	/**容器类*/
 	public class Box extends Component implements IBox {
+		
 		public function Box() {
 			mouseChildren = true;
 		}
@@ -90,6 +88,16 @@ package morn.core.components {
 				var item:Component = getChildAt(i) as Component;
 				if (item != null) {
 					item.validate();
+				}
+			}
+		}
+		
+		override public function set dataSource(value:Object):void {
+			_dataSource = value;
+			for (var name:String in value) {
+				var comp:Component = getChildByName(name) as Component;
+				if (comp != null) {
+					comp.dataSource = value[name];
 				}
 			}
 		}

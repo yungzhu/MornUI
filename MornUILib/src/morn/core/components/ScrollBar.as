@@ -1,13 +1,14 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import morn.core.utils.StringUtils;
+	
+	/**滚动位置变化后触发*/
+	[Event(name="change",type="flash.events.Event")]
 	
 	/**滚动条*/
 	public class ScrollBar extends Component {
@@ -18,7 +19,6 @@ package morn.core.components {
 		/**长按按钮，等待时间，使其可激活连续滚动*/
 		protected static const DELAY_TIME:int = 500;
 		protected var _scrollSize:Number = 1;
-		protected var _autoHide:Boolean = true;
 		protected var _skin:String;
 		protected var _upButton:Button;
 		protected var _downButton:Button;
@@ -45,22 +45,22 @@ package morn.core.components {
 			_downButton.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 		}
 		
-		private function onSliderChange(e:Event):void {
+		protected function onSliderChange(e:Event):void {
 			sendEvent(Event.CHANGE);
 		}
 		
-		private function onButtonMouseDown(e:MouseEvent):void {
+		protected function onButtonMouseDown(e:MouseEvent):void {
 			var isUp:Boolean = e.currentTarget == _upButton;
 			slide(isUp);
 			App.timer.doOnce(DELAY_TIME, startLoop, [isUp]);
 			App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 		}
 		
-		private function startLoop(isUp:Boolean):void {
+		protected function startLoop(isUp:Boolean):void {
 			App.timer.doFrameLoop(1, slide, [isUp]);
 		}
 		
-		private function slide(isUp:Boolean):void {
+		protected function slide(isUp:Boolean):void {
 			if (isUp) {
 				value -= _scrollSize;
 			} else {
@@ -68,7 +68,7 @@ package morn.core.components {
 			}
 		}
 		
-		private function onStageMouseUp(e:MouseEvent):void {
+		protected function onStageMouseUp(e:MouseEvent):void {
 			App.stage.removeEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 			App.timer.clearTimer(startLoop);
 			App.timer.clearTimer(slide);
@@ -89,7 +89,7 @@ package morn.core.components {
 			}
 		}
 		
-		private function changeScrollBar():void {
+		protected function changeScrollBar():void {
 			if (_slider.direction == HORIZONTAL) {
 				_slider.x = _upButton.width;
 			} else {
@@ -98,7 +98,7 @@ package morn.core.components {
 			resetButtonPosition();
 		}
 		
-		private function resetButtonPosition():void {
+		protected function resetButtonPosition():void {
 			if (_slider.direction == HORIZONTAL) {
 				_downButton.x = _slider.x + _slider.width;
 			} else {
@@ -108,16 +108,16 @@ package morn.core.components {
 		
 		override protected function changeSize():void {
 			super.changeSize();
-			_slider.width = _width - _upButton.width - _downButton.width;
-			_slider.height = _height - _upButton.height - _downButton.height;
+			if (_slider.direction == HORIZONTAL) {
+				_slider.width = _width - _upButton.width - _downButton.width;
+			} else {
+				_slider.height = _height - _upButton.height - _downButton.height;
+			}
 			resetButtonPosition();
 		}
 		
 		/**设置滚动条*/
 		public function setScroll(min:Number, max:Number, value:Number):void {
-			this.min = min;
-			this.max = max;
-			this.value = value;
 			_slider.setSlider(min, max, value);
 		}
 		
@@ -173,6 +173,28 @@ package morn.core.components {
 		
 		public function set scrollSize(value:Number):void {
 			_scrollSize = value;
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is Number) {
+				this.value = value as Number;
+			} else {
+				super.dataSource = value;
+			}
+		}
+		
+		override public function get width():Number {
+			if (StringUtils.isNotEmpty(_skin)) {
+				return super.width;
+			}
+			return 0;
+		}
+		
+		override public function get height():Number {
+			if (StringUtils.isNotEmpty(_skin)) {
+				return super.height;
+			}
+			return 0;
 		}
 	}
 }

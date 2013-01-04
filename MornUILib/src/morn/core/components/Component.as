@@ -1,21 +1,24 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.editor.core.IComponent;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	import morn.editor.core.IComponent;
+	
+	/**渲染后触发*/
+	[Event(name="renderCompleted",type="morn.core.components.UIEvent")]
+	/**重置大小后触发*/
+	[Event(name="resize",type="flash.events.Event")]
 	
 	/**组件基类*/
 	public class Component extends Sprite implements IComponent {
-		protected var _methodList:Dictionary = new Dictionary();
+		protected var _methods:Dictionary = new Dictionary();
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
 		protected var _width:Number = 0;
@@ -23,6 +26,8 @@ package morn.core.components {
 		protected var _disabled:Boolean;
 		protected var _tag:Object;
 		protected var _comXml:XML;
+		protected var _dataSource:Object;
+		protected var _toolTip:Object;
 		
 		public function Component() {
 			mouseChildren = tabEnabled = tabChildren = false;
@@ -41,7 +46,7 @@ package morn.core.components {
 		
 		}
 		
-		/**初始化，这里组件对象已经被创建，可以进行修改操作*/
+		/**初始化，此处子对象已被创建，可以针对子对象进行修改*/
 		protected function initialize():void {
 		
 		}
@@ -63,22 +68,22 @@ package morn.core.components {
 		}
 		
 		protected function render():void {
-			for (var method:Object in _methodList) {
+			for (var method:Object in _methods) {
 				exeCallLater(method as Function);
 			}
 		}
 		
 		protected function exeCallLater(method:Function):void {
-			if (_methodList[method] != null) {
-				var args:Array = _methodList[method];
-				delete _methodList[method];
+			if (_methods[method] != null) {
+				var args:Array = _methods[method];
+				delete _methods[method];
 				method.apply(null, args);
 			}
 		}
 		
 		/**立即渲染组件*/
 		public function validate():void {
-			for (var obj:Object in _methodList) {
+			for (var obj:Object in _methods) {
 				onValidate(null);
 				break;
 			}
@@ -86,8 +91,8 @@ package morn.core.components {
 		
 		/**延迟调用*/
 		public function callLater(mothod:Function, args:Array = null):void {
-			if (_methodList[mothod] == null) {
-				_methodList[mothod] = args || [];
+			if (_methods[mothod] == null) {
+				_methods[mothod] = args || [];
 				invalidate();
 			}
 		}
@@ -114,7 +119,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**x坐标(四舍五入)*/
+		/**x坐标(显示时四舍五入)*/
 		override public function get x():Number {
 			return _x;
 		}
@@ -126,7 +131,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**y坐标(四舍五入)*/
+		/**y坐标(显示时四舍五入)*/
 		override public function get y():Number {
 			return _y;
 		}
@@ -146,11 +151,11 @@ package morn.core.components {
 		
 		/**宽度(值为0时，宽度为自适应)*/
 		override public function get width():Number {
-			if (_width == 0) {
+			if (_width != 0) {
+				return _width;
+			} else {
 				validate();
 				return super.width;
-			} else {
-				return _width;
 			}
 		}
 		
@@ -163,11 +168,11 @@ package morn.core.components {
 		
 		/**高度(值为0时，高度为自适应)*/
 		override public function get height():Number {
-			if (_height == 0) {
+			if (_height != 0) {
+				return _height;
+			} else {
 				validate();
 				return super.height;
-			} else {
-				return _height;
 			}
 		}
 		
@@ -188,12 +193,12 @@ package morn.core.components {
 			this.height = height;
 		}
 		
-		/**真实x坐标*/
+		/**真实X坐标*/
 		public function get realX():Number {
 			return super.x;
 		}
 		
-		/**真实y坐标*/
+		/**真实Y坐标*/
 		public function get realY():Number {
 			return super.y;
 		}
@@ -256,6 +261,37 @@ package morn.core.components {
 		
 		public function set comXml(value:XML):void {
 			_comXml = value;
+		}
+		
+		/**数据源*/
+		public function get dataSource():Object {
+			return _dataSource;
+		}
+		
+		public function set dataSource(value:Object):void {
+			_dataSource = value;
+			for (var prop:String in _dataSource) {
+				if (hasOwnProperty(prop)) {
+					this[prop] = _dataSource[prop];
+				}
+			}
+		}
+		
+		/**鼠标提示*/
+		public function get toolTip():Object {
+			return _toolTip;
+		}
+		
+		public function set toolTip(value:Object):void {
+			if (_toolTip != value) {
+				_toolTip = value;
+				addEventListener(MouseEvent.ROLL_OVER, onRollMouse);
+				addEventListener(MouseEvent.ROLL_OUT, onRollMouse);
+			}
+		}
+		
+		protected function onRollMouse(e:MouseEvent):void {
+			dispatchEvent(new UIEvent(e.type == MouseEvent.ROLL_OVER ? UIEvent.SHOW_TIP : UIEvent.HIDE_TIP, _toolTip,true));
 		}
 	}
 }

@@ -1,19 +1,16 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.core.handlers.Handler;
 	import flash.display.DisplayObject;
+	import morn.core.handlers.Handler;
 	
 	/**视图类*/
-	public class ViewStack extends Box implements IItems {
-		private var _items:Vector.<DisplayObject>;
-		private var _setIndexHandler:Handler = new Handler(setIndex);
-		private var _selectedIndex:int;
+	public class ViewStack extends Box implements IItem {
+		protected var _items:Vector.<DisplayObject>;
+		protected var _setIndexHandler:Handler = new Handler(setIndex);
+		protected var _selectedIndex:int;
 		
 		/**设置视图*/
 		public function setItems(... displays):void {
@@ -31,7 +28,7 @@ package morn.core.components {
 		
 		/**增加视图*/
 		public function addItem(item:DisplayObject):void {
-			item.name = _items.length + "";
+			item.name = "item" + _items.length;
 			initItems();
 		}
 		
@@ -61,13 +58,22 @@ package morn.core.components {
 			}
 		}
 		
-		private function setSelect(index:int, selected:Boolean):void {
+		protected function setSelect(index:int, selected:Boolean):void {
 			if (_items != null && index > -1 && index < _items.length) {
 				_items[index].visible = selected;
 			}
 		}
 		
-		/**索引设置处理器*/
+		/**选择项*/
+		public function get selection():DisplayObject {
+			return _selectedIndex > -1 && _selectedIndex < _items.length ? _items[_selectedIndex] : null;
+		}
+		
+		public function set selection(value:DisplayObject):void {
+			selectedIndex = _items.indexOf(value);
+		}
+		
+		/**索引设置处理器(默认接收参数index:int)*/
 		public function get setIndexHandler():Handler {
 			return _setIndexHandler;
 		}
@@ -76,13 +82,26 @@ package morn.core.components {
 			_setIndexHandler = value;
 		}
 		
-		private function setIndex(index:int):void {
+		protected function setIndex(index:int):void {
 			selectedIndex = index;
 		}
 		
 		/**视图集合*/
 		public function get items():Vector.<DisplayObject> {
 			return _items;
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is int) {
+				selectedIndex = value as int;
+			} else {
+				_dataSource = value;
+				for (var prop:String in _dataSource) {
+					if (hasOwnProperty(prop)) {
+						this[prop] = _dataSource[prop];
+					}
+				}
+			}
 		}
 	}
 }

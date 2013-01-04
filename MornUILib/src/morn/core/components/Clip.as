@@ -1,30 +1,42 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.editor.core.IClip;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import morn.core.handlers.Handler;
+	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
+	import morn.editor.core.IClip;
+	
+	/**图片加载后触发(类库中已经存在不会触发)*/
+	[Event(name="imageLoaded",type="morn.core.components.UIEvent")]
+	/**当前帧发生变化后触发*/
+	[Event(name="frameChanged",type="morn.core.components.UIEvent")]
 	
 	/**位图剪辑*/
 	public class Clip extends Component implements IClip {
-		private var _autoStopAtRemoved:Boolean = true;
-		private var _bitmap:Bitmap;
-		private var _clips:Vector.<BitmapData>;
-		private var _clipX:int = 1;
-		private var _clipY:int = 1;
-		private var _url:String;
-		private var _index:int;
-		private var _autoPlay:Boolean;
-		private var _interval:int = Config.MOVIE_INTERVAL;
+		protected var _autoStopAtRemoved:Boolean = true;
+		protected var _bitmap:Bitmap;
+		protected var _clips:Vector.<BitmapData>;
+		protected var _clipX:int = 1;
+		protected var _clipY:int = 1;
+		protected var _url:String;
+		protected var _frame:int;
+		protected var _autoPlay:Boolean;
+		protected var _interval:int = Config.MOVIE_INTERVAL;
+		protected var _from:int = -1;
+		protected var _to:int = -1;
+		protected var _complete:Handler;
+		protected var _isPlaying:Boolean;
 		
+		/**位图切片
+		 * @param url 资源类库名或者地址
+		 * @param clipX x方向个数
+		 * @param clipY y方向个数
+		 */
 		public function Clip(url:String = null, clipX:int = 1, clipY:int = 1) {
 			_clipX = clipX;
 			_clipY = clipY;
@@ -36,10 +48,17 @@ package morn.core.components {
 		}
 		
 		override protected function initialize():void {
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
 		
-		private function onRemovedFromStage(e:Event):void {
+		protected function onAddedToStage(e:Event):void {
+			if (_autoPlay) {
+				play();
+			}
+		}
+		
+		protected function onRemovedFromStage(e:Event):void {
 			if (_autoStopAtRemoved) {
 				stop();
 			}
@@ -55,33 +74,6 @@ package morn.core.components {
 				_url = value;
 				callLater(changeClip);
 			}
-		}
-		
-		private function changeClip():void {
-			if (App.asset.hasClass(_url)) {
-				_clips = App.asset.getClips(_url, _clipX, _clipY, false);
-				index = _index;
-				_width = _width == 0 ? _bitmap.bitmapData.width : _width;
-				_height = _height == 0 ? _bitmap.bitmapData.height : _height;
-				changeSize();
-			} else {
-				var fullUrl:String = Config.resPath + _url;
-				App.loader.loadBMD(fullUrl, new Handler(loadComplete));
-			}
-		}
-		
-		private function loadComplete(bmd:BitmapData):void {
-			if (bmd != null) {
-				App.asset.cacheBitmapData(_url, bmd);
-				changeClip();
-			}
-			sendEvent(UIEvent.IMAGE_LOADED);
-		}
-		
-		override protected function changeSize():void {
-			_bitmap.width = _width;
-			_bitmap.height = _height;
-			super.changeSize();
 		}
 		
 		/**切片宽度*/
@@ -108,17 +100,61 @@ package morn.core.components {
 			}
 		}
 		
-		/**切片索引*/
-		public function get index():int {
-			return _index;
+		protected function changeClip():void {
+			if (App.asset.hasClass(_url)) {
+				bitmapData = App.asset.getBitmapData(_url, false);
+			} else {
+				App.loader.loadBMD(_url, new Handler(loadComplete));
+			}
 		}
 		
-		public function set index(value:int):void {
-			_index = value;
-			if (_clips != null) {
-				_index = (_index < _clips.length && _index > -1) ? _index : 0;
-				_bitmap.bitmapData = _clips[_index];
+		protected function loadComplete(bmd:BitmapData):void {
+			bitmapData = bmd;
+			sendEvent(UIEvent.IMAGE_LOADED);
+		}
+		
+		/**源位图数据*/
+		public function set bitmapData(value:BitmapData):void {
+			if (value != null) {
+				_clips = BitmapUtils.createClips(value, _clipX, _clipY);
+				frame = _frame;
+				_bitmap.width = _width = (_width == 0 ? _clips[0].width : _width);
+				_bitmap.height = _height = (_height == 0 ? _clips[0].height : _height);
 			}
+		}
+		
+		override protected function changeSize():void {
+			_bitmap.width = _width;
+			_bitmap.height = _height;
+			super.changeSize();
+		}
+		
+		/**当前帧*/
+		public function get frame():int {
+			return _frame;
+		}
+		
+		public function set frame(value:int):void {
+			_frame = value;
+			if (_clips != null) {
+				_frame = (_frame < _clips.length && _frame > -1) ? _frame : 0;
+				_bitmap.bitmapData = _clips[_frame];
+				sendEvent(UIEvent.FRAME_CHANGED);
+				if (_frame == _to) {
+					stop();
+					_to = -1;
+					if (_complete != null) {
+						var handler:Handler = _complete;
+						_complete = null;
+						handler.execute();
+					}
+				}
+			}
+		}
+		
+		/**切片帧的总数*/
+		public function get totalFrame():int {
+			return _clips ? _clips.length : 0;
 		}
 		
 		/**从显示列表删除后是否自动停止播放*/
@@ -138,12 +174,8 @@ package morn.core.components {
 		public function set autoPlay(value:Boolean):void {
 			if (_autoPlay != value) {
 				_autoPlay = value;
-				callLater(changePlay);
+				_autoPlay ? play() : stop();
 			}
-		}
-		
-		private function changePlay():void {
-			_autoPlay ? play() : stop();
 		}
 		
 		/**动画播放间隔(单位毫秒)*/
@@ -154,24 +186,67 @@ package morn.core.components {
 		public function set interval(value:int):void {
 			if (_interval != value) {
 				_interval = value;
-				callLater(changePlay);
+				if (_isPlaying) {
+					play();
+				}
 			}
+		}
+		
+		/**是否正在播放*/
+		public function get isPlaying():Boolean {
+			return _isPlaying;
+		}
+		
+		public function set isPlaying(value:Boolean):void {
+			_isPlaying = value;
 		}
 		
 		/**开始播放*/
 		public function play():void {
-			_autoPlay = true;
+			_isPlaying = true;
+			frame = _frame;
 			App.timer.doLoop(_interval, loop);
 		}
 		
-		private function loop():void {
-			index++;
+		protected function loop():void {
+			frame++;
 		}
 		
 		/**停止播放*/
 		public function stop():void {
-			_autoPlay = false;
 			App.timer.clearTimer(loop);
+			_isPlaying = false;
+		}
+		
+		/**从指定的位置播放*/
+		public function gotoAndPlay(frame:int):void {
+			this.frame = frame;
+			play();
+		}
+		
+		/**跳到指定位置并停止*/
+		public function gotoAndStop(frame:int):void {
+			stop();
+			this.frame = frame;
+		}
+		
+		/**从某帧播放到某帧，播放结束发送事件
+		 * @param from 开始帧(为-1时默认为第一帧)
+		 * @param to 结束帧(为-1时默认为最后一帧)
+		 */
+		public function playFromTo(from:int = -1, to:int = -1, complete:Handler = null):void {
+			_from = from == -1 ? 0 : from;
+			_to = to == -1 ? _clipX * _clipY - 1 : to;
+			_complete = complete;
+			gotoAndPlay(_from);
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is int) {
+				frame = value as int;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

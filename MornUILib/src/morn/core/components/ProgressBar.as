@@ -1,23 +1,21 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.core.utils.StringUtils;
+	import flash.events.Event;
 	
-	/**
-	 * 进度条
-	 */
+	/**值改变后触发*/
+	[Event(name="change",type="flash.events.Event")]
+	
+	/**进度条*/
 	public class ProgressBar extends Component {
-		private var _bg:Image;
-		private var _bar:Image;
-		private var _skin:String;
-		private var _value:Number = 0.5;
-		private var _label:String;
-		private var _barLabel:Label;
+		protected var _bg:Image;
+		protected var _bar:Image;
+		protected var _skin:String;
+		protected var _value:Number = 0.5;
+		protected var _label:String;
+		protected var _barLabel:Label;
 		
 		public function ProgressBar(skin:String = null) {
 			this.skin = skin;
@@ -27,6 +25,9 @@ package morn.core.components {
 			addChild(_bg = new Image());
 			addChild(_bar = new Image());
 			addChild(_barLabel = new Label());
+		}
+		
+		override protected function initialize():void {
 			_barLabel.width = 200;
 			_barLabel.height = 18;
 			_barLabel.align = "center";
@@ -49,7 +50,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**当前值*/
+		/**当前值(0-1)*/
 		public function get value():Number {
 			return _value;
 		}
@@ -58,11 +59,12 @@ package morn.core.components {
 			if (_value != value) {
 				value = value > 1 ? 1 : value < 0 ? 0 : value;
 				_value = value;
+				sendEvent(Event.CHANGE);
 				callLater(changeValue);
 			}
 		}
 		
-		private function changeValue():void {
+		protected function changeValue():void {
 			_bar.width = _width * _value;
 		}
 		
@@ -88,7 +90,7 @@ package morn.core.components {
 			return _barLabel;
 		}
 		
-		/**九宫格信息(格式[4,4,4,4]，分别为[左边距,上边距,右边距,下边距])*/
+		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
 			return _bg.sizeGrid;
 		}
@@ -109,6 +111,14 @@ package morn.core.components {
 			_bg.height = _height;
 			_bar.height = _height;
 			_barLabel.y = (_height - _barLabel.height) * 0.5 - 2;
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is Number) {
+				this.value = value as Number;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

@@ -1,32 +1,29 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.events.Event;
 	
 	/**具有相对定位功能的容器*/
 	public class Container extends Box {
-		private var _top:Number;
-		private var _bottom:Number;
-		private var _left:Number;
-		private var _right:Number;
+		protected var _top:Number;
+		protected var _bottom:Number;
+		protected var _left:Number;
+		protected var _right:Number;
 		
 		public function Container() {
 			addEventListener(Event.ADDED, onAdded);
 		}
 		
-		private function onAdded(e:Event):void {
+		protected function onAdded(e:Event):void {
 			if (e.target == this) {
 				parent.addEventListener(Event.RESIZE, onResize);
 				callLater(resetPosition);
 			}
 		}
 		
-		private function onResize(e:Event):void {
+		protected function onResize(e:Event):void {
 			callLater(resetPosition);
 		}
 		
@@ -70,7 +67,7 @@ package morn.core.components {
 			callLater(resetPosition);
 		}
 		
-		private function resetPosition():void {
+		protected function resetPosition():void {
 			if (parent) {
 				if (!isNaN(_left)) {
 					x = _left;

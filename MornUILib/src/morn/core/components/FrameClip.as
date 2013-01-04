@@ -1,106 +1,48 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
-	import morn.editor.core.IClip;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import morn.core.handlers.Handler;
+	import morn.editor.core.IClip;
 	
-	/**
-	 * 矢量动画类
-	 */
+	/**当前帧发生变化后触发*/
+	[Event(name="frameChanged",type="morn.core.components.UIEvent")]
+	
+	/**矢量动画类(为了统一，frame从0开始与movieclip不同)*/
 	public class FrameClip extends Component implements IClip {
-		private var _autoStopAtRemoved:Boolean = true;
-		private var _mc:MovieClip;
-		private var _skin:String;
-		private var _from:Object;
-		private var _to:Object;
-		private var _replay:Boolean;
-		private var _complete:Handler;
-		private var _autoPlay:Boolean;
+		protected var _autoStopAtRemoved:Boolean = true;
+		protected var _mc:MovieClip;
+		protected var _skin:String;
+		protected var _frame:int;
+		protected var _autoPlay:Boolean;
+		protected var _interval:int = Config.MOVIE_INTERVAL;
+		protected var _from:Object;
+		protected var _to:Object;
+		protected var _complete:Handler;
+		protected var _isPlaying:Boolean;
 		
 		public function FrameClip(skin:String = null) {
 			this.skin = skin;
+		}
+		
+		override protected function initialize():void {
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
 		
-		private function onRemovedFromStage(e:Event):void {
+		protected function onAddedToStage(e:Event):void {
+			if (_autoPlay) {
+				play();
+			}
+		}
+		
+		protected function onRemovedFromStage(e:Event):void {
 			if (_autoStopAtRemoved) {
 				stop();
 			}
-		}
-		
-		/**从某帧播放到某帧，播放结束发送事件*/
-		public function playFromTo(from:Object = null, to:Object = null, complete:Handler = null, replay:Boolean = false):void {
-			if (_mc) {
-				_from = from || 0;
-				_to = to || _mc.totalFrames;
-				_replay = replay;
-				_complete = complete;
-				gotoAndPlay(_from);
-				if (!hasEventListener(Event.ENTER_FRAME)) {
-					addEventListener(Event.ENTER_FRAME, onEnterFrame);
-				}
-			}
-		}
-		
-		private function onEnterFrame(e:Event):void {
-			if (_mc.currentFrame == _to || _mc.currentLabel == _to) {
-				if (_replay) {
-					gotoAndPlay(_from);
-				} else {
-					removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-					stop();
-					sendEvent(UIEvent.PLAY_COMPLETED);
-					if (_complete != null) {
-						var handler:Handler = _complete;
-						_complete = null;
-						handler.execute();
-					}
-				}
-			}
-		}
-		
-		/**开始播放*/
-		public function play():void {
-			if (_mc) {
-				_mc.play();
-			}
-		}
-		
-		/**停止播放*/
-		public function stop():void {
-			if (_mc) {
-				_mc.stop();
-			}
-		}
-		
-		/**从某帧并开始播放*/
-		public function gotoAndPlay(frame:Object):void {
-			if (_mc) {
-				_mc.gotoAndPlay(frame);
-			}
-		}
-		
-		/**停在某帧*/
-		public function gotoAndStop(frame:Object):void {
-			if (_mc) {
-				_mc.gotoAndStop(frame);
-			}
-		}
-		
-		/**从显示列表里面删除时是否自动停止*/
-		public function get autoStopAtRemoved():Boolean {
-			return _autoStopAtRemoved;
-		}
-		
-		public function set autoStopAtRemoved(value:Boolean):void {
-			_autoStopAtRemoved = value;
 		}
 		
 		/**资源*/
@@ -130,10 +72,55 @@ package morn.core.components {
 				if (_mc != null) {
 					_mc.stop();
 					addChild(_mc);
-					_width = mc.width;
-					_height = mc.height;
+					mc.width = _width = _width == 0 ? mc.width : _width;
+					mc.height = _height = _height == 0 ? mc.height : _height;
 				}
 			}
+		}
+		
+		override protected function changeSize():void {
+			if (_mc) {
+				_mc.width = _width;
+				_mc.height = _height;
+			}
+			super.changeSize();
+		}
+		
+		/**当前帧(为了统一，frame从0开始，原始的movieclip从1开始)*/
+		public function get frame():int {
+			return _frame;
+		}
+		
+		public function set frame(value:int):void {
+			_frame = value;
+			if (_mc != null) {
+				_frame = (_frame < _mc.totalFrames && _frame > -1) ? _frame : 0;
+				_mc.gotoAndStop(_frame + 1);
+				sendEvent(UIEvent.FRAME_CHANGED);
+				if (_mc.currentFrame - 1 == _to || _mc.currentLabel == _to) {
+					stop();
+					_to = null;
+					if (_complete != null) {
+						var handler:Handler = _complete;
+						_complete = null;
+						handler.execute();
+					}
+				}
+			}
+		}
+		
+		/**切片帧的总数*/
+		public function get totalFrame():int {
+			return _mc ? _mc.totalFrames : 0;
+		}
+		
+		/**从显示列表删除后是否自动停止播放*/
+		public function get autoStopAtRemoved():Boolean {
+			return _autoStopAtRemoved;
+		}
+		
+		public function set autoStopAtRemoved(value:Boolean):void {
+			_autoStopAtRemoved = value;
 		}
 		
 		/**自动播放*/
@@ -144,20 +131,80 @@ package morn.core.components {
 		public function set autoPlay(value:Boolean):void {
 			if (_autoPlay != value) {
 				_autoPlay = value;
-				callLater(changePlay);
+				_autoPlay ? play() : stop();
 			}
 		}
 		
-		private function changePlay():void {
-			_autoPlay ? play() : stop();
+		/**动画播放间隔(单位毫秒)*/
+		public function get interval():int {
+			return _interval;
 		}
 		
-		override protected function changeSize():void {
-			if (_mc) {
-				_mc.width = _width;
-				_mc.height = _height;
+		public function set interval(value:int):void {
+			if (_interval != value) {
+				_interval = value;
+				if (_isPlaying) {
+					play();
+				}
 			}
-			super.changeSize();
+		}
+		
+		/**是否正在播放*/
+		public function get isPlaying():Boolean {
+			return _isPlaying;
+		}
+		
+		public function set isPlaying(value:Boolean):void {
+			_isPlaying = value;
+		}
+		
+		/**开始播放*/
+		public function play():void {
+			_isPlaying = true;
+			frame = _frame;
+			App.timer.doLoop(_interval, loop);
+		}
+		
+		protected function loop():void {
+			frame++;
+		}
+		
+		/**停止播放*/
+		public function stop():void {
+			App.timer.clearTimer(loop);
+			_isPlaying = false;
+		}
+		
+		/**从指定的位置播放*/
+		public function gotoAndPlay(frame:int):void {
+			this.frame = frame;
+			play();
+		}
+		
+		/**跳到指定位置并停止*/
+		public function gotoAndStop(frame:int):void {
+			stop();
+			this.frame = frame;
+		}
+		
+		/**从某帧播放到某帧，播放结束发送事件(为了统一，frame从0开始，原始的movieclip从1开始)
+		 * @param from 开始帧或标签(为null时默认为第一帧)
+		 * @param to 结束帧或标签(为null时默认为最后一帧)
+		 */
+		public function playFromTo(from:Object = null, to:Object = null, complete:Handler = null):void {
+			_from = from == null ? 0 : from;
+			_to = to == null ? _mc.totalFrames - 1 : to;
+			_complete = complete;
+			_mc.gotoAndStop(_from);
+			gotoAndPlay(_mc.currentFrame - 1);
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is int) {
+				frame = value as int;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package morn.editor.core {
 	/**容器接口，实现了编辑器容器类型*/
-	public interface IBox extends IComponent{
-		
+	public interface IBox extends IComponent{		
 	}
 }

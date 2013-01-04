@@ -1,20 +1,18 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	import morn.core.handlers.Handler;
+	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
 	
 	/**按钮类*/
-	public class Button extends Component implements ISelectable {
+	public class Button extends Component {
 		protected var _bitmap:Bitmap;
 		protected var _clips:Vector.<BitmapData>;
 		protected var _btnLabel:Label;
@@ -26,11 +24,12 @@ package morn.core.components {
 		protected var _toggle:Boolean;
 		protected var _selected:Boolean;
 		protected var _skin:String;
+		protected var _sizeGrid:Array = [4, 4, 4, 4];
+		protected var _autoSize:Boolean = true;
 		
 		public function Button(skin:String = null, label:String = "") {
 			this.skin = skin;
 			this.label = label;
-			this.labelStroke = "0x170702";
 		}
 		
 		override protected function createChildren():void {
@@ -47,21 +46,16 @@ package morn.core.components {
 			addEventListener(MouseEvent.CLICK, onMouse);
 		}
 		
-		override protected function render():void {
-			exeCallLater(changeState);
-			super.render();
-		}
-		
-		private function onMouse(e:MouseEvent):void {
+		protected function onMouse(e:MouseEvent):void {
 			if ((_toggle == false && _selected) || _disabled) {
 				return;
 			}
 			if (e.type == MouseEvent.CLICK) {
-				if (_clickHandler) {
-					_clickHandler.execute();
-				}
 				if (_toggle) {
 					selected = !_selected;
+				}
+				if (_clickHandler) {
+					_clickHandler.execute();
 				}
 				return;
 			}
@@ -90,23 +84,38 @@ package morn.core.components {
 		public function set skin(value:String):void {
 			if (_skin != value) {
 				_skin = value;
-				var bmd:BitmapData = App.asset.getBitmapData(_skin);
-				if (bmd != null) {
-					_clips = App.asset.getClips(_skin, 1, 3);
-					callLater(changeState);
-					callLater(changeLabelSize);
+				_clips = App.asset.getClips(_skin, 1, 3);
+				if (_autoSize && _clips != null) {
+					_width = _width == 0 ? _clips[0].width : _width;
+					_height = _height == 0 ? _clips[0].height : _height;
 				}
+				callLater(changeState);
+				callLater(changeLabelSize);
+			}
+		}
+		
+		override protected function render():void {
+			exeCallLater(changeClips);
+			exeCallLater(changeState);
+			super.render();
+		}
+		
+		protected function changeClips():void {
+			_clips = App.asset.getClips(_skin, 1, 3);
+			if (_autoSize && _clips != null) {
+				var clips:Vector.<BitmapData> = new Vector.<BitmapData>();
+				for (var i:int = 0, n:int = _clips.length; i < n; i++) {
+					clips.push(BitmapUtils.scale9Bmd(_clips[i], _sizeGrid, _width, _height));
+				}
+				_clips = clips;
 			}
 		}
 		
 		protected function changeLabelSize():void {
-			_btnLabel.validate();
+			_btnLabel.width = _width - _labelMargin[0] - _labelMargin[2];
+			_btnLabel.height = ObjectUtils.getTextField(_btnLabel.format).height;
 			_btnLabel.x = _labelMargin[0];
-			_btnLabel.width = _bitmap.width - _labelMargin[0] - _labelMargin[2];
-			_btnLabel.autoSize = "left";
-			_btnLabel.height = _btnLabel.textField.height;
-			_btnLabel.autoSize = "none";
-			_btnLabel.y = (_bitmap.height - _btnLabel.height) / 2 + _labelMargin[1];
+			_btnLabel.y = (_height - _btnLabel.height) * 0.5 + _labelMargin[1];
 		}
 		
 		/**是否选择*/
@@ -121,11 +130,11 @@ package morn.core.components {
 			}
 		}
 		
-		private function get state():int {
+		protected function get state():int {
 			return _state;
 		}
 		
-		private function set state(value:int):void {
+		protected function set state(value:int):void {
 			_state = value;
 			callLater(changeState);
 		}
@@ -156,9 +165,9 @@ package morn.core.components {
 			}
 		}
 		
-		/**按钮标签颜色*/
+		/**按钮标签颜色(格式:upColor,overColor,downColor,disableColor)*/
 		public function get labelColors():String {
-			return String(_labelColors);
+			return _labelColors as String;
 		}
 		
 		public function set labelColors(value:String):void {
@@ -166,9 +175,9 @@ package morn.core.components {
 			callLater(changeState);
 		}
 		
-		/**按钮标签对齐[左,上,右,下]*/
+		/**按钮标签对齐(格式:左边距,上边距,右边距,下边距)*/
 		public function get labelMargin():String {
-			return String(_labelMargin);
+			return _labelMargin as String;
 		}
 		
 		public function set labelMargin(value:String):void {
@@ -205,7 +214,7 @@ package morn.core.components {
 			callLater(changeLabelSize);
 		}
 		
-		/**点击处理器*/
+		/**点击处理器(无默认参数)*/
 		public function get clickHandler():Handler {
 			return _clickHandler;
 		}
@@ -221,14 +230,59 @@ package morn.core.components {
 			return _btnLabel;
 		}
 		
+		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		public function get sizeGrid():String {
+			return _sizeGrid.toString();
+		}
+		
+		public function set sizeGrid(value:String):void {
+			_sizeGrid = StringUtils.fillArray([4, 4, 4, 4], value);
+			callLater(changeClips);
+			callLater(changeState);
+		}
+		
 		override public function get width():Number {
-			_btnLabel.validate();
-			return super.width;
+			if (_autoSize == false) {
+				_btnLabel.validate();
+				validate();
+			}
+			if (StringUtils.isNotEmpty(_skin) || StringUtils.isNotEmpty(label)) {
+				return super.width;
+			}
+			return 0;
+		}
+		
+		override public function set width(value:Number):void {
+			super.width = value;
+			callLater(changeClips);
+			callLater(changeState);
+			callLater(changeLabelSize);
 		}
 		
 		override public function get height():Number {
-			_btnLabel.validate();
-			return super.height;
+			if (_autoSize == false) {
+				_btnLabel.validate();
+				validate();
+			}
+			if (StringUtils.isNotEmpty(_skin) || StringUtils.isNotEmpty(label)) {
+				return super.height;
+			}
+			return 0;
+		}
+		
+		override public function set height(value:Number):void {
+			super.height = value;
+			callLater(changeClips);
+			callLater(changeState);
+			callLater(changeLabelSize);
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is String) {
+				label = value as String;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

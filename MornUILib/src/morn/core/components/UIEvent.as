@@ -1,9 +1,6 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -13,6 +10,10 @@ package morn.core.components {
 		//-----------------Component-----------------			
 		/**更新完毕*/
 		public static const RENDER_COMPLETED:String = "renderCompleted";
+		/**显示鼠标提示*/
+		public static const SHOW_TIP:String = "showTip";
+		/**隐藏鼠标提示*/
+		public static const HIDE_TIP:String = "hideTip";
 		//-----------------Image-----------------
 		/**图片加载完毕*/
 		public static const IMAGE_LOADED:String = "imageLoaded";
@@ -20,8 +21,8 @@ package morn.core.components {
 		/**视图创建完毕*/
 		public static const VIEW_CREATED:String = "viewCreated";
 		//-----------------FrameClip-----------------
-		/**播放完毕*/
-		public static const PLAY_COMPLETED:String = "playCompleted";
+		/**帧跳动*/
+		public static const FRAME_CHANGED:String = "frameChanged";
 		
 		private var _data:*;
 		

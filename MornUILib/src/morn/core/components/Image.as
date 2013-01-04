@@ -1,9 +1,6 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.display.Bitmap;
@@ -12,11 +9,14 @@ package morn.core.components {
 	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
 	
+	/**图片被加载后触发*/
+	[Event(name="imageLoaded",type="morn.core.components.UIEvent")]
+	
 	/**图像类*/
 	public class Image extends Component {
-		private var _bitmap:Bitmap;
-		private var _sizeGrid:Array;
-		private var _url:String;
+		protected var _bitmap:Bitmap;
+		protected var _sizeGrid:Array;
+		protected var _url:String;
 		
 		public function Image(url:String = null) {
 			this.url = url;
@@ -35,21 +35,24 @@ package morn.core.components {
 			if (_url != value && StringUtils.isNotEmpty(value)) {
 				_url = value;
 				if (App.asset.hasClass(_url)) {
-					setBitmapData(App.asset.getBitmapData(_url));
+					bitmapData = App.asset.getBitmapData(_url);
 				} else {
-					var fullUrl:String = Config.resPath + _url;
-					App.loader.loadBMD(fullUrl, new Handler(setBitmapData));
+					App.loader.loadBMD(_url, new Handler(setBitmapData));
 				}
 			}
 		}
 		
-		private function setBitmapData(bmd:BitmapData):void {
-			if (bmd != null) {
-				_width = _width == 0 ? bmd.width : _width;
-				_height = _height == 0 ? bmd.height : _height;
-				_bitmap.bitmapData = bmd;
+		public function set bitmapData(value:BitmapData):void {
+			if (value) {
+				_width = _width == 0 ? value.width : _width;
+				_height = _height == 0 ? value.height : _height;
+				_bitmap.bitmapData = value;
 				callLater(changeSize);
 			}
+		}
+		
+		protected function setBitmapData(bmd:BitmapData):void {
+			bitmapData = bmd;
 			sendEvent(UIEvent.IMAGE_LOADED);
 		}
 		
@@ -65,7 +68,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**九宫格信息(格式[4,4,4,4]，分别为[左边距,上边距,右边距,下边距])*/
+		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
 			return _sizeGrid.toString();
 		}
@@ -77,6 +80,14 @@ package morn.core.components {
 		/**位图控件*/
 		public function get bitmap():Bitmap {
 			return _bitmap;
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is String) {
+				url = value as String;
+			} else {
+				super.dataSource = value;
+			}
 		}
 	}
 }

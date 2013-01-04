@@ -3,7 +3,7 @@ package morn.editor{
 		/**对UI类库进行初始化(编辑器导入UI类库后，会默认调用此方法)
 		 * 这里可以针对编辑器对UI库做特殊改变
 		 */
-		public static function init():void{
+		public static function init():void {
 			App.stage = Sys.stage;
 			App.asset = new BuilderResManager();
 		}

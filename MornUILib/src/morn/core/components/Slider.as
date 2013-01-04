@@ -1,14 +1,14 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	
+	/**滑动条变化后触发*/
+	[Event(name="change",type="flash.events.Event")]
 	
 	/**滑动条*/
 	public class Slider extends Component {
@@ -16,17 +16,17 @@ package morn.core.components {
 		public static const HORIZONTAL:String = "horizontal";
 		/**垂直移动*/
 		public static const VERTICAL:String = "vertical";
-		private var _allowBackClick:Boolean;
-		private var _max:Number = 100;
-		private var _min:Number = 0;
-		private var _tick:Number = 1;
-		private var _value:Number = 0;
-		private var _direction:String = HORIZONTAL;
-		private var _skin:String;
-		private var _back:Image;
-		private var _button:Button;
-		private var _label:Label;
-		private var _showLabel:Boolean = true;
+		protected var _allowBackClick:Boolean;
+		protected var _max:Number = 100;
+		protected var _min:Number = 0;
+		protected var _tick:Number = 1;
+		protected var _value:Number = 0;
+		protected var _direction:String = VERTICAL;
+		protected var _skin:String;
+		protected var _back:Image;
+		protected var _button:Button;
+		protected var _label:Label;
+		protected var _showLabel:Boolean = true;
 		
 		public function Slider(skin:String = null):void {
 			this.skin = skin;
@@ -48,32 +48,32 @@ package morn.core.components {
 			allowBackClick = true;
 		}
 		
-		private function onButtonMouseDown(e:MouseEvent):void {
+		protected function onButtonMouseDown(e:MouseEvent):void {
 			App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 			App.stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
 			if (_direction == HORIZONTAL) {
-				_button.startDrag(false, new Rectangle(0, _button.y, _back.width - _button.width, 0));
+				_button.startDrag(false, new Rectangle(0, _button.y, _width - _button.width, 0));
 			} else {
-				_button.startDrag(false, new Rectangle(_button.x, 0, 0, _back.height - _button.height));
+				_button.startDrag(false, new Rectangle(_button.x, 0, 0, _height - _button.height));
 			}
 			//显示提示
 			showValueText();
 		}
 		
-		private function showValueText():void {
+		protected function showValueText():void {
 			if (_showLabel) {
 				_label.text = _value + "";
 				if (_direction == HORIZONTAL) {
 					_label.y = _button.y - 20;
-					_label.x = (_button.width - _label.width) / 2 + _button.realX;
+					_label.x = (_button.width - _label.width) * 0.5 + _button.realX;
 				} else {
 					_label.x = _button.x + 20;
-					_label.y = (_button.height - _label.height) / 2 + _button.realY;
+					_label.y = (_button.height - _label.height) * 0.5 + _button.realY;
 				}
 			}
 		}
 		
-		private function hideValueText():void {
+		protected function hideValueText():void {
 			_label.text = "";
 		}
 		
@@ -87,9 +87,9 @@ package morn.core.components {
 		protected function onStageMouseMove(e:MouseEvent):void {
 			var oldValue:Number = _value;
 			if (_direction == HORIZONTAL) {
-				_value = _button.realX / (_back.width - _button.width) * (_max - _min) + _min;
+				_value = _button.realX / (_width - _button.width) * (_max - _min) + _min;
 			} else {
-				_value = _button.realY / (_back.height - _button.height) * (_max - _min) + _min;
+				_value = _button.realY / (_height - _button.height) * (_max - _min) + _min;
 			}
 			_value = Math.round(_value / _tick) * _tick;
 			if (_value != oldValue) {
@@ -108,26 +108,23 @@ package morn.core.components {
 				_skin = value;
 				_back.url = _skin;
 				_button.skin = _skin + "$bar";
-				if (_direction == HORIZONTAL) {
-					_button.y = (_back.height - _button.height) / 2;
-				} else {
-					_button.x = (_back.width - _button.width) / 2;
-				}
-				_width = _width == 0 ? _back.width : _width;
-				_height = _height == 0 ? _back.height : _height;
+				width = _width == 0 ? _back.width : _width;
+				height = _height == 0 ? _back.height : _height;
 			}
 		}
 		
 		override protected function changeSize():void {
 			super.changeSize();
+			_back.width = _width;
+			_back.height = _height;
 			if (_direction == HORIZONTAL) {
-				_back.width = _width;
+				_button.y = (_height - _button.height) * 0.5;
 			} else {
-				_back.height = _height;
+				_button.x = (_width - _button.width) * 0.5;
 			}
 		}
 		
-		/**九宫格信息*/
+		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
 			return _back.toString();
 		}
@@ -136,12 +133,12 @@ package morn.core.components {
 			_back.sizeGrid = value;
 		}
 		
-		private function changeValue():void {
+		protected function changeValue():void {
 			_value = _value > _max ? _max : _value < _min ? _min : _value;
 			if (_direction == HORIZONTAL) {
-				_button.x = (_value - _min) / (_max - _min) * (_back.width - _button.width);
+				_button.x = (_value - _min) / (_max - _min) * (_width - _button.width);
 			} else {
-				_button.y = (_value - _min) / (_max - _min) * (_back.height - _button.height);
+				_button.y = (_value - _min) / (_max - _min) * (_height - _button.height);
 			}
 		}
 		
@@ -235,11 +232,19 @@ package morn.core.components {
 			}
 		}
 		
-		private function onBackBoxMouseDown(e:MouseEvent):void {
+		protected function onBackBoxMouseDown(e:MouseEvent):void {
 			if (_direction == HORIZONTAL) {
-				value = _back.mouseX / (_back.width - _button.width) * (_max - _min) + _min;
+				value = _back.mouseX / (_width - _button.width) * (_max - _min) + _min;
 			} else {
-				value = _back.mouseY / (_back.height - _button.height) * (_max - _min) + _min;
+				value = _back.mouseY / (_height - _button.height) * (_max - _min) + _min;
+			}
+		}
+		
+		override public function set dataSource(value:Object):void {
+			if (value is Number) {
+				this.value = value as Number;
+			} else {
+				super.dataSource = value;
 			}
 		}
 	}

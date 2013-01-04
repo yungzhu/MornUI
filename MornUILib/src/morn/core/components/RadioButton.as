@@ -1,9 +1,6 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -11,7 +8,7 @@ package morn.core.components {
 	
 	/**单选框按钮*/
 	public class RadioButton extends Button {
-		private var _value:Object;
+		protected var _value:Object;
 		
 		public function RadioButton(skin:String = null, label:String = "") {
 			super(skin, label);
@@ -20,6 +17,7 @@ package morn.core.components {
 		override protected function preinitialize():void {
 			super.preinitialize();
 			_toggle = false;
+			_autoSize = false;
 		}
 		
 		override protected function initialize():void {
@@ -30,10 +28,10 @@ package morn.core.components {
 		
 		override protected function changeLabelSize():void {
 			_btnLabel.x = _bitmap.width + _labelMargin[0];
-			_btnLabel.y = (_bitmap.height - _btnLabel.height) / 2 + _labelMargin[1];
+			_btnLabel.y = (_bitmap.height - _btnLabel.height) * 0.5 + _labelMargin[1];
 		}
 		
-		private function onClick(e:Event):void {
+		protected function onClick(e:Event):void {
 			selected = true;
 		}
 		

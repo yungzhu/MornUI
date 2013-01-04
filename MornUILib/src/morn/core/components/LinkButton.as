@@ -1,23 +1,21 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.components {
+	import flash.events.Event;
 	
 	/**文本按钮*/
 	public class LinkButton extends Button {
 		
 		public function LinkButton(label:String = "") {
 			super(null, label);
-			this.labelStroke = null;
 		}
 		
 		override protected function preinitialize():void {
 			super.preinitialize();
 			_labelColors = Styles.linkLabelColors;
+			_autoSize = false;
 			buttonMode = true;
 		}
 		

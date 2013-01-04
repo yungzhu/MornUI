@@ -1,9 +1,6 @@
 /**
- * Version 0.9.2 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package morn.core.managers {
 	import flash.display.Bitmap;
@@ -68,7 +65,7 @@ package morn.core.managers {
 				tryCloseLoad();
 			}
 			_isLoading = true;
-			_urlRequest.url = _url;
+			_urlRequest.url = App.getResPath(_url);
 			if (_type == SWF) {
 				_loader.load(_urlRequest, _loaderContext);
 				return;
