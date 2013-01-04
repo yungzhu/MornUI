@@ -37,7 +37,7 @@
 		<prop name="url" tips="地址" type="string" default="" />
 		<prop name="clipX" tips="切片X轴数量" type="int" default="" />
 		<prop name="clipY" tips="切片Y轴数量" type="int" default="" />
-		<prop name="index" tips="显示索引" type="int" default="" />		
+		<prop name="frame" tips="当前帧" type="int" default="" />		
 		<prop name="interval" tips="动画播放间隔(单位毫秒)" type="int" default="" />
 		<prop name="autoPlay" tips="自动播放" type="bool" default="false" />
 	</Clip>
@@ -53,6 +53,8 @@
 		<prop name="isHtml" tips="是否是html" type="bool" default="false" />		
 		<prop name="multiline" tips="是否是多行" type="bool" default="false" />
 		<prop name="wordWrap" tips="是否自动换行" type="bool" default="false" />
+		<prop name="skin" tips="背景皮肤" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息" type="string" default="" />
 		<prop name="leftMargin" tips="左间距" type="int" default="" />		
 		<prop name="rightMargin" tips="右间距" type="int" default="" />
 		<prop name="selectable" tips="是否可选" type="bool" default="false" />		
@@ -61,15 +63,16 @@
 		<prop name="indent" tips="第一个字符的缩进" type="int" default="" />
 		<prop name="asPassword" tips="是否是密码" type="bool" default="false" />
 	</Label>
-	<TextInput className="morn.core.components.TextInput" inherit="Label" defaultValue="text='TextInput'" resName="input" icon="TextInput" drag="3">
+	<TextInput className="morn.core.components.TextInput" inherit="Label" defaultValue="text='TextInput'" skinLabel="skin" resName="input" icon="TextInput" drag="3">
 		<prop name="restrict" tips="可以输入的文字" type="string" default="" />
 		<prop name="editable" tips="是否可编辑" type="bool" default="false" />
 	</TextInput>
-	<TextArea className="morn.core.components.TextArea" inherit="TextInput" defaultValue="text='TextArea'" resName="area" icon="TextArea"  drag="3">
+	<TextArea className="morn.core.components.TextArea" inherit="TextInput" defaultValue="text='TextArea'" skinLabel="skin" resName="area" icon="TextArea"  drag="3">
 		<prop name="scrollBarSkin" tips="滚动条皮肤" type="string" default="" />
 	</TextArea>
-	<Button className="morn.core.components.Button" inherit="Component" skinLabel="skin" defaultValue="label='label'" resName="btn" icon="Button">
+	<Button className="morn.core.components.Button" inherit="Component" skinLabel="skin" defaultValue="label='label'" resName="btn" icon="Button" drag="3">
 		<prop name="skin" tips="皮肤" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息" type="string" default="" />
 		<prop name="label" tips="按钮标签" type="string" default="" />
 		<prop name="labelBold" tips="标签加粗" type="bool" default="false" />
 		<prop name="labelColors" tips="标签颜色" type="string" default="" />
@@ -126,6 +129,8 @@
 	<FrameClip className="morn.core.components.FrameClip" inherit="Component" skinLabel="skin" resName="frame" icon="VideoDisplay" drag="3">
 		<prop name="skin" tips="皮肤" type="string" default="" />	
 		<prop name="autoPlay" tips="自动播放" type="bool" default="false" />
+		<prop name="frame" tips="当前帧" type="int" default="" />		
+		<prop name="interval" tips="动画播放间隔(单位毫秒)" type="int" default="" />
 	</FrameClip>
 	<ProgressBar className="morn.core.components.ProgressBar" inherit="Box" skinLabel="skin" resName="progress" icon="ProgressBar" drag="1">
 		<prop name="skin" tips="皮肤" type="string" default="" />
@@ -133,4 +138,17 @@
 		<prop name="label" tips="随进度栏显示的文本" type="string" default="" />		
 		<prop name="sizeGrid" tips="九宫格信息" type="string" default="" />
 	</ProgressBar>
+	<ComboBox className="morn.core.components.ComboBox" inherit="Component" skinLabel="skin" defaultValue="labels='label1,label2'" resName="combo" icon="ComboBox" drag="1">
+		<prop name="skin" tips="皮肤" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息" type="string" default="" />
+		<prop name="labels" tips="标签集合" type="string" default="" />
+		<prop name="itemColors" tips="项颜色(格式:overColor,selectColor,borderColor)" type="string" default="" />
+		<prop name="scrollBarSkin" tips="滚动条" type="string" default="" />
+		<prop name="selectedIndex" tips="选择索引" type="int" default="" />
+		<prop name="visibleNum" tips="可见项数量" type="int" default="" />
+	</ComboBox>
+	<Panel className="morn.core.components.Panel" inherit="Box" icon="Panel" drag="3">
+		<prop name="scrollBarSkin" tips="滚动条皮肤" type="string" default="" />
+		<prop name="direction" tips="滚动条方向" type="option" option="horizontal,vertical" default="" />
+	</Panel>
 </uiComp>
