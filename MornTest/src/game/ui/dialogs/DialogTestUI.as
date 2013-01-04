@@ -5,9 +5,9 @@ package game.ui.dialogs {
 		public var closeBtn:Button;
 		private var uiXML:XML =
 			<Dialog>
-			  <Image url="png.comp.image" x="0" y="0" sizeGrid="4,4,4,4" width="400" height="300"/>
-			  <Button skin="png.comp.btn_close" x="370" y="7" var="closeBtn"/>
-			  <FrameClip skin="assets.frameclip_Bear" x="18" y="43" width="365.85" height="247.5"/>
+			  <Image url="png.comp.bg" x="0" y="0" width="500" height="300" sizeGrid="4,26,4,4"/>
+			  <FrameClip skin="assets.frameclip_Bear" x="72" y="41" width="365.85" height="247.5" autoPlay="true" interval="50"/>
+			  <Button skin="png.comp.btn_close" x="461" y="3" var="closeBtn"/>
 			</Dialog>;
 		public function DialogTestUI() {
 			createView(uiXML);

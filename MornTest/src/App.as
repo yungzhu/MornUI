@@ -1,21 +1,21 @@
 /**
- * Version 0.9.0 https://github.com/yungzhu/morn
+ * Version 0.9.4.1.3 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
- * Copyright 2012, yungzhu. All rights reserved.
- * This program is free software. You can redistribute and/or modify it
- * in accordance with the terms of the accompanying license agreement.
  */
 package {
-	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import morn.core.components.View;
+	import morn.core.handlers.Handler;
 	import morn.core.managers.AssetManager;
 	import morn.core.managers.DialogManager;
 	import morn.core.managers.LoaderManager;
 	import morn.core.managers.LogManager;
 	import morn.core.managers.TimerManager;
+	import morn.core.managers.TipManager;
+	import morn.core.utils.StringUtils;
 	
 	/**全局引用入口*/
 	public class App {
@@ -31,6 +31,8 @@ package {
 		public static var dialog:DialogManager = new DialogManager();
 		/**日志管理器*/
 		public static var log:LogManager = new LogManager();
+		/**提示管理器*/
+		public static var tip:TipManager = new TipManager();
 		
 		public static function init(main:Sprite):void {
 			stage = main.stage;
@@ -41,16 +43,32 @@ package {
 			stage.tabChildren = false;
 			
 			//覆盖配置
-			var loaderInfo:LoaderInfo = stage.loaderInfo;
-			var gameVars:Object = loaderInfo.parameters;
+			var gameVars:Object = stage.loaderInfo.parameters;
 			if (gameVars != null) {
 				for (var s:String in gameVars) {
-					Config[s] = gameVars[s];
+					if (Config[s] != null) {
+						Config[s] = gameVars[s];
+					}
 				}
 			}
 			
 			stage.addChild(dialog);
 			stage.addChild(log);
+			stage.addChild(tip);
+			
+			//如果UI视图是加载模式，则进行整体加载
+			if (StringUtils.isNotEmpty(Config.uiPath)) {
+				App.loader.loadDB(Config.uiPath, new Handler(onUIloadComplete));
+			}
+		}
+		
+		private static function onUIloadComplete(content:*):void {
+			View.xmlMap = content;
+		}
+		
+		/**获得资源路径(此处可以加上资源版本控制)*/
+		public static function getResPath(url:String):String {
+			return /^http:\/\//g.test(url) ? url : Config.resPath + url;
 		}
 	}
 }

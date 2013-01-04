@@ -3,6 +3,7 @@ package game.ui {
 	import morn.core.components.*;
 	public class SceneUI extends View {
 		public var btn1:Button;
+		public var btn3:Button;
 		public var btn2:Button;
 		private var uiXML:XML =
 			<View>
@@ -41,8 +42,9 @@ package game.ui {
 			  <ProgressBar skin="png.nav.progress" x="352" y="538" sizeGrid="4,4,4,4" width="648" height="12"/>
 			  <Image url="png.nav.image_134" x="441" y="483"/>
 			  <Image url="png.nav.image_78" x="365" y="480"/>
-			  <Button label="对话框" skin="png.other.btn_yellow" x="403" y="186" var="btn1"/>
-			  <Button label="组件" skin="png.other.btn_yellow" x="403" y="247" var="btn2"/>
+			  <Button label="对话框1" skin="png.other.btn_yellow" x="403" y="186" var="btn1"/>
+			  <Button label="组件" skin="png.other.btn_yellow" x="403" y="247" var="btn3" labelBold="true"/>
+			  <Button label="对话框2" skin="png.other.btn_yellow" x="497" y="186" var="btn2"/>
 			</View>;
 		public function SceneUI() {
 			createView(uiXML);

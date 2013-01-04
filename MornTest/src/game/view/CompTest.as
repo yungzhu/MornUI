@@ -1,9 +1,6 @@
 package game.view {
-	import flash.display.DisplayObject;
 	import game.ui.CompTestUI;
-	import morn.core.components.Box;
-	import morn.core.components.Clip;
-	import morn.core.components.Label;
+	import game.ui.TestTipsUI;
 	import morn.core.handlers.Handler;
 	
 	/**
@@ -11,12 +8,43 @@ package game.view {
 	 */
 	public class CompTest extends CompTestUI {
 		public static const instance:CompTest = new CompTest();
+		private var _testTips:TestTipsUI = new TestTipsUI();
 		
-		public function CompTest() {
+		override public function CompTest() {
+			testDataSource();
+			testTips();
 			testBtn();
 			testList();
 			testTab();
 			closeBtn.clickHandler = new Handler(close);
+		}
+		
+		/**测试数据赋值*/
+		protected function testDataSource():void {
+			//简单的赋值操作
+			dataSource = {label: "改变了label", checkbox: true};
+			//复杂的赋值操作实例，可以对组件任意属性赋值
+			//dataSource = {label: {text:"改变了label",size:14}, checkbox: true};
+		}
+		
+		/**测试鼠标提示*/
+		private function testTips():void {
+			//简单tips
+			btn2.toolTip = "这个是大按钮这个是<b>大按钮</b><br>这个是大按钮这个是大按钮这个是大按钮这个是大按钮<br>这个是大按钮这个是大按钮";
+			//复杂tips
+			btn.toolTip = showTips1;
+			//带参数的tips
+			clip.toolTip = new Handler(showTips2, ["clip"]);
+		}
+		
+		private function showTips1():void {
+			_testTips.label.text = "这里是按钮["+btn.label+"]";
+			App.tip.addChild(_testTips);
+		}
+		
+		private function showTips2(name:String):void {
+			_testTips.label.text = "这里是" + name;
+			App.tip.addChild(_testTips);
 		}
 		
 		/**测试按钮*/
@@ -26,26 +54,17 @@ package game.view {
 		
 		private function onBtnClick():void {
 			checkbox.selected = !checkbox.selected;
-			radioGroup.selectedValue = "item0";
+			radioGroup.selectedIndex = Math.random() * 2;
 			progressBar.value = Math.random();
-			hSlider.value = Math.random() * 100;
-			clip.index = Math.random() * 9;
+			hslider.value = Math.random() * 100;
+			clip.frame = Math.random() * 9;
+			combo.selectedIndex = Math.random() * 2;
 		}
-		
-		private var _listData:Array = ["label1", "label2", "label3", "label4", "label5", "label6", "label7", "label8", "label9", "label10", "label11", "label12", "label13", "label14", "label15", "label16", "label17", "label18", "label19", "label20"];
 		
 		/**测试list*/
 		private function testList():void {
-			list.length = _listData.length;
-			list.renderHandler = new Handler(listRender);
-		}
-		
-		private function listRender(item:DisplayObject, index:int):void {
-			var box:Box = item as Box;
-			var icon:Clip = box.getChildByName("icon") as Clip;
-			var label:Label = box.getChildByName("label") as Label;
-			icon.index = index % 10;
-			label.text = _listData[index];
+			//list赋值
+			list.dataSource = [{icon: 0, label: "label1"}, {icon: 1, label: "label2"}, {icon: 2, label: "label3"}, {icon: 3, label: "label4"}, {icon: 4, label: "label5"}, {icon: 5, label: "label6"}, {icon: 6, label: "label7"}, {icon: 7, label: "label8"}, {icon: 8, label: "label9"}, {icon: 9, label: "label10"}, {icon: 0, label: "label11"}, {icon: 1, label: "label12"}];
 		}
 		
 		/**测试Tab及viewStack*/

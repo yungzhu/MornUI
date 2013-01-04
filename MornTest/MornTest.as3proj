@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\Test.swf" />
+    <movie path="bin\main.swf" />
     <movie fps="30" />
     <movie width="1000" />
     <movie height="550" />
@@ -17,6 +17,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\MornUILib\src" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -51,7 +52,7 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\MornUILib.swc" />
+    <!-- example: <element path="..." /> -->
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

@@ -8,7 +8,7 @@ package game.view.dialogs {
 	public class DialogTest extends DialogTestUI {
 		public static const instance:DialogTest = new DialogTest();
 		
-		public function DialogTest() {
+		override public function DialogTest() {
 			closeBtn.clickHandler = new Handler(close);
 		}
 	}
