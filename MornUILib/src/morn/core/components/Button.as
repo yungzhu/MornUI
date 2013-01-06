@@ -181,7 +181,7 @@ package morn.core.components {
 		}
 		
 		public function set labelMargin(value:String):void {
-			_labelMargin = StringUtils.fillArray(_labelMargin, value);
+			_labelMargin = StringUtils.fillArray(_labelMargin, value, int);
 			callLater(changeLabelSize);
 		}
 		
