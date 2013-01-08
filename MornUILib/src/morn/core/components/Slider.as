@@ -24,7 +24,7 @@ package morn.core.components {
 		protected var _direction:String = VERTICAL;
 		protected var _skin:String;
 		protected var _back:Image;
-		protected var _button:Button;
+		protected var _bar:Button;
 		protected var _label:Label;
 		protected var _showLabel:Boolean = true;
 		
@@ -38,12 +38,12 @@ package morn.core.components {
 		
 		override protected function createChildren():void {
 			addChild(_back = new Image());
-			addChild(_button = new Button());
+			addChild(_bar = new Button());
 			addChild(_label = new Label());
 		}
 		
 		override protected function initialize():void {
-			_button.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
+			_bar.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 			_back.sizeGrid = "4,4,4,4";
 			allowBackClick = true;
 		}
@@ -52,9 +52,9 @@ package morn.core.components {
 			App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 			App.stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
 			if (_direction == HORIZONTAL) {
-				_button.startDrag(false, new Rectangle(0, _button.y, _width - _button.width, 0));
+				_bar.startDrag(false, new Rectangle(0, _bar.y, _width - _bar.width, 0));
 			} else {
-				_button.startDrag(false, new Rectangle(_button.x, 0, 0, _height - _button.height));
+				_bar.startDrag(false, new Rectangle(_bar.x, 0, 0, _height - _bar.height));
 			}
 			//显示提示
 			showValueText();
@@ -64,11 +64,11 @@ package morn.core.components {
 			if (_showLabel) {
 				_label.text = _value + "";
 				if (_direction == HORIZONTAL) {
-					_label.y = _button.y - 20;
-					_label.x = (_button.width - _label.width) * 0.5 + _button.realX;
+					_label.y = _bar.y - 20;
+					_label.x = (_bar.width - _label.width) * 0.5 + _bar.realX;
 				} else {
-					_label.x = _button.x + 20;
-					_label.y = (_button.height - _label.height) * 0.5 + _button.realY;
+					_label.x = _bar.x + 20;
+					_label.y = (_bar.height - _label.height) * 0.5 + _bar.realY;
 				}
 			}
 		}
@@ -80,16 +80,16 @@ package morn.core.components {
 		protected function onStageMouseUp(e:MouseEvent):void {
 			App.stage.removeEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 			App.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
-			_button.stopDrag();
+			_bar.stopDrag();
 			hideValueText();
 		}
 		
 		protected function onStageMouseMove(e:MouseEvent):void {
 			var oldValue:Number = _value;
 			if (_direction == HORIZONTAL) {
-				_value = _button.realX / (_width - _button.width) * (_max - _min) + _min;
+				_value = _bar.realX / (_width - _bar.width) * (_max - _min) + _min;
 			} else {
-				_value = _button.realY / (_height - _button.height) * (_max - _min) + _min;
+				_value = _bar.realY / (_height - _bar.height) * (_max - _min) + _min;
 			}
 			_value = Math.round(_value / _tick) * _tick;
 			if (_value != oldValue) {
@@ -107,7 +107,7 @@ package morn.core.components {
 			if (_skin != value) {
 				_skin = value;
 				_back.url = _skin;
-				_button.skin = _skin + "$bar";
+				_bar.skin = _skin + "$bar";
 				width = _width == 0 ? _back.width : _width;
 				height = _height == 0 ? _back.height : _height;
 			}
@@ -118,9 +118,9 @@ package morn.core.components {
 			_back.width = _width;
 			_back.height = _height;
 			if (_direction == HORIZONTAL) {
-				_button.y = (_height - _button.height) * 0.5;
+				_bar.y = (_height - _bar.height) * 0.5;
 			} else {
-				_button.x = (_width - _button.width) * 0.5;
+				_bar.x = (_width - _bar.width) * 0.5;
 			}
 		}
 		
@@ -136,16 +136,16 @@ package morn.core.components {
 		protected function changeValue():void {
 			_value = _value > _max ? _max : _value < _min ? _min : _value;
 			if (_direction == HORIZONTAL) {
-				_button.x = (_value - _min) / (_max - _min) * (_width - _button.width);
+				_bar.x = (_value - _min) / (_max - _min) * (_width - _bar.width);
 			} else {
-				_button.y = (_value - _min) / (_max - _min) * (_height - _button.height);
+				_bar.y = (_value - _min) / (_max - _min) * (_height - _bar.height);
 			}
 		}
 		
 		/**设置滑动条*/
 		public function setSlider(min:Number, max:Number, value:Number):void {
 			_min = min;
-			_max = max;
+			_max = max > min ? max : min;
 			this.value = value;
 		}
 		
@@ -234,9 +234,9 @@ package morn.core.components {
 		
 		protected function onBackBoxMouseDown(e:MouseEvent):void {
 			if (_direction == HORIZONTAL) {
-				value = _back.mouseX / (_width - _button.width) * (_max - _min) + _min;
+				value = _back.mouseX / (_width - _bar.width) * (_max - _min) + _min;
 			} else {
-				value = _back.mouseY / (_height - _button.height) * (_max - _min) + _min;
+				value = _back.mouseY / (_height - _bar.height) * (_max - _min) + _min;
 			}
 		}
 		
@@ -246,6 +246,11 @@ package morn.core.components {
 			} else {
 				super.dataSource = value;
 			}
+		}
+		
+		/**控制按钮*/
+		public function get bar():Button {
+			return _bar;
 		}
 	}
 }

@@ -47,10 +47,12 @@ package morn.core.components {
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {
+			callLater(changeScroll);
 			return _content.addChild(child);
 		}
 		
 		override public function removeChild(child:DisplayObject):DisplayObject {
+			callLater(changeScroll);
 			return _content.removeChild(child);
 		}
 		
@@ -69,13 +71,24 @@ package morn.core.components {
 			super.changeSize();
 		}
 		
-		override protected function render():void {
-			super.render();
+		private function changeScroll():void {
 			if (_scrollBar.direction == ScrollBar.VERTICAL) {
+				_scrollBar.visible = _content.height > _height;
 				_scrollBar.setScroll(0, _content.height - _height, 0);
 			} else {
+				_scrollBar.visible = _content.width > _width;
 				_scrollBar.setScroll(0, _content.width - _width, 0);
 			}
+		}
+		
+		override public function set width(value:Number):void {
+			super.width = value;
+			callLater(changeScroll);
+		}
+		
+		override public function set height(value:Number):void {
+			super.height = value;
+			callLater(changeScroll);
 		}
 		
 		/**内容容器*/
@@ -104,6 +117,13 @@ package morn.core.components {
 		
 		public function set direction(value:String):void {
 			_scrollBar.direction = value;
+		}
+		
+		override public function removeAllChild():void {
+			for (var i:int = _content.numChildren - 1; i > -1; i--) {
+				_content.removeChildAt(i);
+			}
+			callLater(changeScroll);
 		}
 	}
 }

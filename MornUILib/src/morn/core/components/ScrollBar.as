@@ -119,6 +119,9 @@ package morn.core.components {
 		/**设置滚动条*/
 		public function setScroll(min:Number, max:Number, value:Number):void {
 			_slider.setSlider(min, max, value);
+			_upButton.disabled = max <= 0;
+			_downButton.disabled = max <= 0;
+			_slider.bar.visible = max > 0;
 		}
 		
 		/**最大滚动位置*/

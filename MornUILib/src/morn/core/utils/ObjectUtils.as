@@ -62,7 +62,7 @@ package morn.core.utils {
 		
 		/**写入AMF*/
 		public static function writeAMF(obj:Object):ByteArray {
-			var bytes:ByteArray;
+			var bytes:ByteArray = new ByteArray();
 			bytes.writeByte(0x11);
 			bytes.writeObject(obj);
 			return bytes;

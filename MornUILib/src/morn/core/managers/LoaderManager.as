@@ -3,9 +3,9 @@
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
-	import morn.core.handlers.Handler;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import morn.core.handlers.Handler;
 	
 	/**加载管理器*/
 	public class LoaderManager extends EventDispatcher {
@@ -100,9 +100,48 @@ package morn.core.managers {
 		public function loadDB(url:String, complete:Handler = null, progress:Handler = null):void {
 			load(url, ResLoader.DB, complete, progress);
 		}
+		
+		/**
+		 * 加载数组里面的资源
+		 * @param arr 简单：["a.swf","b.swf"]，复杂[{url:"a.swf",type:ResLoader.SWF,size:100},{url:"a.png",type:ResLoader.BMD,size:50}]
+		 */
+		public function loadAssets(arr:Array, complete:Handler = null, progress:Handler = null):void {
+			var itemCount:int = arr.length;
+			var itemloaded:int = 0;
+			var totalSize:int = 0;
+			var totalLoaded:int = 0;
+			for (var i:int = 0; i < itemCount; i++) {
+				var item:Object = arr[i];
+				if (item is String) {
+					item = {url: item, type: ResLoader.SWF, size: 1};
+				}
+				totalSize += item.size;
+				load(item.url, item.type, new Handler(loadAssetsComplete, [item.size]), new Handler(loadAssetsProgress, [item.size]));
+			}
+			
+			function loadAssetsComplete(content:*, size:int):void {
+				itemloaded++;
+				totalLoaded += size;
+				if (itemloaded == itemCount) {
+					if (progress != null) {
+						progress.executeWith([1]);
+					}
+					if (complete != null) {
+						complete.execute();
+					}
+				}
+			}
+			
+			function loadAssetsProgress(value:Number, size:int):void {
+				if (progress != null) {
+					var value:Number = (totalLoaded + size * value) / totalSize;
+					progress.executeWith([value]);
+				}
+			}
+		}
 	}
 }
-import morn.core.handlers.Handler;
+import core.handlers.Handler;
 
 class ResInfo {
 	public var url:String;

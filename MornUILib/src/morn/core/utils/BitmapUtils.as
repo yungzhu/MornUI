@@ -10,6 +10,10 @@ package morn.core.utils {
 	
 	/**位图工具集*/
 	public class BitmapUtils {
+		private static var m:Matrix = new Matrix();
+		private static var newRect:Rectangle = new Rectangle();
+		private static var clipRect:Rectangle = new Rectangle();
+		private static var grid:Rectangle = new Rectangle();
 		
 		/**获取9宫格拉伸位图数据*/
 		public static function scale9Bmd(bmd:BitmapData, sizeGrid:Array, width:int, height:int):BitmapData {
@@ -22,20 +26,20 @@ package morn.core.utils {
 			var gw:int = int(sizeGrid[0]) + int(sizeGrid[2]);
 			var gh:int = int(sizeGrid[1]) + int(sizeGrid[3]);
 			var newBmd:BitmapData = new BitmapData(width, height, bmd.transparent, 0x00000000);
-			var m:Matrix = new Matrix();
-			//如果目标大小大于九宫格，则进行9宫格缩放，否则直接缩放
+			//如果目标大于九宫格，则进行9宫格缩放，否则直接缩放
 			if (width > gw && height > gh) {
-				var grid:Rectangle = new Rectangle(sizeGrid[0], sizeGrid[1], bmd.width - sizeGrid[0] - sizeGrid[2], bmd.height - sizeGrid[1] - sizeGrid[3]);
+				//grid.setTo(sizeGrid[0], sizeGrid[1], bmd.width - sizeGrid[0] - sizeGrid[2], bmd.height - sizeGrid[1] - sizeGrid[3]);
+				setRectangle(grid, sizeGrid[0], sizeGrid[1], bmd.width - sizeGrid[0] - sizeGrid[2], bmd.height - sizeGrid[1] - sizeGrid[3]);
 				var rows:Array = [0, grid.top, grid.bottom, bmd.height];
 				var cols:Array = [0, grid.left, grid.right, bmd.width];
 				var newRows:Array = [0, grid.top, height - (bmd.height - grid.bottom), height];
 				var newCols:Array = [0, grid.left, width - (bmd.width - grid.right), width];
-				var newRect:Rectangle = new Rectangle();
-				var clipRect:Rectangle = new Rectangle();
 				for (var i:int = 0; i < 3; i++) {
 					for (var j:int = 0; j < 3; j++) {
-						newRect.setTo(cols[i], rows[j], cols[i + 1] - cols[i], rows[j + 1] - rows[j]);
-						clipRect.setTo(newCols[i], newRows[j], newCols[i + 1] - newCols[i], newRows[j + 1] - newRows[j]);
+						//newRect.setTo(cols[i], rows[j], cols[i + 1] - cols[i], rows[j + 1] - rows[j]);
+						//clipRect.setTo(newCols[i], newRows[j], newCols[i + 1] - newCols[i], newRows[j + 1] - newRows[j]);
+						setRectangle(newRect, cols[i], rows[j], cols[i + 1] - cols[i], rows[j + 1] - rows[j]);
+						setRectangle(clipRect, newCols[i], newRows[j], newCols[i + 1] - newCols[i], newRows[j + 1] - newRows[j]);
 						m.identity();
 						m.a = clipRect.width / newRect.width;
 						m.d = clipRect.height / newRect.height;
@@ -47,9 +51,20 @@ package morn.core.utils {
 			} else {
 				m.a = width / bmd.width;
 				m.d = height / bmd.height;
-				newBmd.draw(bmd, m, null, null, new Rectangle(0, 0, width, height), true);
+				//grid.setTo(0, 0, width, height);
+				setRectangle(grid, 0, 0, width, height);
+				newBmd.draw(bmd, m, null, null, grid, true);
 			}
 			return newBmd;
+		}
+		
+		/**设置rect，兼容player10*/
+		public static function setRectangle(rect:Rectangle, x:Number = 0, y:Number = 0, width:Number = 0, height:Number = 0):Rectangle {
+			rect.x = x;
+			rect.y = y;
+			rect.width = width;
+			rect.height = height;
+			return rect;
 		}
 		
 		/**创建切片资源*/
