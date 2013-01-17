@@ -97,7 +97,7 @@ package morn.core.components {
 				_frame = (_frame < _mc.totalFrames && _frame > -1) ? _frame : 0;
 				_mc.gotoAndStop(_frame + 1);
 				sendEvent(UIEvent.FRAME_CHANGED);
-				if (_mc.currentFrame - 1 == _to || _mc.currentLabel == _to) {
+				if (_to != null && (_mc.currentFrame - 1 == _to || _mc.currentLabel == _to)) {
 					stop();
 					_to = null;
 					if (_complete != null) {

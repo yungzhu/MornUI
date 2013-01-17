@@ -141,7 +141,7 @@ package morn.core.managers {
 		}
 	}
 }
-import core.handlers.Handler;
+import morn.core.handlers.Handler;
 
 class ResInfo {
 	public var url:String;
