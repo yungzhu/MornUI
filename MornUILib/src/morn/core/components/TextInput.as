@@ -3,8 +3,9 @@
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
+	import flash.events.Event;
 	import flash.text.TextFieldType;
-	
+
 	/**输入框*/
 	public class TextInput extends Label {
 		
@@ -23,6 +24,14 @@ package morn.core.components {
 			_textField.type = TextFieldType.INPUT;
 			_textField.autoSize = "none";
 			selectable = true;
+
+			//要让控件真正能接收输入 并且能取的出来
+			_textField.addEventListener(Event.CHANGE,onInput);
+		}
+		
+		private function onInput(evt:Event):void
+		{
+			_text = _textField.text;
 		}
 		
 		/**指示用户可以输入到控件的字符集*/
