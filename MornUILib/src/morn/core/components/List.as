@@ -118,7 +118,7 @@ package morn.core.components {
 		}
 		
 		public function set page(value:int):void {
-			_page = (value < 1 ? 1 : (value >= _totalPage ? _totalPage : value));
+			_page = (value =< 1 ? 1 : (value >= _totalPage ? _totalPage : value));
 			_startIndex = (_page - 1) * _itemCount;
 			callLater(refresh);
 		}
