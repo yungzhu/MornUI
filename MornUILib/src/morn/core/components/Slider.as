@@ -1,11 +1,12 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import morn.core.handlers.Handler;
 	
 	/**滑动条变化后触发*/
 	[Event(name="change",type="flash.events.Event")]
@@ -27,6 +28,7 @@ package morn.core.components {
 		protected var _bar:Button;
 		protected var _label:Label;
 		protected var _showLabel:Boolean = true;
+		protected var _changeHandler:Handler;
 		
 		public function Slider(skin:String = null):void {
 			this.skin = skin;
@@ -94,7 +96,14 @@ package morn.core.components {
 			_value = Math.round(_value / _tick) * _tick;
 			if (_value != oldValue) {
 				showValueText();
-				sendEvent(Event.CHANGE);
+				sendChangeEvent();
+			}
+		}
+		
+		protected function sendChangeEvent():void {
+			sendEvent(Event.CHANGE);
+			if (_changeHandler != null) {
+				_changeHandler.executeWith([_value]);
 			}
 		}
 		
@@ -194,7 +203,7 @@ package morn.core.components {
 				_value = num;
 				//callLater(changeValue);
 				changeValue();
-				sendEvent(Event.CHANGE);
+				sendChangeEvent();
 			}
 		}
 		

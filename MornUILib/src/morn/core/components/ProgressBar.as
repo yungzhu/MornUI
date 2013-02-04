@@ -1,9 +1,10 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
+	import morn.core.handlers.Handler;
 	
 	/**值改变后触发*/
 	[Event(name="change",type="flash.events.Event")]
@@ -16,6 +17,7 @@ package morn.core.components {
 		protected var _value:Number = 0.5;
 		protected var _label:String;
 		protected var _barLabel:Label;
+		protected var _changeHandler:Handler;
 		
 		public function ProgressBar(skin:String = null) {
 			this.skin = skin;
@@ -60,6 +62,9 @@ package morn.core.components {
 				value = value > 1 ? 1 : value < 0 ? 0 : value;
 				_value = value;
 				sendEvent(Event.CHANGE);
+				if (_changeHandler != null) {
+					_changeHandler.executeWith([_value]);
+				}
 				callLater(changeValue);
 			}
 		}

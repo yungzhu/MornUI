@@ -1,10 +1,11 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import morn.core.handlers.Handler;
 	import morn.core.utils.StringUtils;
 	
 	/**滚动位置变化后触发*/
@@ -23,6 +24,7 @@ package morn.core.components {
 		protected var _upButton:Button;
 		protected var _downButton:Button;
 		protected var _slider:Slider;
+		protected var _changeHandler:Handler;
 		
 		public function ScrollBar(skin:String = null):void {
 			this.skin = skin;
@@ -47,6 +49,9 @@ package morn.core.components {
 		
 		protected function onSliderChange(e:Event):void {
 			sendEvent(Event.CHANGE);
+			if (_changeHandler != null) {
+				_changeHandler.executeWith([value]);
+			}
 		}
 		
 		protected function onButtonMouseDown(e:MouseEvent):void {

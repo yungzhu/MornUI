@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.utils {
@@ -53,8 +53,8 @@ package morn.core.utils {
 					}
 				}
 			} else {
-				m.a = width / bmd.width;
-				m.d = height / bmd.height;
+				m.identity();
+				m.scale(width / bmd.width, height / bmd.height);
 				//grid.setTo(0, 0, width, height);
 				setRect(grid, 0, 0, width, height);
 				newBmd.draw(bmd, m, null, null, grid, true);

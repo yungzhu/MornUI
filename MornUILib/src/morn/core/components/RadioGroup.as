@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -21,6 +21,7 @@ package morn.core.components {
 		protected var _labelStroke:String;
 		protected var _labelSize:Object;
 		protected var _labelBold:Object;
+		protected var _labelMargin:String;
 		
 		public function RadioGroup(labels:String = null, skin:String = null) {
 			this.skin = skin;
@@ -149,6 +150,18 @@ package morn.core.components {
 			}
 		}
 		
+		/**按钮标签边距(格式:左边距,上边距,右边距,下边距)*/
+		public function get labelMargin():String {
+			return _labelMargin;
+		}
+		
+		public function set labelMargin(value:String):void {
+			if (_labelMargin != value) {
+				_labelMargin = value;
+				callLater(changeLabels);
+			}
+		}
+		
 		protected function changeLabels():void {
 			if (StringUtils.isNotEmpty(_labels)) {
 				removeAllChild();
@@ -169,6 +182,9 @@ package morn.core.components {
 					}
 					if (_labelBold) {
 						radio.labelBold = _labelBold;
+					}
+					if (_labelMargin) {
+						radio.labelMargin = _labelMargin;
 					}
 					addElement(radio, right, 0);
 					right += radio.width;

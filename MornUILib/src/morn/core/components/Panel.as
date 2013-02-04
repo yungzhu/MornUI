@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -15,7 +15,8 @@ package morn.core.components {
 	public class Panel extends Box implements IContent {
 		protected var _content:Sprite;
 		protected var _mask:Bitmap;
-		protected var _scrollBar:ScrollBar;
+		protected var _vScrollBar:VScrollBar;
+		protected var _hScrollBar:HScrollBar;
 		
 		public function Panel() {
 			width = height = 100;
@@ -23,27 +24,11 @@ package morn.core.components {
 		
 		override protected function createChildren():void {
 			super.addChild(_content = new Sprite());
-			super.addChild(_scrollBar = new ScrollBar());
 			super.addChild(_mask = new Bitmap(new BitmapData(1, 1, false, 0x000000)));
 		}
 		
 		override protected function initialize():void {
 			_content.mask = _mask;
-			_scrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
-			addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
-		}
-		
-		protected function onScrollBarChange(e:Event):void {
-			var start:int = Math.round(_scrollBar.value);
-			if (_scrollBar.direction == ScrollBar.VERTICAL) {
-				_content.y = -start;
-			} else {
-				_content.x = -start;
-			}
-		}
-		
-		protected function onMouseWheel(e:MouseEvent):void {
-			_scrollBar.value -= e.delta;
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {
@@ -51,33 +36,47 @@ package morn.core.components {
 			return _content.addChild(child);
 		}
 		
+		override public function addChildAt(child:DisplayObject, index:int):DisplayObject {
+			callLater(changeScroll);
+			return _content.addChildAt(child, index);
+		}
+		
 		override public function removeChild(child:DisplayObject):DisplayObject {
 			callLater(changeScroll);
 			return _content.removeChild(child);
 		}
 		
-		override protected function changeSize():void {
-			_mask.width = _width;
-			_mask.height = _height;
-			if (_scrollBar.direction == ScrollBar.VERTICAL) {
-				_scrollBar.x = _width - _scrollBar.width;
-				_scrollBar.y = 0;
-				_scrollBar.height = _height;
-			} else {
-				_scrollBar.x = 0;
-				_scrollBar.y = _height - _scrollBar.height;
-				_scrollBar.width = _width;
-			}
-			super.changeSize();
+		override public function removeChildAt(index:int):DisplayObject {
+			callLater(changeScroll);
+			return _content.removeChildAt(index);
+		}
+		
+		override public function get numChildren():int {
+			return _content.numChildren;
 		}
 		
 		private function changeScroll():void {
-			if (_scrollBar.direction == ScrollBar.VERTICAL) {
-				_scrollBar.visible = _content.height > _height;
-				_scrollBar.setScroll(0, _content.height - _height, 0);
-			} else {
-				_scrollBar.visible = _content.width > _width;
-				_scrollBar.setScroll(0, _content.width - _width, 0);
+			var vShow:Boolean = _vScrollBar && _content.height > _height;
+			var hShow:Boolean = _hScrollBar && _content.width > _width;
+			_mask.width = vShow ? _width - _vScrollBar.width : _width;
+			_mask.height = hShow ? _height - _hScrollBar.height : _height;
+			if (_vScrollBar) {
+				_vScrollBar.visible = _content.height > _height;
+				if (_vScrollBar.visible) {
+					_vScrollBar.x = _width - _vScrollBar.width;
+					_vScrollBar.y = 0;
+					_vScrollBar.height = _height - (hShow ? _hScrollBar.height : 0);
+					_vScrollBar.setScroll(0, _content.height - _mask.height, 0);
+				}
+			}
+			if (_hScrollBar) {
+				_hScrollBar.visible = _content.width > _width;
+				if (_hScrollBar.visible) {
+					_hScrollBar.x = 0;
+					_hScrollBar.y = _height - _hScrollBar.height;
+					_hScrollBar.width = _width - (vShow ? _vScrollBar.width : 0);
+					_hScrollBar.setScroll(0, _content.width - _mask.width, 0);
+				}
 			}
 		}
 		
@@ -96,27 +95,57 @@ package morn.core.components {
 			return _content;
 		}
 		
-		/**滚动条皮肤*/
-		public function get scrollBarSkin():String {
-			return _scrollBar.skin;
+		/**垂直滚动条皮肤*/
+		public function get vScrollBarSkin():String {
+			return _vScrollBar.skin;
 		}
 		
-		public function set scrollBarSkin(value:String):void {
-			_scrollBar.skin = value;
+		public function set vScrollBarSkin(value:String):void {
+			if (_vScrollBar == null) {
+				super.addChild(_vScrollBar = new VScrollBar());
+				_vScrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
+				addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+				callLater(changeScroll);
+			}
+			_vScrollBar.skin = value;
 		}
 		
-		/**滚动条*/
-		public function get scrollBar():ScrollBar {
-			return _scrollBar;
+		/**水平滚动条皮肤*/
+		public function get hScrollBarSkin():String {
+			return _hScrollBar.skin;
 		}
 		
-		/**滚动方向*/
-		public function get direction():String {
-			return _scrollBar.direction;
+		public function set hScrollBarSkin(value:String):void {
+			if (_hScrollBar == null) {
+				super.addChild(_hScrollBar = new HScrollBar());
+				_hScrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
+				callLater(changeScroll);
+			}
+			_hScrollBar.skin = value;
 		}
 		
-		public function set direction(value:String):void {
-			_scrollBar.direction = value;
+		/**垂直滚动条*/
+		public function get vScrollBar():ScrollBar {
+			return _vScrollBar;
+		}
+		
+		/**水平滚动条*/
+		public function get hScrollBar():ScrollBar {
+			return _hScrollBar;
+		}
+		
+		protected function onScrollBarChange(e:Event):void {
+			var scroll:ScrollBar = e.currentTarget as ScrollBar;
+			var start:int = Math.round(scroll.value);
+			if (scroll.direction == ScrollBar.VERTICAL) {
+				_content.y = -start;
+			} else {
+				_content.x = -start;
+			}
+		}
+		
+		protected function onMouseWheel(e:MouseEvent):void {
+			_vScrollBar.value -= e.delta;
 		}
 		
 		override public function removeAllChild():void {

@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -78,12 +78,18 @@ package morn.core.components {
 		public function set selectedIndex(value:int):void {
 			var oldValue:int = _selectedIndex;
 			_selectedIndex = (value < -1 ? -1 : (value >= _array.length ? _array.length - 1 : value));
-			callLater(refresh);
 			if (oldValue != _selectedIndex) {
+				setSelectStatus();
 				sendEvent(Event.SELECT);
 				if (_selectHandler != null) {
 					_selectHandler.executeWith([_selectedIndex]);
 				}
+			}
+		}
+		
+		protected function setSelectStatus():void {
+			for (var i:int = 0, n:int = items.length; i < n; i++) {
+				changeItemState(items[i], _selectedIndex == _startIndex + i, 1);
 			}
 		}
 		
@@ -118,8 +124,8 @@ package morn.core.components {
 		}
 		
 		public function set page(value:int):void {
-			_page = (value < 1 ? 1 : (value >= _totalPage ? _totalPage : value));
-			_startIndex = (_page - 1) * _itemCount;
+			_page = (value < 0 ? 0 : (value >= _totalPage ? _totalPage : value));
+			_startIndex = _page * _itemCount;
 			callLater(refresh);
 		}
 		
@@ -142,10 +148,7 @@ package morn.core.components {
 			} else {
 				item.visible = false;
 			}
-			//选中处理
-			if (item.visible) {
-				changeItemState(item, _selectedIndex == index, 1);
-			}
+			setSelectStatus();
 			if (_renderHandler != null) {
 				_renderHandler.executeWith([item, index]);
 			}

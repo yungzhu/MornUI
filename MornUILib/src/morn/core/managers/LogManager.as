@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0 Alpha https://github.com/yungzhu/morn
+ * Version 1.0.0203 https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -109,7 +109,7 @@ package morn.core.managers {
 		}
 		
 		private function onStageKeyDown(e:KeyboardEvent):void {
-			if (e.ctrlKey && e.keyCode == Keyboard.F8) {
+			if (e.ctrlKey && e.keyCode == Keyboard.L) {
 				toggle();
 			}
 		}
