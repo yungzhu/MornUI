@@ -43,7 +43,7 @@ package morn.core.components {
 			if (type != "List") {
 				for (var j:int = 0, n:int = xml.children().length(); j < n; j++) {
 					var child:Component = createComps(xml.children()[j], false);
-					if (child != null) {
+					if (child) {
 						comp.addChild(child);
 					}
 				}

@@ -115,11 +115,13 @@ package morn.core.components {
 		
 		/**源位图数据*/
 		public function set bitmapData(value:BitmapData):void {
-			if (value != null) {
+			if (value) {
 				_clips = BitmapUtils.createClips(value, _clipX, _clipY);
 				frame = _frame;
-				_bitmap.width = _width = (_width == 0 ? _clips[0].width : _width);
-				_bitmap.height = _height = (_height == 0 ? _clips[0].height : _height);
+				_contentWidth = _clips[0].width;
+				_contentHeight = _clips[0].height;
+				_bitmap.width = width;
+				_bitmap.height = height;
 			}
 		}
 		
@@ -136,7 +138,7 @@ package morn.core.components {
 		
 		public function set frame(value:int):void {
 			_frame = value;
-			if (_clips != null) {
+			if (_clips) {
 				_frame = (_frame < _clips.length && _frame > -1) ? _frame : 0;
 				_bitmap.bitmapData = _clips[_frame];
 				sendEvent(UIEvent.FRAME_CHANGED);

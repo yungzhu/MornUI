@@ -10,14 +10,8 @@ package {
 		/**游戏帧率*/
 		public static const GAME_FPS:int = 50;
 		/**动画默认播放间隔*/
-		public static const MOVIE_INTERVAL:int = 100;		
+		public static const MOVIE_INTERVAL:int = 100;
 		//------------------动态配置------------------
-		/**是否是调试模式*/
-		public static var debug:int = 1;
-		/**游戏宽度*/
-		public static var gameWidth:int = 1000;
-		/**游戏高度*/
-		public static var gameHeight:int = 550;
 		/**资源路径*/
 		public static var resPath:String = "";
 		/**UI路径(UI加载模式可用)*/

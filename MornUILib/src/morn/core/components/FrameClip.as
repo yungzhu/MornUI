@@ -64,12 +64,12 @@ package morn.core.components {
 		
 		public function set mc(value:MovieClip):void {
 			if (_mc != value) {
-				if (_mc != null && _mc.parent) {
+				if (_mc && _mc.parent) {
 					_mc.stop();
 					removeChild(_mc);
 				}
 				_mc = value;
-				if (_mc != null) {
+				if (_mc) {
 					_mc.stop();
 					addChild(_mc);
 					mc.width = _width = _width == 0 ? mc.width : _width;
@@ -93,11 +93,11 @@ package morn.core.components {
 		
 		public function set frame(value:int):void {
 			_frame = value;
-			if (_mc != null) {
+			if (_mc) {
 				_frame = (_frame < _mc.totalFrames && _frame > -1) ? _frame : 0;
 				_mc.gotoAndStop(_frame + 1);
 				sendEvent(UIEvent.FRAME_CHANGED);
-				if (_to != null && (_mc.currentFrame - 1 == _to || _mc.currentLabel == _to)) {
+				if (_to && (_mc.currentFrame - 1 == _to || _mc.currentLabel == _to)) {
 					stop();
 					_to = null;
 					if (_complete != null) {

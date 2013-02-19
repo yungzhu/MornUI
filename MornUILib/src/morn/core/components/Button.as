@@ -85,39 +85,37 @@ package morn.core.components {
 			if (_skin != value) {
 				_skin = value;
 				_clips = App.asset.getClips(_skin, 1, 3);
-				if (_autoSize && _clips != null) {
-					_width = _width == 0 ? _clips[0].width : _width;
-					_height = _height == 0 ? _clips[0].height : _height;
+				if (_autoSize && _clips) {
+					_contentWidth = _clips[0].width;
+					_contentHeight = _clips[0].height;
 				}
 				callLater(changeState);
 				callLater(changeLabelSize);
 			}
 		}
 		
-		override protected function render():void {
-			exeCallLater(changeClips);
-			exeCallLater(changeState);
-			super.render();
-		}
-		
 		protected function changeClips():void {
 			if (StringUtils.isNotEmpty(_skin)) {
-				_clips = App.asset.getClips(_skin, 1, 3);
-				if (_autoSize && _clips != null) {
-					var clips:Vector.<BitmapData> = new Vector.<BitmapData>();
-					for (var i:int = 0, n:int = _clips.length; i < n; i++) {
-						clips.push(BitmapUtils.scale9Bmd(_clips[i], _sizeGrid, _width, _height));
+				var source:Vector.<BitmapData> = App.asset.getClips(_skin, 1, 3);
+				if (_autoSize && source) {
+					var temp:Vector.<BitmapData> = new Vector.<BitmapData>();
+					for (var i:int = 0, n:int = source.length; i < n; i++) {
+						//清理临时位图数据
+						if (_clips[i] != source[i]) {
+							_clips[i].dispose();
+						}
+						temp.push(BitmapUtils.scale9Bmd(source[i], _sizeGrid, width, height));
 					}
-					_clips = clips;
+					_clips = temp;
 				}
 			}
 		}
 		
 		protected function changeLabelSize():void {
-			_btnLabel.width = _width - _labelMargin[0] - _labelMargin[2];
+			_btnLabel.width = width - _labelMargin[0] - _labelMargin[2];
 			_btnLabel.height = ObjectUtils.getTextField(_btnLabel.format).height;
 			_btnLabel.x = _labelMargin[0];
-			_btnLabel.y = (_height - _btnLabel.height) * 0.5 + _labelMargin[1];
+			_btnLabel.y = (height - _btnLabel.height) * 0.5 + _labelMargin[1] - _labelMargin[3];
 		}
 		
 		/**是否选择*/
@@ -142,21 +140,20 @@ package morn.core.components {
 		}
 		
 		protected function changeState():void {
-			if (_clips != null) {
+			exeCallLater(changeClips);
+			if (_clips) {
 				_bitmap.bitmapData = _clips[_state];
 			}
 			_btnLabel.color = _labelColors[_state];
 		}
 		
-		/**控制是否处于切换状态*/
+		/**是否切换状态*/
 		public function get toggle():Boolean {
 			return _toggle;
 		}
 		
 		public function set toggle(value:Boolean):void {
-			if (_toggle != value) {
-				_toggle = value;
-			}
+			_toggle = value;
 		}
 		
 		override public function set disabled(value:Boolean):void {
@@ -222,9 +219,7 @@ package morn.core.components {
 		}
 		
 		public function set clickHandler(value:Handler):void {
-			if (_clickHandler != value) {
-				_clickHandler = value;
-			}
+			_clickHandler = value;
 		}
 		
 		/**按钮标签控件*/
@@ -234,7 +229,7 @@ package morn.core.components {
 		
 		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
-			return _sizeGrid.toString();
+			return _sizeGrid.join(",");
 		}
 		
 		public function set sizeGrid(value:String):void {

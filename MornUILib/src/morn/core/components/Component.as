@@ -23,11 +23,14 @@ package morn.core.components {
 		protected var _y:Number = 0;
 		protected var _width:Number = 0;
 		protected var _height:Number = 0;
+		protected var _contentWidth:Number = 0;
+		protected var _contentHeight:Number = 0;
 		protected var _disabled:Boolean;
 		protected var _tag:Object;
 		protected var _comXml:XML;
 		protected var _dataSource:Object;
 		protected var _toolTip:Object;
+		protected var _mouseChildren:Boolean;
 		
 		public function Component() {
 			mouseChildren = tabEnabled = tabChildren = false;
@@ -55,7 +58,7 @@ package morn.core.components {
 			addEventListener(Event.RENDER, onValidate);
 			//render有一定几率无法触发，这里加上保险处理
 			addEventListener(Event.ENTER_FRAME, onValidate);
-			if (App.stage != null) {
+			if (App.stage) {
 				App.stage.invalidate();
 			}
 		}
@@ -153,6 +156,8 @@ package morn.core.components {
 		override public function get width():Number {
 			if (_width != 0) {
 				return _width;
+			} else if (_contentWidth != 0) {
+				return _contentWidth;
 			} else {
 				validate();
 				return super.width;
@@ -170,6 +175,8 @@ package morn.core.components {
 		override public function get height():Number {
 			if (_height != 0) {
 				return _height;
+			} else if (_contentHeight != 0) {
+				return _contentHeight;
 			} else {
 				validate();
 				return super.height;
@@ -230,8 +237,13 @@ package morn.core.components {
 		public function set disabled(value:Boolean):void {
 			if (_disabled != value) {
 				_disabled = value;
-				mouseEnabled = !disabled;
+				mouseEnabled = !value;
+				super.mouseChildren = value ? false : _mouseChildren;
 			}
+		}
+		
+		override public function set mouseChildren(value:Boolean):void {
+			_mouseChildren = super.mouseChildren = value;
 		}
 		
 		/**标签(冗余字段，可以用来储存数据)*/
@@ -291,7 +303,7 @@ package morn.core.components {
 		}
 		
 		protected function onRollMouse(e:MouseEvent):void {
-			dispatchEvent(new UIEvent(e.type == MouseEvent.ROLL_OVER ? UIEvent.SHOW_TIP : UIEvent.HIDE_TIP, _toolTip,true));
+			dispatchEvent(new UIEvent(e.type == MouseEvent.ROLL_OVER ? UIEvent.SHOW_TIP : UIEvent.HIDE_TIP, _toolTip, true));
 		}
 	}
 }

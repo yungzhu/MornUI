@@ -46,7 +46,7 @@ package morn.core.components {
 		
 		override protected function initialize():void {
 			_bar.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
-			_back.sizeGrid = "4,4,4,4";
+			_back.sizeGrid = _bar.sizeGrid = "4,4,4,4";
 			allowBackClick = true;
 		}
 		
@@ -54,9 +54,9 @@ package morn.core.components {
 			App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 			App.stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
 			if (_direction == HORIZONTAL) {
-				_bar.startDrag(false, new Rectangle(0, _bar.y, _width - _bar.width, 0));
+				_bar.startDrag(false, new Rectangle(0, _bar.y, width - _bar.width, 0));
 			} else {
-				_bar.startDrag(false, new Rectangle(_bar.x, 0, 0, _height - _bar.height));
+				_bar.startDrag(false, new Rectangle(_bar.x, 0, 0, height - _bar.height));
 			}
 			//显示提示
 			showValueText();
@@ -89,9 +89,9 @@ package morn.core.components {
 		protected function onStageMouseMove(e:MouseEvent):void {
 			var oldValue:Number = _value;
 			if (_direction == HORIZONTAL) {
-				_value = _bar.realX / (_width - _bar.width) * (_max - _min) + _min;
+				_value = _bar.realX / (width - _bar.width) * (_max - _min) + _min;
 			} else {
-				_value = _bar.realY / (_height - _bar.height) * (_max - _min) + _min;
+				_value = _bar.realY / (height - _bar.height) * (_max - _min) + _min;
 			}
 			_value = Math.round(_value / _tick) * _tick;
 			if (_value != oldValue) {
@@ -117,8 +117,9 @@ package morn.core.components {
 				_skin = value;
 				_back.url = _skin;
 				_bar.skin = _skin + "$bar";
-				width = _width == 0 ? _back.width : _width;
-				height = _height == 0 ? _back.height : _height;
+				_contentWidth = _back.width;
+				_contentHeight = _back.height;
+				setBarPoint();
 			}
 		}
 		
@@ -126,10 +127,14 @@ package morn.core.components {
 			super.changeSize();
 			_back.width = _width;
 			_back.height = _height;
+			setBarPoint();
+		}
+		
+		protected function setBarPoint():void {
 			if (_direction == HORIZONTAL) {
-				_bar.y = (_height - _bar.height) * 0.5;
+				_bar.y = (_back.height - _bar.height) * 0.5;
 			} else {
-				_bar.x = (_width - _bar.width) * 0.5;
+				_bar.x = (_back.width - _bar.width) * 0.5;
 			}
 		}
 		
@@ -143,11 +148,12 @@ package morn.core.components {
 		}
 		
 		protected function changeValue():void {
+			_value = Math.round(_value / _tick) * _tick;
 			_value = _value > _max ? _max : _value < _min ? _min : _value;
 			if (_direction == HORIZONTAL) {
-				_bar.x = (_value - _min) / (_max - _min) * (_width - _bar.width);
+				_bar.x = (_value - _min) / (_max - _min) * (width - _bar.width);
 			} else {
-				_bar.y = (_value - _min) / (_max - _min) * (_height - _bar.height);
+				_bar.y = (_value - _min) / (_max - _min) * (height - _bar.height);
 			}
 		}
 		
@@ -165,6 +171,7 @@ package morn.core.components {
 		
 		public function set tick(value:Number):void {
 			_tick = value;
+			callLater(changeValue);
 		}
 		
 		/**滑块上允许的最大值*/
@@ -197,11 +204,10 @@ package morn.core.components {
 		}
 		
 		public function set value(num:Number):void {
-			num = Math.round(num / _tick) * _tick;
-			num = num > _max ? _max : num < _min ? _min : num;
 			if (_value != num) {
 				_value = num;
 				//callLater(changeValue);
+				//callLater(sendChangeEvent);
 				changeValue();
 				sendChangeEvent();
 			}
@@ -243,9 +249,9 @@ package morn.core.components {
 		
 		protected function onBackBoxMouseDown(e:MouseEvent):void {
 			if (_direction == HORIZONTAL) {
-				value = _back.mouseX / (_width - _bar.width) * (_max - _min) + _min;
+				value = _back.mouseX / (width - _bar.width) * (_max - _min) + _min;
 			} else {
-				value = _back.mouseY / (_height - _bar.height) * (_max - _min) + _min;
+				value = _back.mouseY / (height - _bar.height) * (_max - _min) + _min;
 			}
 		}
 		

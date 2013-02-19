@@ -53,7 +53,7 @@ package morn.core.managers {
 		
 		/**显示对话框(不会关闭其他窗口)*/
 		public function popup(dialog:Dialog, x:int = 0, y:int = 0):void {
-			if (dialog != null) {
+			if (dialog) {
 				if (x == 0 && y == 0) {
 					x = (stage.stageWidth - dialog.width) * 0.5;
 					y = (stage.stageHeight - dialog.height) * 0.5;
@@ -82,11 +82,11 @@ package morn.core.managers {
 		}
 		
 		public function set modal(value:Dialog):void {
-			if (_modal != null) {
+			if (_modal) {
 				_modal.remove();
 			}
 			_modal = value;
-			if (_modal != null) {
+			if (_modal) {
 				addChild(_mask);
 				var x:int = (_mask.width - _modal.width) * 0.5;
 				var y:int = (_mask.height - _modal.height) * 0.5;

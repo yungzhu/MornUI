@@ -69,7 +69,7 @@ package morn.core.managers {
 		
 		/**缓存位图数据*/
 		public function cacheBitmapData(name:String, bmd:BitmapData):void {
-			if (bmd != null) {
+			if (bmd) {
 				_bmdMap[name] = bmd;
 			}
 		}
@@ -85,7 +85,7 @@ package morn.core.managers {
 		
 		/**缓存切片资源*/
 		public function cacheClips(name:String, clips:Vector.<BitmapData>):void {
-			if (clips != null) {
+			if (clips) {
 				_clipsMap[name] = clips;
 			}
 		}

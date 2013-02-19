@@ -64,7 +64,7 @@ package morn.core.components {
 		}
 		
 		protected function setSelect(index:int, selected:Boolean):void {
-			if (_items != null && index > -1 && index < _items.length) {
+			if (_items && index > -1 && index < _items.length) {
 				_items[index].selected = selected;
 			}
 		}

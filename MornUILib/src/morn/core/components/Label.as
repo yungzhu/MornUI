@@ -40,6 +40,14 @@ package morn.core.components {
 			_format = new TextFormat(Styles.fontName, Styles.fontSize, Styles.labelColor);
 		}
 		
+		override public function get mouseEnabled():Boolean {
+			return super.mouseEnabled;
+		}
+		
+		override public function set mouseEnabled(value:Boolean):void {
+			super.mouseEnabled = value;
+		}
+		
 		override protected function createChildren():void {
 			addChild(_bitmap = new Bitmap());
 			addChild(_textField = new TextField());
@@ -178,10 +186,8 @@ package morn.core.components {
 		}
 		
 		public function set color(value:Object):void {
-			if (String(_format.color) != String(value)) {
-				_format.color = value;
-				callLater(changeText);
-			}
+			_format.color = value;
+			callLater(changeText);
 		}
 		
 		/**字体类型*/
@@ -301,16 +307,20 @@ package morn.core.components {
 		
 		protected function changeBitmap():void {
 			if (StringUtils.isNotEmpty(_skin) && App.asset.hasClass(_skin)) {
-				var bmd:BitmapData = App.asset.getBitmapData(_skin);
-				_width = _width == 0 ? bmd.width : _width;
-				_height = _height == 0 ? bmd.height : _height;
-				_bitmap.bitmapData = BitmapUtils.scale9Bmd(bmd, _sizeGrid, _width, _height);
+				var source:BitmapData = App.asset.getBitmapData(_skin);
+				_contentWidth = source.width;
+				_contentHeight = source.height;
+				//清理临时位图数据
+				if (_bitmap.bitmapData && _bitmap.bitmapData != source) {
+					_bitmap.bitmapData.dispose();
+				}
+				_bitmap.bitmapData = BitmapUtils.scale9Bmd(source, _sizeGrid, width, height);
 			}
 		}
 		
 		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
-			return _sizeGrid.toString();
+			return _sizeGrid.join(",");
 		}
 		
 		public function set sizeGrid(value:String):void {

@@ -15,7 +15,11 @@ package morn.core.components {
 	
 	/**下拉框*/
 	public class ComboBox extends Component {
-		private const ITEM_HEIGHT:int = 22;
+		/**向上方向*/
+		public static const UP:String = "up";
+		/**向下方向*/
+		public static const DOWN:String = "down";
+		protected static const ITEM_HEIGHT:int = 22;
 		protected var _visibleNum:int = 6;
 		protected var _button:Button;
 		protected var _list:List;
@@ -25,6 +29,8 @@ package morn.core.components {
 		protected var _labels:Array = [];
 		protected var _selectedIndex:int = -1;
 		protected var _selectHandler:Handler;
+		protected var _openDirection:String = DOWN;
+		protected var _listHeight:Number;
 		
 		public function ComboBox(skin:String = null, labels:String = null) {
 			this.skin = skin;
@@ -68,8 +74,9 @@ package morn.core.components {
 		public function set skin(value:String):void {
 			if (_button.skin != value) {
 				_button.skin = value;
-				width = _width == 0 ? _button.width : _width;
-				height = _height == 0 ? _button.height : _height;
+				_contentWidth = _button.width;
+				_contentHeight = _button.height;
+				callLater(changeList);
 			}
 		}
 		
@@ -78,7 +85,7 @@ package morn.core.components {
 			for (var i:int = 0; i < _visibleNum; i++) {
 				var label:Label = new Label();
 				label.name = "label";
-				label.width = _width - 2;
+				label.width = width - 2;
 				label.height = ITEM_HEIGHT;
 				
 				var box:Box = new Box();
@@ -88,7 +95,7 @@ package morn.core.components {
 				box.addEventListener(MouseEvent.ROLL_OUT, onListItemMouse);
 				_list.addElement(box, 0, i * ITEM_HEIGHT);
 			}
-			_scrollBar.x = _width - _scrollBar.width - 1;
+			_scrollBar.x = width - _scrollBar.width - 1;
 			_list.addChild(_scrollBar);
 			_list.initItems();
 			_list.refresh();
@@ -146,14 +153,14 @@ package morn.core.components {
 			_list.array = a;
 			
 			//显示边框
+			_listHeight = Math.min(_visibleNum, a.length) * ITEM_HEIGHT;
 			var g:Graphics = _list.graphics;
-			var min:int = Math.min(_visibleNum, a.length);
 			g.lineStyle(1, _itemColors[3]);
 			g.beginFill(_itemColors[4]);
-			g.drawRect(0, 0, _width - 1, min * ITEM_HEIGHT);
+			g.drawRect(0, 0, width - 1, _listHeight);
 			g.endFill();
 			
-			_scrollBar.height = min * ITEM_HEIGHT;
+			_scrollBar.height = _listHeight;
 		}
 		
 		/**选择索引*/
@@ -220,8 +227,12 @@ package morn.core.components {
 				_isOpen = value;
 				_button.selected = _isOpen;
 				if (_isOpen) {
-					var p:Point = localToGlobal(new Point(0, _height));
-					_list.setPosition(p.x, p.y);
+					var p:Point = localToGlobal(new Point());
+					if (_openDirection == DOWN) {
+						_list.setPosition(p.x, p.y + height);
+					} else {
+						_list.setPosition(p.x, p.y - _listHeight);
+					}
 					App.stage.addChild(_list);
 					App.stage.addEventListener(MouseEvent.CLICK, removeList);
 					App.stage.addEventListener(Event.REMOVED_FROM_STAGE, removeList);
@@ -273,6 +284,15 @@ package morn.core.components {
 			} else {
 				super.dataSource = value;
 			}
+		}
+		
+		/**打开方向*/
+		public function get openDirection():String {
+			return _openDirection;
+		}
+		
+		public function set openDirection(value:String):void {
+			_openDirection = value;
 		}
 	}
 }

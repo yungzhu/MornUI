@@ -17,7 +17,7 @@ package morn.core.components {
 			var index:int = 0;
 			for (var i:int = 0, n:int = displays.length; i < n; i++) {
 				var item:DisplayObject = displays[i];
-				if (item != null) {
+				if (item) {
 					item.name = "item" + index;
 					addChild(item);
 					index++;
@@ -59,7 +59,7 @@ package morn.core.components {
 		}
 		
 		protected function setSelect(index:int, selected:Boolean):void {
-			if (_items != null && index > -1 && index < _items.length) {
+			if (_items && index > -1 && index < _items.length) {
 				_items[index].visible = selected;
 			}
 		}

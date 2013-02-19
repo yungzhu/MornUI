@@ -37,7 +37,7 @@ package morn.core.components {
 		
 		/**删除子显示对象*/
 		public function removeElement(element:DisplayObject):void {
-			if (element != null && contains(element)) {
+			if (element && contains(element)) {
 				removeChild(element);
 			}
 		}
@@ -86,7 +86,7 @@ package morn.core.components {
 		protected function validateChild():void {
 			for (var i:int = 0, n:int = numChildren; i < n; i++) {
 				var item:Component = getChildAt(i) as Component;
-				if (item != null) {
+				if (item) {
 					item.validate();
 				}
 			}
@@ -96,7 +96,7 @@ package morn.core.components {
 			_dataSource = value;
 			for (var name:String in value) {
 				var comp:Component = getChildByName(name) as Component;
-				if (comp != null) {
+				if (comp) {
 					comp.dataSource = value[name];
 				}
 			}
