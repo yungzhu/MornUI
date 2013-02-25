@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Morn配置及简单使用教程</title>
+<style type="text/css">
+body{width:800px; line-height:150%;}
+h4{margin:0 2px 0 0}
+p{margin-top:2px;}
+</style>
+<body>
+<br/>
+<div><a href="advanced_use.html">常见问题解答</a></div>
+<br/>
+<div style="border-bottom:1px dotted;width:400px;"></div>
+<h1>Morn配置及简单使用教程</h1>
+<div>
+<h3>A.引用项目库并初始化</h3>
+<h4>1.新建一个空项目，我这里用flashdevlop，用flash builder类同（注意编译目录改为bin，默认为bin-debug）</h4>
+<p><img src="./images/newproject.jpg"></p>
+<h4>2.拷贝组件库(MornUILib内)到项目内，下图morn是ui库(也可以通过引用类库的方式调用)</h4>
+<p><img src="./images/uselib.jpg"></p>
+<h4>3.初始化组件，编辑Main.as，调用初始化函数</h4>
+<p><img src="./images/initmain.jpg">
+<br>到此就完成类库的调用过程<br>
+</p>
+<br>
+<h3>B.使用编辑器制作界面</h3>
+<h4>1.打开编辑器Builder/Main.exe</h4>
+<h4>2.新建项目到as3项目目录(快捷键Ctrl+O)</h4>
+<p><img src="./images/uiproject.jpg"></p>
+<h4>3.点击“添加资源”添加组件资源(在morn里，图片即组件，编辑器根据资源前缀识别成对应的组件，命名规则详见Builder下的MornUIConfig.xml)</h4>
+<p><img src="./images/addasset.jpg"></p>
+<h4>4.copy资源到打开的assets目录(除了矢量图(vector.swf)，图片要以<font color="#ff0000">文件夹</font>的方式存放，编辑器会根据文件夹打包为对应的swf)</h4>
+<p><img src="./images/copyasset.jpg"></p>
+<h4>5.编辑器按快捷键F5刷新，就能看到资源树了</h4>
+<p><img src="./images/restree.jpg"></p>
+<h4>6.在编辑器内，使用快捷键Ctrl+N新建一个页面，起名叫Page1</h4>
+<p><img src="./images/addpage.jpg"></p>
+<h4>7.拖拽左面组件到页面Page1内，我放置了一个button，并且定义为btn</h4>
+<p><img src="./images/editpage.jpg"></p>
+<h4>8.Ctrl+S保存，F12发布代码，Page1对应生成Page1UI.as,默认发布到game/ui下，所用资源自动打包为swf，默认发布到bin/assets下（路径可配置，快捷键F9）</h4>
+<p><img src="./images/createcode.jpg"></p>
+<h4>9.现在要使用这个UI，那么我们新建一个类，继承至这个Page1UI类，就可以随意控制它了(UI和逻辑分离)</h4>
+<p><img src="./images/code.jpg"></p>
+<h4>10.在Main.as里面，加载资源，并实例化这个Page1页面</h4>
+<p><img src="./images/usepage.jpg"></p>
+<h4>11.编译项目，至此就能正确的运行了</h4>
+<p><img src="./images/viewpage.jpg"></p>
+<h3>更多技巧请参看<a href="advanced_use.html">常见问题解答</a></h3>
+<br>
+<br>
+</div>
+</body>
+</html>
