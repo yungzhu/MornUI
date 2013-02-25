@@ -1,16 +1,19 @@
+/**
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ */
 package morn.core.managers {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
-	import morn.core.components.UIEvent;
+	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
 	import morn.core.utils.StringUtils;
 	
 	/**鼠标提示管理类*/
 	public class TipManager extends Sprite {
-		
 		private var _tipBox:Sprite;
 		private var _tipText:TextField;
 		
@@ -31,7 +34,7 @@ package morn.core.managers {
 		}
 		
 		private function onStageHideTip(e:UIEvent):void {
-			clear();
+			closeAll();
 		}
 		
 		private function onStageShowTip(e:UIEvent):void {
@@ -57,7 +60,7 @@ package morn.core.managers {
 		}
 		
 		private function onStageMouseDown(e:MouseEvent):void {
-			clear();
+			closeAll();
 		}
 		
 		private function onStageMouseMove(e:MouseEvent):void {
@@ -77,7 +80,8 @@ package morn.core.managers {
 			this.y = y;
 		}
 		
-		public function clear():void {
+		/**关闭所有鼠标提示*/
+		public function closeAll():void {
 			App.timer.clearTimer(showTip);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onStageMouseDown);

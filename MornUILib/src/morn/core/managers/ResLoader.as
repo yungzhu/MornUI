@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -26,6 +26,7 @@ package morn.core.managers {
 		public static const AMF:uint = 2;
 		public static const TXT:uint = 3;
 		public static const DB:uint = 4;
+		public static const BYTE:uint = 5;
 		private static var _loadedMap:Object = {};
 		private var _loader:Loader = new Loader();
 		private var _urlLoader:URLLoader = new URLLoader();
@@ -70,7 +71,7 @@ package morn.core.managers {
 				_loader.load(_urlRequest, _loaderContext);
 				return;
 			}
-			if (_type == BMD || _type == AMF || _type == DB) {
+			if (_type == BMD || _type == AMF || _type == DB || _type == BYTE) {
 				_urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
 				_urlLoader.load(_urlRequest);
 				return;
@@ -121,6 +122,12 @@ package morn.core.managers {
 				var bytes:ByteArray = _urlLoader.data as ByteArray;
 				bytes.uncompress();
 				endLoad(_loadedMap[_url] = bytes.readObject());
+				return;
+			}
+			if (_type == BYTE) {
+				var byte:ByteArray = _urlLoader.data as ByteArray;
+				byte.uncompress();
+				endLoad(_loadedMap[_url] = byte);
 				return;
 			}
 			if (_type == TXT) {

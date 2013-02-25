@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -125,8 +125,8 @@ package morn.core.components {
 		
 		override protected function changeSize():void {
 			super.changeSize();
-			_back.width = _width;
-			_back.height = _height;
+			_back.width = width;
+			_back.height = height;
 			setBarPoint();
 		}
 		

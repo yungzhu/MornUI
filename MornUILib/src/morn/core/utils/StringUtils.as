@@ -1,8 +1,9 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.utils {
+	import flash.geom.Rectangle;
 	
 	/**文本工具集*/
 	public class StringUtils {
@@ -28,6 +29,14 @@ package morn.core.utils {
 				}
 			}
 			return temp;
+		}
+		
+		/**转换Rectangle为逗号间隔的字符串*/
+		public static function rectToString(rect:Rectangle):String {
+			if (rect) {
+				return rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
+			}
+			return null;
 		}
 	}
 }

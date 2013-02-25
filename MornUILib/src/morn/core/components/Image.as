@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -8,9 +8,10 @@ package morn.core.components {
 	import morn.core.handlers.Handler;
 	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
+	import morn.core.events.UIEvent;
 	
 	/**图片被加载后触发*/
-	[Event(name="imageLoaded",type="morn.core.components.UIEvent")]
+	[Event(name="imageLoaded",type="morn.core.events.UIEvent")]
 	
 	/**图像类*/
 	public class Image extends Component {
@@ -76,7 +77,10 @@ package morn.core.components {
 		
 		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
-			return _sizeGrid.join(",");
+			if (_sizeGrid) {
+				return _sizeGrid.join(",");
+			}
+			return null;
 		}
 		
 		public function set sizeGrid(value:String):void {

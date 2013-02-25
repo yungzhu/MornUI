@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -10,9 +10,10 @@ package morn.core.components {
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
 	import morn.editor.core.IComponent;
+	import morn.core.events.UIEvent;
 	
 	/**渲染后触发*/
-	[Event(name="renderCompleted",type="morn.core.components.UIEvent")]
+	[Event(name="renderCompleted",type="morn.core.events.UIEvent")]
 	/**重置大小后触发*/
 	[Event(name="resize",type="flash.events.Event")]
 	

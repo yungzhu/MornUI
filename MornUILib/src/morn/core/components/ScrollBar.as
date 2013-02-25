@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -100,23 +100,28 @@ package morn.core.components {
 			} else {
 				_slider.y = _upButton.height;
 			}
+			this
 			resetButtonPosition();
 		}
 		
 		protected function resetButtonPosition():void {
 			if (_slider.direction == HORIZONTAL) {
 				_downButton.x = _slider.x + _slider.width;
+				_contentWidth = _downButton.x + _downButton.width;
+				_contentHeight = _downButton.height;
 			} else {
 				_downButton.y = _slider.y + _slider.height;
+				_contentWidth = _downButton.width;
+				_contentHeight = _downButton.y + _downButton.height;
 			}
 		}
 		
 		override protected function changeSize():void {
 			super.changeSize();
 			if (_slider.direction == HORIZONTAL) {
-				_slider.width = _width - _upButton.width - _downButton.width;
+				_slider.width = width - _upButton.width - _downButton.width;
 			} else {
-				_slider.height = _height - _upButton.height - _downButton.height;
+				_slider.height = height - _upButton.height - _downButton.height;
 			}
 			resetButtonPosition();
 		}
@@ -166,11 +171,11 @@ package morn.core.components {
 		}
 		
 		/**9宫格(格式[4,4,4,4]，分别为[左边距,上边距,右边距,下边距])*/
-		public function get _sizeGrid():String {
+		public function get sizeGrid():String {
 			return _slider.sizeGrid;
 		}
 		
-		public function set _sizeGrid(value:String):void {
+		public function set sizeGrid(value:String):void {
 			_slider.sizeGrid = value;
 		}
 		

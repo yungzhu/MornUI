@@ -1,5 +1,5 @@
 /**
- * Version 0.9.1 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -10,9 +10,7 @@ package morn.core.managers {
 	import morn.core.components.Dialog;
 	import morn.core.utils.ObjectUtils;
 	
-	/**
-	 * 对话框管理器
-	 */
+	/**对话框管理器*/
 	public class DialogManager extends Sprite {
 		private var _box:Box = new Box();
 		private var _mask:Box = new Box();

@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -123,12 +123,14 @@ package morn.core.components {
 		}
 		
 		override public function set width(value:Number):void {
-			_width = _button.width = value;
+			super.width = value;
+			_button.width = _width;
 			callLater(changeList);
 		}
 		
 		override public function set height(value:Number):void {
-			_height = _button.height = value;
+			super.height = value;
+			_button.height = _height;
 		}
 		
 		/**标签集合*/
@@ -138,8 +140,12 @@ package morn.core.components {
 		
 		public function set labels(value:String):void {
 			if (StringUtils.isNotEmpty(value)) {
+				var oldLabels:Array = _labels;
 				_labels = value.split(",");
 				callLater(changeItem);
+				if (oldLabels) {
+					selectedIndex = -1;
+				}
 			}
 		}
 		

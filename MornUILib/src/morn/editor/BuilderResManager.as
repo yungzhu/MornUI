@@ -4,9 +4,7 @@ package morn.editor{
 	import morn.core.managers.AssetManager;
 	import morn.core.utils.BitmapUtils;
 
-	/**
-	 * 重置加载器(对MornUI库的AssetsManager进行重置，通过Sys提供的方法，调用编辑器内的资源)
-	 */
+	/**重置加载器(对MornUI库的AssetsManager进行重置，通过Sys提供的方法，调用编辑器内的资源)*/
 	public class BuilderResManager extends AssetManager{
 		public function BuilderResManager(){
 			

@@ -1,12 +1,10 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.handlers {
 	
-	/**
-	 * 处理器
-	 */
+	/**处理器*/
 	public class Handler {
 		/**处理方法*/
 		public var method:Function;

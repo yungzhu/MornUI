@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -10,11 +10,12 @@ package morn.core.components {
 	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
 	import morn.editor.core.IClip;
+	import morn.core.events.UIEvent;
 	
 	/**图片加载后触发(类库中已经存在不会触发)*/
-	[Event(name="imageLoaded",type="morn.core.components.UIEvent")]
+	[Event(name="imageLoaded",type="morn.core.events.UIEvent")]
 	/**当前帧发生变化后触发*/
-	[Event(name="frameChanged",type="morn.core.components.UIEvent")]
+	[Event(name="frameChanged",type="morn.core.events.UIEvent")]
 	
 	/**位图剪辑*/
 	public class Clip extends Component implements IClip {
@@ -125,10 +126,14 @@ package morn.core.components {
 			}
 		}
 		
-		override protected function changeSize():void {
+		override public function set width(value:Number):void {
+			super.width = value;
 			_bitmap.width = _width;
+		}
+		
+		override public function set height(value:Number):void {
+			super.height = value;
 			_bitmap.height = _height;
-			super.changeSize();
 		}
 		
 		/**当前帧*/

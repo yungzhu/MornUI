@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {
@@ -11,6 +11,8 @@ package {
 	import morn.core.handlers.Handler;
 	import morn.core.managers.AssetManager;
 	import morn.core.managers.DialogManager;
+	import morn.core.managers.DragManager;
+	import morn.core.managers.LangManager;
 	import morn.core.managers.LoaderManager;
 	import morn.core.managers.LogManager;
 	import morn.core.managers.TimerManager;
@@ -33,6 +35,10 @@ package {
 		public static var log:LogManager = new LogManager();
 		/**提示管理器*/
 		public static var tip:TipManager = new TipManager();
+		/**拖动管理器*/
+		public static var drag:DragManager = new DragManager();
+		/**语言管理器*/
+		public static var lang:LangManager = new LangManager();
 		
 		public static function init(main:Sprite):void {
 			stage = main.stage;
@@ -53,8 +59,8 @@ package {
 			}
 			
 			stage.addChild(dialog);
-			stage.addChild(log);
 			stage.addChild(tip);
+			stage.addChild(log);
 			
 			//如果UI视图是加载模式，则进行整体加载
 			if (StringUtils.isNotEmpty(Config.uiPath)) {

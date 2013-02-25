@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -14,7 +14,7 @@ package morn.core.managers {
 		private var _isLoading:Boolean;
 		private var _failRes:Object = {};
 		
-		private function load(url:String, type:uint, complete:Handler = null, progress:Handler = null):void {
+		public function load(url:String, type:uint, complete:Handler = null, progress:Handler = null):void {
 			var resInfo:ResInfo = new ResInfo();
 			resInfo.url = url;
 			resInfo.type = type;
@@ -99,6 +99,11 @@ package morn.core.managers {
 		/**加载DB*/
 		public function loadDB(url:String, complete:Handler = null, progress:Handler = null):void {
 			load(url, ResLoader.DB, complete, progress);
+		}
+		
+		/**加载BYTE*/
+		public function loadBYTE(url:String, complete:Handler = null, progress:Handler = null):void {
+			load(url, ResLoader.BYTE, complete, progress);
 		}
 		
 		/**

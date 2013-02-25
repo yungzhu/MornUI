@@ -2,9 +2,7 @@ package morn.editor {
 	import flash.display.BitmapData;
 	import flash.display.Stage;
 	
-	/**
-	 * 编辑器系统类，提供扩展插件使用（不要修改此类）
-	 */
+	/**编辑器系统类，提供扩展插件使用(不要修改此类)*/
 	public class Sys {
 		/**全局stage引用*/
 		public static var stage:Stage;
