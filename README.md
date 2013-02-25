@@ -16,11 +16,11 @@ google code托管地址：http://code.google.com/p/morn/
 
 6.自定义组件，编辑器自定义组件及编辑器表现，甚至完全用你自己写的组件
 
-6.支持多项目，支持多视图开发，支持代码视图，支持协同开发
+7.支持多项目，支持多视图开发，支持代码视图，支持协同开发
 
-7.内置支持多语言支持，方便开发国际化游戏
+8.内置支持多语言支持，方便开发国际化游戏
 
-8.Morn比flex轻量高效，比flash IDE自定义组件方便
+9.Morn比flex轻量高效，比flash IDE自定义组件方便
 
 ![screenshot](https://raw.github.com/yungzhu/morn/master/help/images/main.jpg "screenshot")
 
