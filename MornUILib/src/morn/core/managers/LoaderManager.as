@@ -136,7 +136,7 @@ package morn.core.managers {
 			
 			function loadAssetsProgress(value:Number, size:int):void {
 				if (progress != null) {
-					var value:Number = (totalLoaded + size * value) / totalSize;
+					value = (totalLoaded + size * value) / totalSize;
 					progress.executeWith([value]);
 				}
 			}
