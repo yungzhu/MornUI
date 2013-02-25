@@ -18,7 +18,7 @@
 
 7.Morn比flex轻量高效，比flash IDE自定义组件方便
 
-![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main.jpg "screenshot")
+![screenshot](https://raw.github.com/yungzhu/morn/master/help/images/main.jpg "screenshot")
 
 目前处于测试版本，如果遇到BUG请反馈
 反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
