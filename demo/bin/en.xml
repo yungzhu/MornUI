@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<langs>
+<item key="银币" value="Coin"/>
+<item key="金币" value="Gold"/>
+<item key="礼券" value="Gift"/>
+<item key="小白龙" value="Dragon"/>
+<item key="当前可以强化装备" value="You can strengthen"/>
+<item key="可以进行竞技战斗" value="You can fight"/>
+<item key="你是【自由身】" value="You are free"/>
+<item key="测试多语言{0}{1}" value="Now is english {0} {1}"/>
+</langs>
