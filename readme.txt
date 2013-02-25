@@ -11,10 +11,10 @@
 8.内置支持多语言支持，方便开发国际化游戏
 9.Morn比flex轻量高效，比flash IDE自定义组件方便
 
-目前处于测试版本，如果遇到BUG请反馈
-反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
-	
-提醒：编辑器需要java环境，没有java的请安装www.java.com
+如果遇到BUG欢迎反馈
+反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081	
+google code 托管地址：http://code.google.com/p/morn/	
+github托管地址：https://github.com/yungzhu/morn
 
 目录结构:
 Builder-------UI编辑器

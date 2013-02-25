@@ -24,10 +24,12 @@ google code托管地址：http://code.google.com/p/morn/
 
 ![screenshot](https://raw.github.com/yungzhu/morn/master/help/images/main.jpg "screenshot")
 
-目前处于测试版本，如果遇到BUG请反馈
+如果遇到BUG欢迎反馈
 反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
 	
-提醒：编辑器需要java环境，没有java的请安装www.java.com
+google code 托管地址：http://code.google.com/p/morn/
+	
+github托管地址：https://github.com/yungzhu/morn
 
 目录结构:
 
