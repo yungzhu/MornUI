@@ -1,1 +1,0 @@
-打开编辑器（Builder/Main.exe）- 打开项目（快捷键Ctrl+O）- 选择项目文件（Examples/MornExamples.morn)-发布（快捷键F12）

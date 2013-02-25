@@ -1,4 +1,0 @@
-<View sceneWidth="400" sceneHeight="300" sceneColor="0xffffff" sceneBg="" layers="2,1,0;1,1,0">
-  <Image url="png.comp.bg" x="0" y="0" layer="1" width="150" height="50"/>
-  <Label text="label" x="9" y="21" layer="1" var="label" width="130" height="22"/>
-</View>
