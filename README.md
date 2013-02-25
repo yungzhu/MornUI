@@ -1,5 +1,7 @@
 ## Morn UI是flash轻量级，高性能，可视化UI解决方案
 
+google code托管地址：http://code.google.com/p/morn/
+
 具有以下优势：
 
 1.可视化，Morn UI提供强大的可视化编辑器，布局及属性均可在编辑器直观设置，实现UI和逻辑分离，让美术和程序轻松合作
