@@ -18,7 +18,9 @@ google code托管地址：http://code.google.com/p/morn/
 
 6.支持多项目，支持多视图开发，支持代码视图，支持协同开发
 
-7.Morn比flex轻量高效，比flash IDE自定义组件方便
+7.支持多语言，方便开发国际化游戏
+
+8.Morn比flex轻量高效，比flash IDE自定义组件方便
 
 ![screenshot](https://raw.github.com/yungzhu/morn/master/help/images/main.jpg "screenshot")
 
