@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0226 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -77,12 +77,12 @@ package morn.core.components {
 		}
 		
 		override protected function changeSize():void {
-			if (_width != 0) {
+			if (_width != -1) {
 				_textField.autoSize = TextFieldAutoSize.NONE;
 				_textField.width = _width - _margin[0] - _margin[2];
-				_textField.height = _height == 0 ? 18 : _height - _margin[1] - _margin[3];
+				_textField.height = _height == -1 ? 18 : _height - _margin[1] - _margin[3];
 			} else {
-				_width = _height = 0;
+				_width = _height = -1;
 				_textField.autoSize = TextFieldAutoSize.LEFT;
 			}
 			super.changeSize();

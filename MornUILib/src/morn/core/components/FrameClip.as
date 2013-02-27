@@ -1,13 +1,13 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0226 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
 	import morn.editor.core.IClip;
-	import morn.core.events.UIEvent;
 	
 	/**当前帧发生变化后触发*/
 	[Event(name="frameChanged",type="morn.core.events.UIEvent")]
@@ -83,12 +83,16 @@ package morn.core.components {
 		
 		override public function set width(value:Number):void {
 			super.width = value;
-			mc.width = _width;
+			if (_mc) {
+				_mc.width = _width;
+			}
 		}
 		
 		override public function set height(value:Number):void {
 			super.height = value;
-			mc.height = _height;
+			if (_mc) {
+				_mc.height = _height;
+			}
 		}
 		
 		/**当前帧(为了统一，frame从0开始，原始的movieclip从1开始)*/
