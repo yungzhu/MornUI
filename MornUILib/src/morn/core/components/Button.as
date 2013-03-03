@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0303 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -12,7 +12,7 @@ package morn.core.components {
 	import morn.core.utils.StringUtils;
 	
 	/**按钮类*/
-	public class Button extends Component {
+	public class Button extends Component implements ISelect {
 		protected var _bitmap:Bitmap;
 		protected var _clips:Vector.<BitmapData>;
 		protected var _btnLabel:Label;

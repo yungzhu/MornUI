@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0303 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -98,7 +98,19 @@ package morn.core.components {
 		public function set labels(value:String):void {
 			if (_labels != value) {
 				_labels = value;
-				callLater(changeLabels);
+				//callLater(changeLabels);
+				removeAllChild();
+				if (StringUtils.isNotEmpty(_labels)) {
+					var a:Array = _labels.split(",");
+					var right:int = 0
+					for (var i:int = 0, n:int = a.length; i < n; i++) {
+						var radio:RadioButton = new RadioButton(_skin, a[i]);
+						radio.name = "item" + i;
+						addElement(radio, right, 0);
+						right += radio.width;
+					}
+				}
+				initItems();
 			}
 		}
 		
@@ -163,33 +175,23 @@ package morn.core.components {
 		}
 		
 		protected function changeLabels():void {
-			if (StringUtils.isNotEmpty(_labels)) {
-				removeAllChild();
-				var a:Array = _labels.split(",");
-				var right:int = 0
-				for (var i:int = 0, n:int = a.length; i < n; i++) {
-					var item:String = a[i];
-					var radio:RadioButton = new RadioButton(_skin, item);
-					radio.name = "item" + i;
-					if (_labelColors) {
-						radio.labelColors = _labelColors;
-					}
-					if (_labelStroke) {
-						radio.labelStroke = _labelStroke;
-					}
-					if (_labelSize) {
-						radio.labelSize = _labelSize;
-					}
-					if (_labelBold) {
-						radio.labelBold = _labelBold;
-					}
-					if (_labelMargin) {
-						radio.labelMargin = _labelMargin;
-					}
-					addElement(radio, right, 0);
-					right += radio.width;
-				}
-				initItems();
+			var right:int = 0
+			for (var i:int = 0, n:int = _items.length; i < n; i++) {
+				var radio:RadioButton = _items[i];
+				if (_skin)
+					radio.skin = _skin;
+				if (_labelColors)
+					radio.labelColors = _labelColors;
+				if (_labelStroke)
+					radio.labelStroke = _labelStroke;
+				if (_labelSize)
+					radio.labelSize = _labelSize;
+				if (_labelBold)
+					radio.labelBold = _labelBold;
+				if (_labelMargin)
+					radio.labelMargin = _labelMargin;
+				radio.x = right;
+				right += radio.width;
 			}
 		}
 		

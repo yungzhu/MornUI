@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0226 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0302 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -9,8 +9,8 @@ package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
-	import morn.editor.core.IComponent;
 	import morn.core.events.UIEvent;
+	import morn.editor.core.IComponent;
 	
 	/**渲染后触发*/
 	[Event(name="renderCompleted",type="morn.core.events.UIEvent")]
@@ -22,8 +22,8 @@ package morn.core.components {
 		protected var _methods:Dictionary = new Dictionary();
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
-		protected var _width:Number = -1;
-		protected var _height:Number = -1;
+		protected var _width:Number;
+		protected var _height:Number;
 		protected var _contentWidth:Number = 0;
 		protected var _contentHeight:Number = 0;
 		protected var _disabled:Boolean;
@@ -155,7 +155,7 @@ package morn.core.components {
 		
 		/**宽度(值为0时，宽度为自适应)*/
 		override public function get width():Number {
-			if (_width != -1) {
+			if (!isNaN(_width)) {
 				return _width;
 			} else if (_contentWidth != 0) {
 				return _contentWidth;
@@ -174,7 +174,7 @@ package morn.core.components {
 		
 		/**高度(值为0时，高度为自适应)*/
 		override public function get height():Number {
-			if (_height != -1) {
+			if (!isNaN(_height)) {
 				return _height;
 			} else if (_contentHeight != 0) {
 				return _contentHeight;
