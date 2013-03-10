@@ -58,7 +58,7 @@ package game.ui {
 			    <RadioButton label="自定义" skin="png.comp.radio" x="113" name="item2" labelColors="0xff0000"/>
 			  </RadioGroup>
 			</Dialog>;
-		public function CompTestUI() {
+		override protected function createChildren():void {
 			createView(uiXML);
 		}
 	}

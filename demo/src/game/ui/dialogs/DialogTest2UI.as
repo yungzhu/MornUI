@@ -8,7 +8,7 @@ package game.ui.dialogs {
 			  <Button skin="png.comp.btn_close" x="361" y="3" name="close"/>
 			  <Label text="label" x="161" y="196"/>
 			</Dialog>;
-		public function DialogTest2UI() {
+		override protected function createChildren():void {
 			createView(uiXML);
 		}
 	}

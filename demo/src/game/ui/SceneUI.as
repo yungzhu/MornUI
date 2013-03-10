@@ -48,7 +48,7 @@ package game.ui {
 			    <Image url="png.nav.image_78" x="46"/>
 			  </Container>
 			</View>;
-		public function SceneUI() {
+		override protected function createChildren():void {
 			createView(uiXML);
 		}
 	}

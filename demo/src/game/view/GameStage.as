@@ -36,7 +36,7 @@ package game.view {
 		
 		/**测试模式窗口*/
 		protected function onBtn3Click(e:MouseEvent):void {
-			CompTest.instance.modal();
+			CompTest.instance.popup();
 		}
 	}
 }
