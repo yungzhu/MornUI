@@ -34,8 +34,8 @@ p{margin-top:2px;}
 <p>选中组件，快捷键Ctrl+B转换为容器，容器的类型可以通过F9配置</p>
 <h4>怎么去除容器</h4>
 <p>选中容器，通过快捷键Ctrl+U打散容器</p>
-<h4>怎么自定义Tab，Radiogroup</h4>
-<p>在页面内摆放几个按钮，每个按钮的位置颜色等属性可以随意设置，然后把按钮的name属性分别命名为item0，tiem1，item2...，选中这些按钮，Ctrl+B转换为Tab，这样就完成了自定义的Tab，RadioGroup类同</p>
+<h4>怎么自定义Tab，Radiogroup，List</h4>
+<p>在页面内摆放几个按钮，每个按钮的位置颜色等属性可以随意设置，然后把按钮的name属性分别命名为item0，tiem1，item2...，选中这些按钮，Ctrl+B转换为Tab，这样就完成了自定义的Tab，RadioGroup，List类同</p>
 <h4>怎么设置9宫格</h4>
 <p>组件有gridSize属性(格式:左边距,上边距,右边距,下边距)，例如可以设置为4,5,4,5</p>
 <h4>Box,Container,Panel的区别</h4>
@@ -58,7 +58,7 @@ Panel继承自Box，实现了遮罩效果和滚动条
 <font color="#ff0000">复杂赋值:</font>this.dataSource={{"labe1":{text:"设置text",size:12}},{"btn2":{label:"按钮名称",alpha:0.5}}};<br/>
 </p>
 <h4>list怎么用</h4>
-<p>例子:添加一个label并选中，Ctrl+B转换为Box，设置box的name属性为render，再把box转换为List，设置List的行数，列数和间隔属性即可(分别为repeatX,repeatY,spaceX,spaceY)</p>
+<p>例子:添加一个label并选中，Ctrl+B转换为Box，设置box的name属性为render，再把box转换为List，设置List的行数，列数和间隔属性即可(分别为repeatX,repeatY,spaceX,spaceY)。还可以自定义list，参考怎么自定义Tab，Radiogroup，List</p>
 <h4>怎么对list赋值</h4>
 <p>代码中通过dataSource进行赋值，比如list.dataSource=[{label:"1"},{label:"2"},{label:"2"}]<br/>
 或者list.array=[{label:"1"},{label:"2"},{label:"2"}]
@@ -70,7 +70,7 @@ Panel继承自Box，实现了遮罩效果和滚动条
 <p>双击list，进入list内部，拖动一个滚动条到list内，修改name属性为scrollBar，即可自动识别，详细可参看Example示例</p>
 <h4>怎么在list内添加鼠标经过效果</h4>
 <p>双击进入list的item内部，添加一个两帧的clip(over状态，select状态)，命名为selectBox，list即可自动识别，详细可参看Example示例</p>
-<h4>怎么自定义组件，怎么扩展Morn</h4>
+<h4>怎么自定义组件，怎么扩展组件</h4>
 <p>
 	自定义组件有三个步骤:<br/>
 	1.书写组件类，实现IComponent接口（或者直接继承Component类），如果是容器，实现IBox接口(或者直接继承Box类)<br/>
@@ -93,6 +93,8 @@ Panel继承自Box，实现了遮罩效果和滚动条
 <p>Clip和FrameClip可以在编辑器内进行预览，选择组件，按回车键控制播放</p>
 <h4>都有哪些快捷键</h4>
 <p>常用快捷键：刷新资源(F5)，发布代码(F12)，转换为容器(Ctrl+B)，打散容器(Ctrl+U),拖动视图(鼠标右键)等等,更多快捷键可以从菜单提示内找到</p>
+<h4>怎么扩展Morn UI编辑器</h4>
+<p>只要继承至编辑器扩展基类PluginBase即可，详细参考PluginDemo扩展实例源码</p>
 <h4>获得更多帮助</h4>
 <p>如需更多帮助，可以加入Morn交流群51451081，如发现bug，请在<a href="https://github.com/yungzhu/morn">https://github.com/yungzhu/morn</a>或<a href="http://code.google.com/p/morn">http://code.google.com/p/morn</a>进行反馈</p>
 <br>
