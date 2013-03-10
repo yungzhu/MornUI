@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -15,8 +15,8 @@ package morn.core.components {
 		
 		override protected function preinitialize():void {
 			super.preinitialize();
-			_width = 128;
-			_height = 22;
+			width = 128;
+			height = 22;
 		}
 		
 		override protected function initialize():void {

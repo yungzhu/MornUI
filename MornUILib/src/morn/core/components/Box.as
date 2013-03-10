@@ -1,5 +1,5 @@
 /**
- * Version 1.0.0203 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -42,39 +42,27 @@ package morn.core.components {
 			}
 		}
 		
-		/**删除所有子显示对象*/
-		public function removeAllChild():void {
+		/**删除所有子显示对象 @param except 例外的对象*/
+		public function removeAllChild(except:DisplayObject = null):void {
 			for (var i:int = numChildren - 1; i > -1; i--) {
-				removeChildAt(i);
+				if (except != getChildAt(i)) {
+					removeChildAt(i);
+				}
 			}
 		}
 		
 		/**增加显示对象到某对象上*/
 		public function insertAbove(element:DisplayObject, compare:DisplayObject):void {
+			removeElement(element);
 			var index:int = getChildIndex(compare);
-			if (contains(element)) {
-				var oldIndex:int = getChildIndex(element);
-				if (oldIndex > index) {
-					index = index + 1;
-				}
-				setChildIndex(element, Math.min(index, numChildren - 1));
-			} else {
-				addChildAt(element, Math.min(index + 1, numChildren - 1));
-			}
+			addChildAt(element, Math.min(index + 1, numChildren - 1));
 		}
 		
 		/**增加显示对象到某对象下*/
 		public function insertBelow(element:DisplayObject, compare:DisplayObject):void {
+			removeElement(element);
 			var index:int = getChildIndex(compare);
-			if (contains(element)) {
-				var oldIndex:int = getChildIndex(element);
-				if (oldIndex < index) {
-					index = index - 1;
-				}
-				setChildIndex(element, Math.max(index, 0));
-			} else {
-				addChildAt(element, Math.max(index, 0));
-			}
+			addChildAt(element, Math.max(index, 0));
 		}
 		
 		/**立即渲染组件*/

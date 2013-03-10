@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0310 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -17,7 +17,6 @@ package morn.core.components {
 		
 		protected function createView(xml:XML):void {
 			createComps(xml);
-			sendEvent(UIEvent.VIEW_CREATED);
 		}
 		
 		protected function getCompsInstance(name:String):Component {

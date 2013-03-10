@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -148,9 +148,11 @@ package morn.core.components {
 			_vScrollBar.value -= e.delta;
 		}
 		
-		override public function removeAllChild():void {
+		override public function removeAllChild(except:DisplayObject = null):void {
 			for (var i:int = _content.numChildren - 1; i > -1; i--) {
-				_content.removeChildAt(i);
+				if (except != _content.getChildAt(i)) {
+					_content.removeChildAt(i);
+				}
 			}
 			callLater(changeScroll);
 		}

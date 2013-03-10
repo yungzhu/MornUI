@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0302 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -129,10 +129,8 @@ package morn.core.components {
 		}
 		
 		override public function set x(value:Number):void {
-			if (_x != value) {
-				_x = value;
-				super.x = Math.round(value);
-			}
+			_x = value;
+			super.x = Math.round(value);
 		}
 		
 		/**y坐标(显示时四舍五入)*/
@@ -141,10 +139,8 @@ package morn.core.components {
 		}
 		
 		override public function set y(value:Number):void {
-			if (_y != value) {
-				_y = value;
-				super.y = Math.round(value);
-			}
+			_y = value;
+			super.y = Math.round(value);
 		}
 		
 		/**设置组件位置*/

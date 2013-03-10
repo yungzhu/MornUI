@@ -1,31 +1,26 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0310 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	import morn.core.events.UIEvent;
 	import morn.core.utils.StringUtils;
 	
 	/**对话框*/
 	public class Dialog extends View {
-		
 		public static const CLOSE:String = "close";
 		public static const CANCEL:String = "cancel";
 		public static const OK:String = "ok";
 		
 		protected var _dragArea:Rectangle;
+		protected var _popupCenter:Boolean = true;
 		
-		public function Dialog() {
-			addEventListener(UIEvent.VIEW_CREATED, onViewCreated);
-		}
-		
-		private function onViewCreated(e:UIEvent):void {
+		override protected function initialize():void {
 			var dragTarget:DisplayObject = getChildByName("drag");
 			if (dragTarget) {
-				dragArea = dragTarget.x+","+dragTarget.y+","+dragTarget.width+","+dragTarget.height;
+				dragArea = dragTarget.x + "," + dragTarget.y + "," + dragTarget.width + "," + dragTarget.height;
 				removeElement(dragTarget);
 			}
 			addEventListener(MouseEvent.CLICK, onClick);
@@ -44,24 +39,19 @@ package morn.core.components {
 			}
 		}
 		
-		/**显示对话框(会关闭已打开的非模式窗口)*/
-		public function show():void {
-			App.dialog.show(this);
+		/**显示对话框(非模式窗口) @param closeOther 是否关闭其他对话框*/
+		public function show(closeOther:Boolean = false):void {
+			App.dialog.show(this, closeOther);
 		}
 		
-		/**显示对话框(不会关闭其他窗口)*/
-		public function popup():void {
-			App.dialog.popup(this);
-		}
-		
-		/**作为模式窗口打开*/
-		public function modal():void {
-			App.dialog.modal = this;
+		/**显示对话框(模式窗口) @param closeOther 是否关闭其他对话框*/
+		public function popup(closeOther:Boolean = false):void {
+			App.dialog.popup(this, closeOther);
 		}
 		
 		/**关闭对话框*/
 		public function close(type:String = null):void {
-			App.dialog.remove(this);
+			App.dialog.close(this);
 		}
 		
 		/**拖动区域(格式:x:Number=0, y:Number=0, width:Number=0, height:Number=0)*/
@@ -84,6 +74,20 @@ package morn.core.components {
 			if (_dragArea.contains(mouseX, mouseY)) {
 				App.drag.doDrag(this);
 			}
+		}
+		
+		/**是否弹出*/
+		public function get isPopup():Boolean {
+			return parent != null;
+		}
+		
+		/**是否剧中弹出*/
+		public function get popupCenter():Boolean {
+			return _popupCenter;
+		}
+		
+		public function set popupCenter(value:Boolean):void {
+			_popupCenter = value;
 		}
 	}
 }

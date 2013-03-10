@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -161,6 +161,7 @@ package morn.core.components {
 			//显示边框
 			_listHeight = Math.min(_visibleNum, a.length) * ITEM_HEIGHT;
 			var g:Graphics = _list.graphics;
+			g.clear();
 			g.lineStyle(1, _itemColors[3]);
 			g.beginFill(_itemColors[4]);
 			g.drawRect(0, 0, width - 1, _listHeight);

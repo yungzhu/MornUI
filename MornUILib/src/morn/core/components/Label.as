@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0302 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -301,15 +301,15 @@ package morn.core.components {
 		public function set skin(value:String):void {
 			if (_skin != value) {
 				_skin = value;
-				callLater(changeBitmap);
+				_bitmap.bitmapData = App.asset.getBitmapData(_skin);
+				_contentWidth = _bitmap.bitmapData.width;
+				_contentHeight = _bitmap.bitmapData.height;
 			}
 		}
 		
 		protected function changeBitmap():void {
 			if (StringUtils.isNotEmpty(_skin) && App.asset.hasClass(_skin)) {
 				var source:BitmapData = App.asset.getBitmapData(_skin);
-				_contentWidth = source.width;
-				_contentHeight = source.height;
 				//清理临时位图数据
 				if (_bitmap.bitmapData && _bitmap.bitmapData != source) {
 					_bitmap.bitmapData.dispose();

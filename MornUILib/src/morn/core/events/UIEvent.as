@@ -17,9 +17,6 @@ package morn.core.events {
 		//-----------------Image-----------------
 		/**图片加载完毕*/
 		public static const IMAGE_LOADED:String = "imageLoaded";
-		//-----------------View-----------------
-		/**视图创建完毕*/
-		public static const VIEW_CREATED:String = "viewCreated";
 		//-----------------FrameClip-----------------
 		/**帧跳动*/
 		public static const FRAME_CHANGED:String = "frameChanged";
