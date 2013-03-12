@@ -30,7 +30,9 @@
 		<prop name="centerY" tips="垂直剧中偏移位置" type="number" default="" />
 	</Container>
 	<View className="morn.core.components.View" inherit="Box" drag="3" />
-	<Dialog className="morn.core.components.Dialog" inherit="View" drag="3" />
+	<Dialog className="morn.core.components.Dialog" inherit="View" drag="3">
+		<prop name="dragArea" tips="拖动区域(格式:x, y, width, height)" type="string" default="" />
+	</Dialog>
 	<Image className="morn.core.components.Image" inherit="Component" skinLabel="url" icon="Image" drag="3">
 		<prop name="url" tips="地址" type="string" default="" />
 		<prop name="sizeGrid" tips="9宫格(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
