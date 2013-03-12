@@ -1,17 +1,18 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0312 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import morn.core.handlers.Handler;
+	import morn.editor.core.IList;
 	
 	/**选择项改变后触发*/
 	[Event(name="select",type="flash.events.Event")]
 	
 	/**列表*/
-	public class List extends Box implements IItem {
+	public class List extends Box implements IItem, IList {
 		protected var _items:Vector.<Component>;
 		protected var _renderHandler:Handler;
 		protected var _length:int;
@@ -191,6 +192,11 @@ package morn.core.components {
 				_scrollBar.visible = length > _itemCount;
 				_scrollBar.setScroll(0, Math.max(length - _itemCount, 0), _startIndex);
 			}
+		}
+		
+		/**滚动条*/
+		public function get scrollBar():ScrollBar {
+			return _scrollBar;
 		}
 		
 		/**列表数据总数*/

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.2.0312 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -49,6 +49,18 @@ package morn.core.components {
 		override public function removeChildAt(index:int):DisplayObject {
 			callLater(changeScroll);
 			return _content.removeChildAt(index);
+		}
+		
+		override public function getChildAt(index:int):DisplayObject {
+			return _content.getChildAt(index);
+		}
+		
+		override public function getChildByName(name:String):DisplayObject {
+			return _content.getChildByName(name);
+		}
+		
+		override public function getChildIndex(child:DisplayObject):int {
+			return _content.getChildIndex(child);
 		}
 		
 		override public function get numChildren():int {
