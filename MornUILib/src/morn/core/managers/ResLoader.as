@@ -1,9 +1,10 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0313 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
@@ -174,9 +175,20 @@ package morn.core.managers {
 			}
 		}
 		
-		/**获取已经加载的资源*/
+		/**获取已加载的资源*/
 		public static function getResLoaded(url:String):* {
 			return _loadedMap[url];
+		}
+		
+		/**删除已加载的资源*/
+		public static function clearResLoaded(url:String):void {
+			var res:Object = _loadedMap[url];
+			if (res is BitmapData) {
+				BitmapData(res).dispose();
+			} else if (res is Bitmap) {
+				Bitmap(res).bitmapData.dispose();
+			}
+			delete _loadedMap[url];
 		}
 	}
 }

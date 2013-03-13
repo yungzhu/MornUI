@@ -1,14 +1,15 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 1.1.0313 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
+	import morn.core.managers.ResLoader;
 	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
-	import morn.core.events.UIEvent;
 	
 	/**图片被加载后触发*/
 	[Event(name="imageLoaded",type="morn.core.events.UIEvent")]
@@ -106,6 +107,15 @@ package morn.core.components {
 				url = value as String;
 			} else {
 				super.dataSource = value;
+			}
+		}
+		
+		/**销毁资源*/
+		public function destroy(clearFromLoader:Boolean = false):void {
+			App.asset.destroyBitmapData(_url);
+			_bitmap.bitmapData = null;
+			if (clearFromLoader) {
+				ResLoader.clearResLoaded(_url);
 			}
 		}
 	}
