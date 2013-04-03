@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<!-- 插件描述，必须完整 -->
+	<plugin>
+		<!-- 插件名称，会显示在插件菜单内 -->
+		<name>匹配内容(Ctrl+Shift+F)</name>
+		<!-- 插件资源名称 -->
+		<file>AutoSizeView.swf</file>
+		<!-- 插件包名，调用的入口，执行时调用下面类的start方法 -->
+		<start>AutoSizeView</start>
+		<!-- 快捷键(Keyboard对应的数字)，不能与编辑器快捷键冲突 -->
+		<shortcut ctrl="true" shift="true">70</shortcut>
+		<!-- 插件说明及作者信息 -->
+		<intro>作者：itamt@qq.com，自动设置页面尺寸以匹配内容。</intro>
+	</plugin>
+</root>
