@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<!-- 插件描述，必须完整 -->
+	<plugin>
+		<!-- 插件名称，会显示在插件菜单内 -->
+		<name>提取语言包(Ctrl+G)</name>
+		<!-- 插件资源名称 -->
+		<file>LangExtractor.swf</file>
+		<!-- 插件包名，调用的入口，执行时调用下面类的start方法 -->
+		<start>LangExtractor</start>
+		<!-- 快捷键(Keyboard对应的数字)，不能与编辑器快捷键冲突 -->
+		<shortcut ctrl="true" shift="false">71</shortcut>
+		<!-- 插件说明及作者信息 -->
+		<intro>作者：yungzhu@gmail.com，本插件可以一键提取Morn UI内的语言包</intro>
+	</plugin>
+	<!-- 插件自身配置，可根据自己需求配置 -->
+	<setting>
+		<!-- 语言包地址，相对于项目目录 -->
+		<langPath>bin/en.xml</langPath>
+	</setting>
+</root>
