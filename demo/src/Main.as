@@ -30,7 +30,7 @@ package {
 		
 		private function loadProgress(value:Number):void {
 			//加载进度
-			trace("loaded", value);
+			//trace("loaded", value);
 		}
 		
 		private function loadComplete():void {
