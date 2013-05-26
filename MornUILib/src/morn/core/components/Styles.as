@@ -1,11 +1,15 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	
 	/**组件默认样式*/
 	public class Styles {
+		
+		/**默认九宫格信息[左边距,上边距,右边距,下边距]*/
+		public static var defaultSizeGrid:Array = [4, 4, 4, 4];
+		
 		//-----------------文本-----------------
 		/**字体名称*/
 		public static var fontName:String = "Arial";

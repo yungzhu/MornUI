@@ -1,12 +1,11 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import morn.core.handlers.Handler;
-	import morn.core.utils.StringUtils;
 	
 	/**滚动位置变化后触发*/
 	[Event(name="change",type="flash.events.Event")]
@@ -25,6 +24,7 @@ package morn.core.components {
 		protected var _downButton:Button;
 		protected var _slider:Slider;
 		protected var _changeHandler:Handler;
+		protected var _thumbPercent:Number;
 		
 		public function ScrollBar(skin:String = null):void {
 			this.skin = skin;
@@ -95,33 +95,33 @@ package morn.core.components {
 		}
 		
 		protected function changeScrollBar():void {
-			if (_slider.direction == HORIZONTAL) {
-				_slider.x = _upButton.width;
-			} else {
+			if (_slider.direction == VERTICAL) {
 				_slider.y = _upButton.height;
+			} else {
+				_slider.x = _upButton.width;
 			}
 			this
 			resetButtonPosition();
 		}
 		
 		protected function resetButtonPosition():void {
-			if (_slider.direction == HORIZONTAL) {
-				_downButton.x = _slider.x + _slider.width;
-				_contentWidth = _downButton.x + _downButton.width;
-				_contentHeight = _downButton.height;
-			} else {
+			if (_slider.direction == VERTICAL) {
 				_downButton.y = _slider.y + _slider.height;
 				_contentWidth = _downButton.width;
 				_contentHeight = _downButton.y + _downButton.height;
+			} else {
+				_downButton.x = _slider.x + _slider.width;
+				_contentWidth = _downButton.x + _downButton.width;
+				_contentHeight = _downButton.height;
 			}
 		}
 		
 		override protected function changeSize():void {
 			super.changeSize();
-			if (_slider.direction == HORIZONTAL) {
-				_slider.width = width - _upButton.width - _downButton.width;
-			} else {
+			if (_slider.direction == VERTICAL) {
 				_slider.height = height - _upButton.height - _downButton.height;
+			} else {
+				_slider.width = width - _upButton.width - _downButton.width;
 			}
 			resetButtonPosition();
 		}
@@ -189,25 +189,27 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is Number) {
-				this.value = value as Number;
+			_dataSource = value;				
+			if (value is Number || value is String) {
+				this.value = Number(value);
 			} else {
 				super.dataSource = value;
 			}
 		}
 		
-		override public function get width():Number {
-			if (StringUtils.isNotEmpty(_skin)) {
-				return super.width;
-			}
-			return 0;
+		/**滑条长度比例(0-1)*/
+		public function get thumbPercent():Number {
+			return _thumbPercent;
 		}
 		
-		override public function get height():Number {
-			if (StringUtils.isNotEmpty(_skin)) {
-				return super.height;
+		public function set thumbPercent(value:Number):void {
+			exeCallLater(changeSize);
+			_thumbPercent = value;
+			if (_slider.direction == VERTICAL) {
+				_slider.bar.height = _slider.height * value;
+			} else {
+				_slider.bar.width = _slider.width * value;
 			}
-			return 0;
 		}
 	}
 }

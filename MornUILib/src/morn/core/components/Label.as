@@ -1,16 +1,13 @@
 /**
- * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
 	
@@ -25,8 +22,7 @@ package morn.core.components {
 		protected var _isHtml:Boolean;
 		protected var _stroke:String;
 		protected var _skin:String;
-		protected var _bitmap:Bitmap;
-		protected var _sizeGrid:Array = [2, 2, 2, 2];
+		protected var _bitmap:AutoBitmap;
 		protected var _margin:Array = [0, 0, 0, 0];
 		
 		public function Label(text:String = "", skin:String = null) {
@@ -40,25 +36,18 @@ package morn.core.components {
 			_format = new TextFormat(Styles.fontName, Styles.fontSize, Styles.labelColor);
 		}
 		
-		override public function get mouseEnabled():Boolean {
-			return super.mouseEnabled;
-		}
-		
-		override public function set mouseEnabled(value:Boolean):void {
-			super.mouseEnabled = value;
-		}
-		
 		override protected function createChildren():void {
-			addChild(_bitmap = new Bitmap());
+			addChild(_bitmap = new AutoBitmap(false));
 			addChild(_textField = new TextField());
 		}
 		
 		override protected function initialize():void {
 			_textField.selectable = false;
 			_textField.autoSize = TextFieldAutoSize.LEFT;
+			_bitmap.sizeGrid = [2, 2, 2, 2];
 		}
 		
-		/**显示文本*/
+		/**显示的文本*/
 		public function get text():String {
 			return _text;
 		}
@@ -66,21 +55,27 @@ package morn.core.components {
 		public function set text(value:String):void {
 			if (_text != value) {
 				_text = value || "";
-				callLater(changeText);
+				//callLater(changeText);
+				changeText();
 				sendEvent(Event.CHANGE);
 			}
 		}
 		
 		protected function changeText():void {
 			_textField.defaultTextFormat = _format;
-			_isHtml ? _textField.htmlText = _text : _textField.text = App.lang.getLang(_text);
+			_isHtml ? _textField.htmlText = App.lang.getLang(_text) : _textField.text = App.lang.getLang(_text);
 		}
 		
 		override protected function changeSize():void {
 			if (!isNaN(_width)) {
 				_textField.autoSize = TextFieldAutoSize.NONE;
 				_textField.width = _width - _margin[0] - _margin[2];
-				_textField.height = isNaN(_height) ? 18 : _height - _margin[1] - _margin[3];
+				if (isNaN(_height) && wordWrap) {
+					_textField.autoSize = TextFieldAutoSize.LEFT;
+				} else {
+					_height = isNaN(_height) ? 18 : _height;
+					_textField.height = _height - _margin[1] - _margin[3];
+				}
 			} else {
 				_width = _height = NaN;
 				_textField.autoSize = TextFieldAutoSize.LEFT;
@@ -109,7 +104,7 @@ package morn.core.components {
 			if (_stroke != value) {
 				_stroke = value;
 				ObjectUtils.clearFilter(_textField, GlowFilter);
-				if (StringUtils.isNotEmpty(_stroke)) {
+				if (Boolean(_stroke)) {
 					var a:Array = StringUtils.fillArray(Styles.labelStroke, _stroke);
 					ObjectUtils.addFilter(_textField, new GlowFilter(a[0], a[1], a[2], a[3], a[4], a[5]));
 				}
@@ -282,15 +277,14 @@ package morn.core.components {
 			callLater(changeText);
 		}
 		
-		/**文本控件*/
+		/**文本控件实体*/
 		public function get textField():TextField {
 			return _textField;
 		}
 		
 		/**将指定的字符串追加到文本的末尾*/
 		public function appendText(newText:String):void {
-			_text += newText;
-			callLater(changeText);
+			text += newText;
 		}
 		
 		/**皮肤*/
@@ -307,40 +301,47 @@ package morn.core.components {
 			}
 		}
 		
-		protected function changeBitmap():void {
-			if (StringUtils.isNotEmpty(_skin) && App.asset.hasClass(_skin)) {
-				var source:BitmapData = App.asset.getBitmapData(_skin);
-				//清理临时位图数据
-				if (_bitmap.bitmapData && _bitmap.bitmapData != source) {
-					_bitmap.bitmapData.dispose();
-				}
-				_bitmap.bitmapData = BitmapUtils.scale9Bmd(source, _sizeGrid, width, height);
-			}
-		}
-		
 		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
-			return _sizeGrid.join(",");
+			return _bitmap.sizeGrid.join(",");
 		}
 		
 		public function set sizeGrid(value:String):void {
-			_sizeGrid = StringUtils.fillArray([4, 4, 4, 4], value);
-			callLater(changeBitmap);
+			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value, int);
+		}
+		
+		override public function commitMeasure():void {
+			exeCallLater(changeSize);
+		}
+		
+		override public function get width():Number {
+			if (!isNaN(_width) || Boolean(_skin) || Boolean(_text)) {
+				return super.width;
+			}
+			return 0;
 		}
 		
 		override public function set width(value:Number):void {
 			super.width = value;
-			callLater(changeBitmap);
+			_bitmap.width = value;
+		}
+		
+		override public function get height():Number {
+			if (!isNaN(_height) || Boolean(_skin) || Boolean(_text)) {
+				return super.height;
+			}
+			return 0;
 		}
 		
 		override public function set height(value:Number):void {
 			super.height = value;
-			callLater(changeBitmap);
+			_bitmap.height = value;
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is String) {
-				text = value as String;
+			_dataSource = value;
+			if (value is Number || value is String) {
+				text = String(value);
 			} else {
 				super.dataSource = value;
 			}

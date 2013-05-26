@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -10,7 +10,6 @@ package morn.core.managers {
 	import flash.text.TextField;
 	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
-	import morn.core.utils.StringUtils;
 	
 	/**鼠标提示管理类*/
 	public class TipManager extends Sprite {
@@ -44,7 +43,7 @@ package morn.core.managers {
 		private function showTip(tip:Object):void {
 			if (tip is String) {
 				var text:String = tip as String;
-				if (StringUtils.isNotEmpty(text)) {
+				if (Boolean(text)) {
 					showDefaultTip(text);
 				}
 			} else if (tip is Handler) {

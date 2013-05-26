@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -24,14 +24,20 @@ package morn.core.components {
 		}
 		
 		override protected function changeLabelSize():void {
-			exeCallLater(changeState);
 			_btnLabel.x = _bitmap.width + _labelMargin[0];
 			_btnLabel.y = (_bitmap.height - _btnLabel.height) * 0.5 + _labelMargin[1];
 		}
 		
+		override public function commitMeasure():void {
+			exeCallLater(changeLabelSize);
+		}
+		
 		override public function set dataSource(value:Object):void {
+			_dataSource = value;
 			if (value is Boolean) {
 				selected = value;
+			} else if (value is String) {
+				selected = value == "true";
 			} else {
 				super.dataSource = value;
 			}

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.utils {
@@ -23,16 +23,12 @@ package morn.core.utils {
 			
 			width = width > 1 ? width : 1;
 			height = height > 1 ? height : 1;
-			//if (width == 0 || height == 0) {
-			//	return null;
-			//}
 			
 			var gw:int = int(sizeGrid[0]) + int(sizeGrid[2]);
 			var gh:int = int(sizeGrid[1]) + int(sizeGrid[3]);
 			var newBmd:BitmapData = new BitmapData(width, height, bmd.transparent, 0x00000000);
 			//如果目标大于九宫格，则进行9宫格缩放，否则直接缩放
 			if (width > gw && height > gh) {
-				//grid.setTo(sizeGrid[0], sizeGrid[1], bmd.width - sizeGrid[0] - sizeGrid[2], bmd.height - sizeGrid[1] - sizeGrid[3]);
 				setRect(grid, sizeGrid[0], sizeGrid[1], bmd.width - sizeGrid[0] - sizeGrid[2], bmd.height - sizeGrid[1] - sizeGrid[3]);
 				var rows:Array = [0, grid.top, grid.bottom, bmd.height];
 				var cols:Array = [0, grid.left, grid.right, bmd.width];
@@ -40,8 +36,7 @@ package morn.core.utils {
 				var newCols:Array = [0, grid.left, width - (bmd.width - grid.right), width];
 				for (var i:int = 0; i < 3; i++) {
 					for (var j:int = 0; j < 3; j++) {
-						//newRect.setTo(cols[i], rows[j], cols[i + 1] - cols[i], rows[j + 1] - rows[j]);
-						//clipRect.setTo(newCols[i], newRows[j], newCols[i + 1] - newCols[i], newRows[j + 1] - newRows[j]);
+						
 						setRect(newRect, cols[i], rows[j], cols[i + 1] - cols[i], rows[j + 1] - rows[j]);
 						setRect(clipRect, newCols[i], newRows[j], newCols[i + 1] - newCols[i], newRows[j + 1] - newRows[j]);
 						m.identity();
@@ -55,7 +50,6 @@ package morn.core.utils {
 			} else {
 				m.identity();
 				m.scale(width / bmd.width, height / bmd.height);
-				//grid.setTo(0, 0, width, height);
 				setRect(grid, 0, 0, width, height);
 				newBmd.draw(bmd, m, null, null, grid, true);
 			}

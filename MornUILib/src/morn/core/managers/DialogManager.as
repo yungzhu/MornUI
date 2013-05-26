@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.2.0310 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -14,12 +14,13 @@ package morn.core.managers {
 	public class DialogManager extends Sprite {
 		private var _box:Box = new Box();
 		private var _mask:Box = new Box();
-		private var _maskBg:Bitmap;
+		private var _maskBg:Sprite = new Sprite();
 		
 		public function DialogManager() {
 			addChild(_box);
-			_maskBg = ObjectUtils.createBitmap(10, 10, 0, 0.4);
 			_mask.addChild(_maskBg);
+			_maskBg.addChild(ObjectUtils.createBitmap(10, 10, 0, 0.4));
+			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -45,8 +46,9 @@ package morn.core.managers {
 						item.y = (stage.stageHeight - item.height) * 0.5;
 					}
 				} else {
-					_maskBg.width = stage.stageWidth;
-					_maskBg.height = stage.stageHeight;
+					var bitmap:Bitmap = _maskBg.getChildAt(0) as Bitmap;
+					bitmap.width = stage.stageWidth;
+					bitmap.height = stage.stageHeight;
 				}
 			}
 		}

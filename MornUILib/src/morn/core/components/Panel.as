@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.2.0312 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -12,8 +12,8 @@ package morn.core.components {
 	import morn.editor.core.IContent;
 	
 	/**面板*/
-	public class Panel extends Box implements IContent {
-		protected var _content:Sprite;
+	public class Panel extends Container implements IContent {
+		protected var _content:Box;
 		protected var _mask:Bitmap;
 		protected var _vScrollBar:VScrollBar;
 		protected var _hScrollBar:HScrollBar;
@@ -23,7 +23,7 @@ package morn.core.components {
 		}
 		
 		override protected function createChildren():void {
-			super.addChild(_content = new Sprite());
+			super.addChild(_content = new Box());
 			super.addChild(_mask = new Bitmap(new BitmapData(1, 1, false, 0x000000)));
 		}
 		
@@ -49,6 +49,15 @@ package morn.core.components {
 		override public function removeChildAt(index:int):DisplayObject {
 			callLater(changeScroll);
 			return _content.removeChildAt(index);
+		}
+		
+		override public function removeAllChild(except:DisplayObject = null):void {
+			for (var i:int = _content.numChildren - 1; i > -1; i--) {
+				if (except != _content.getChildAt(i)) {
+					_content.removeChildAt(i);
+				}
+			}
+			callLater(changeScroll);
 		}
 		
 		override public function getChildAt(index:int):DisplayObject {
@@ -79,6 +88,7 @@ package morn.core.components {
 					_vScrollBar.y = 0;
 					_vScrollBar.height = _height - (hShow ? _hScrollBar.height : 0);
 					_vScrollBar.setScroll(0, _content.height - _mask.height, 0);
+					_vScrollBar.thumbPercent = _mask.height / _content.height;
 				}
 			}
 			if (_hScrollBar) {
@@ -88,6 +98,7 @@ package morn.core.components {
 					_hScrollBar.y = _height - _hScrollBar.height;
 					_hScrollBar.width = _width - (vShow ? _vScrollBar.width : 0);
 					_hScrollBar.setScroll(0, _content.width - _mask.width, 0);
+					_hScrollBar.thumbPercent = _mask.width / _content.width;
 				}
 			}
 		}
@@ -100,11 +111,6 @@ package morn.core.components {
 		override public function set height(value:Number):void {
 			super.height = value;
 			callLater(changeScroll);
-		}
-		
-		/**内容容器*/
-		public function get content():Sprite {
-			return _content;
 		}
 		
 		/**垂直滚动条皮肤*/
@@ -146,6 +152,11 @@ package morn.core.components {
 			return _hScrollBar;
 		}
 		
+		/**内容容器*/
+		public function get content():Sprite {
+			return _content;
+		}
+		
 		protected function onScrollBarChange(e:Event):void {
 			var scroll:ScrollBar = e.currentTarget as ScrollBar;
 			var start:int = Math.round(scroll.value);
@@ -160,13 +171,8 @@ package morn.core.components {
 			_vScrollBar.value -= e.delta;
 		}
 		
-		override public function removeAllChild(except:DisplayObject = null):void {
-			for (var i:int = _content.numChildren - 1; i > -1; i--) {
-				if (except != _content.getChildAt(i)) {
-					_content.removeChildAt(i);
-				}
-			}
-			callLater(changeScroll);
+		override public function commitMeasure():void {
+			exeCallLater(changeScroll);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0313 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -22,11 +22,17 @@ package morn.core.managers {
 	
 	/**资源加载器*/
 	public class ResLoader {
+		/**加载swf文件，返回1*/
 		public static const SWF:uint = 0;
+		/**加载位图，返回Bitmapdata*/
 		public static const BMD:uint = 1;
+		/**加载ANF数据，返回Object*/
 		public static const AMF:uint = 2;
+		/**加载TXT文本，返回String*/
 		public static const TXT:uint = 3;
+		/**加载经过压缩的ByteArray，返回ByteArray*/
 		public static const DB:uint = 4;
+		/**加载未压缩的ByteArray，返回ByteArray*/
 		public static const BYTE:uint = 5;
 		private static var _loadedMap:Object = {};
 		private var _loader:Loader = new Loader();
@@ -54,18 +60,18 @@ package morn.core.managers {
 			_urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
 		}
 		
-		private function tryCloseLoad():void {
+		/**中止加载*/
+		public function tryToCloseLoad():void {
 			try {
 				_loader.unloadAndStop();
 				_urlLoader.close();
+				App.timer.clearTimer(checkLoad);
+				_isLoading = false;
 			} catch (e:Error) {
 			}
 		}
 		
 		private function doLoad():void {
-			if (_isLoading) {
-				tryCloseLoad();
-			}
 			_isLoading = true;
 			_urlRequest.url = App.getResPath(_url);
 			if (_type == SWF) {
@@ -127,7 +133,6 @@ package morn.core.managers {
 			}
 			if (_type == BYTE) {
 				var byte:ByteArray = _urlLoader.data as ByteArray;
-				byte.uncompress();
 				endLoad(_loadedMap[_url] = byte);
 				return;
 			}
@@ -150,6 +155,11 @@ package morn.core.managers {
 		
 		/**加载资源*/
 		public function load(url:String, type:int, complete:Handler, progress:Handler):void {
+			if (_isLoading) {
+				App.log.warn("Loader is try to close.", _url);
+				tryToCloseLoad();
+			}
+			
 			_url = url;
 			_type = type;
 			_complete = complete;
@@ -168,7 +178,7 @@ package morn.core.managers {
 		private function checkLoad():void {
 			if (_loaded - _lastLoaded < 1024) {
 				App.log.warn("load time out:" + _url);
-				tryCloseLoad();
+				tryToCloseLoad();
 				endLoad(null);
 			} else {
 				_lastLoaded = _loaded;
@@ -189,6 +199,11 @@ package morn.core.managers {
 				Bitmap(res).bitmapData.dispose();
 			}
 			delete _loadedMap[url];
+		}
+		
+		/**加载资源的地址*/
+		public function get url():String {
+			return _url;
 		}
 	}
 }

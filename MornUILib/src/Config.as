@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {
@@ -15,10 +15,10 @@ package {
 		/**资源路径*/
 		public static var resPath:String = "";
 		/**UI路径(UI加载模式可用)*/
-		public static var uiPath:String = "ui.swf";
+		public static var uiPath:String = "";
 		/**鼠标提示延迟(毫秒)*/
 		public static var tipDelay:int = 200;
 		/**鼠标是否跟随鼠标移动*/
-		public static var tipFollowMove:Boolean = true;
+		public static var tipFollowMove:Boolean = true;				
 	}
 }

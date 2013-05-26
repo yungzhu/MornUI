@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0226 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -115,6 +115,7 @@ package morn.core.components {
 		override public function set width(value:Number):void {
 			super.width = value;
 			_bg.width = _width;
+			_barLabel.width = _width;
 			callLater(changeLabelPoint);
 			callLater(changeValue);
 		}
@@ -127,8 +128,9 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is Number) {
-				this.value = value as Number;
+			_dataSource = value;
+			if (value is Number || value is String) {
+				this.value = Number(value);
 			} else {
 				super.dataSource = value;
 			}

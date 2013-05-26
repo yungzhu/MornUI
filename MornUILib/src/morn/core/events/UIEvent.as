@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.events {
@@ -7,7 +7,9 @@ package morn.core.events {
 	
 	/**UI事件类*/
 	public class UIEvent extends Event {
-		//-----------------Component-----------------			
+		//-----------------Component-----------------	
+		/**移动组件*/
+		public static const MOVE:String = "move";
 		/**更新完毕*/
 		public static const RENDER_COMPLETED:String = "renderCompleted";
 		/**显示鼠标提示*/
@@ -17,9 +19,15 @@ package morn.core.events {
 		//-----------------Image-----------------
 		/**图片加载完毕*/
 		public static const IMAGE_LOADED:String = "imageLoaded";
+		//-----------------TextArea-----------------
+		/**滚动*/
+		public static const SCROLL:String = "scroll";
 		//-----------------FrameClip-----------------
 		/**帧跳动*/
 		public static const FRAME_CHANGED:String = "frameChanged";
+		//-----------------List-----------------
+		/**项渲染*/
+		public static const ITEM_RENDER:String = "listRender";
 		
 		private var _data:*;
 		

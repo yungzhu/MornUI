@@ -1,15 +1,18 @@
 /**
- * Morn UI Version 1.1.0312 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
 	import morn.editor.core.IList;
 	
 	/**选择项改变后触发*/
 	[Event(name="select",type="flash.events.Event")]
+	/**项渲染时触发*/
+	[Event(name="listRender",type="morn.core.events.UIEvent")]
 	
 	/**列表*/
 	public class List extends Box implements IItem, IList {
@@ -20,6 +23,7 @@ package morn.core.components {
 		protected var _page:int;
 		protected var _totalPage:int;
 		protected var _scrollBar:ScrollBar;
+		protected var _scrollSize:int = 1;
 		protected var _startIndex:int;
 		protected var _selectedIndex:int = -1;
 		protected var _array:Array = [];
@@ -29,6 +33,7 @@ package morn.core.components {
 		public function initItems():void {
 			_scrollBar = getChildByName("scrollBar") as ScrollBar;
 			if (_scrollBar) {
+				_scrollBar.scrollSize = _scrollSize;
 				_scrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
 				addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 			}
@@ -39,7 +44,7 @@ package morn.core.components {
 				if (item == null) {
 					break;
 				}
-				item.addEventListener(MouseEvent.CLICK, onItemMouse);
+				item.addEventListener(MouseEvent.MOUSE_DOWN, onItemMouse);
 				if (item.getChildByName("selectBox")) {
 					item.addEventListener(MouseEvent.ROLL_OVER, onItemMouse);
 					item.addEventListener(MouseEvent.ROLL_OUT, onItemMouse);
@@ -56,7 +61,7 @@ package morn.core.components {
 		protected function onItemMouse(e:MouseEvent):void {
 			var item:Component = e.currentTarget as Component;
 			var index:int = _startIndex + _items.indexOf(item);
-			if (e.type == MouseEvent.CLICK) {
+			if (e.type == MouseEvent.MOUSE_DOWN) {
 				selectedIndex = index;
 			} else if (_selectedIndex != index) {
 				changeItemState(item, e.type == MouseEvent.ROLL_OVER, 0);
@@ -112,6 +117,15 @@ package morn.core.components {
 			selectedIndex = _array.indexOf(value);
 		}
 		
+		/**选择项组件*/
+		public function get selection():Component {
+			return _selectedIndex != -1 ? _items[(_selectedIndex - _startIndex) % _itemCount] : null;
+		}
+		
+		public function set selection(value:Component):void {
+			selectedIndex = _startIndex + _items.indexOf(value);
+		}
+		
 		protected function onScrollBarChange(e:Event):void {
 			var start:int = Math.round(_scrollBar.value);
 			if (_startIndex != start) {
@@ -125,7 +139,7 @@ package morn.core.components {
 		}
 		
 		public function set page(value:int):void {
-			_page = (value < 0 ? 0 : (value >= _totalPage ? _totalPage : value));
+			_page = (value < 0 ? 0 : (value >= _totalPage - 1 ? _totalPage - 1 : value));
 			_startIndex = _page * _itemCount;
 			callLater(refresh);
 		}
@@ -136,7 +150,7 @@ package morn.core.components {
 		}
 		
 		public function set startIndex(value:int):void {
-			_startIndex = value;
+			_startIndex = value > 0 ? value : 0;
 			for (var i:int = 0; i < _itemCount; i++) {
 				renderItem(_items[i], _startIndex + i);
 			}
@@ -153,6 +167,7 @@ package morn.core.components {
 			if (_renderHandler != null) {
 				_renderHandler.executeWith([item, index]);
 			}
+			sendEvent(UIEvent.ITEM_RENDER, [item, index]);
 		}
 		
 		/**列表项处理器(默认返回参数item:Component,index:int)*/
@@ -183,14 +198,17 @@ package morn.core.components {
 			_array = value || [];
 			var length:int = _array.length;
 			_totalPage = Math.ceil(length / _itemCount);
-			//重设当前页数
-			page = _page;
 			//重设当前选择项
 			selectedIndex = _selectedIndex;
+			//重设开始相
+			callLater(refresh);
 			if (_scrollBar) {
 				//自动隐藏滚动条
 				_scrollBar.visible = length > _itemCount;
 				_scrollBar.setScroll(0, Math.max(length - _itemCount, 0), _startIndex);
+				if (_scrollBar.visible) {
+					_scrollBar.thumbPercent = _itemCount / length;
+				}
 			}
 		}
 		
@@ -205,7 +223,30 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			_dataSource = array = value as Array;
+			_dataSource = value;
+			if (value is Array) {
+				array = value as Array
+			} else {
+				super.dataSource = value;
+			}
+		}
+		
+		/**滚动单位*/
+		public function get scrollSize():int {
+			return _scrollSize;
+		}
+		
+		public function set scrollSize(value:int):void {
+			_scrollSize = value;
+		}
+		
+		/**最大分页数*/
+		public function get totalPage():int {
+			return _totalPage;
+		}
+		
+		public function set totalPage(value:int):void {
+			_totalPage = value;
 		}
 	}
 }

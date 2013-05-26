@@ -1,19 +1,17 @@
 /**
- * Morn UI Version 1.1.0313 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
-	import morn.core.managers.ResLoader;
 	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
 	import morn.editor.core.IClip;
 	
-	/**图片加载后触发(类库中已经存在不会触发)*/
+	/**图片加载后触发*/
 	[Event(name="imageLoaded",type="morn.core.events.UIEvent")]
 	/**当前帧发生变化后触发*/
 	[Event(name="frameChanged",type="morn.core.events.UIEvent")]
@@ -21,12 +19,10 @@ package morn.core.components {
 	/**位图剪辑*/
 	public class Clip extends Component implements IClip {
 		protected var _autoStopAtRemoved:Boolean = true;
-		protected var _bitmap:Bitmap;
-		protected var _clips:Vector.<BitmapData>;
+		protected var _bitmap:AutoBitmap;
 		protected var _clipX:int = 1;
 		protected var _clipY:int = 1;
 		protected var _url:String;
-		protected var _frame:int;
 		protected var _autoPlay:Boolean;
 		protected var _interval:int = Config.MOVIE_INTERVAL;
 		protected var _from:int = -1;
@@ -37,8 +33,7 @@ package morn.core.components {
 		/**位图切片
 		 * @param url 资源类库名或者地址
 		 * @param clipX x方向个数
-		 * @param clipY y方向个数
-		 */
+		 * @param clipY y方向个数*/
 		public function Clip(url:String = null, clipX:int = 1, clipY:int = 1) {
 			_clipX = clipX;
 			_clipY = clipY;
@@ -46,7 +41,7 @@ package morn.core.components {
 		}
 		
 		override protected function createChildren():void {
-			addChild(_bitmap = new Bitmap());
+			addChild(_bitmap = new AutoBitmap(true));
 		}
 		
 		override protected function initialize():void {
@@ -72,7 +67,7 @@ package morn.core.components {
 		}
 		
 		public function set url(value:String):void {
-			if (_url != value && StringUtils.isNotEmpty(value)) {
+			if (_url != value && Boolean(value)) {
 				_url = value;
 				callLater(changeClip);
 			}
@@ -106,63 +101,74 @@ package morn.core.components {
 			if (App.asset.hasClass(_url)) {
 				bitmapData = App.asset.getBitmapData(_url, false);
 			} else {
-				App.loader.loadBMD(_url, new Handler(loadComplete));
+				App.loader.loadBMD(_url, new Handler(loadComplete, [_url]));
 			}
 		}
 		
-		protected function loadComplete(bmd:BitmapData):void {
-			bitmapData = bmd;
-			sendEvent(UIEvent.IMAGE_LOADED);
+		protected function loadComplete(url:String, bmd:BitmapData):void {
+			if (url == _url) {
+				bitmapData = bmd;
+			}
 		}
 		
 		/**源位图数据*/
 		public function set bitmapData(value:BitmapData):void {
 			if (value) {
-				_clips = BitmapUtils.createClips(value, _clipX, _clipY);
-				frame = _frame;
-				_contentWidth = _clips[0].width;
-				_contentHeight = _clips[0].height;
-				_bitmap.width = width;
-				_bitmap.height = height;
+				_bitmap.clips = BitmapUtils.createClips(value, _clipX, _clipY);
+				_contentWidth = _bitmap.width;
+				_contentHeight = _bitmap.height;
 			}
+			sendEvent(UIEvent.IMAGE_LOADED);
 		}
 		
 		override public function set width(value:Number):void {
 			super.width = value;
-			_bitmap.width = _width;
+			_bitmap.width = value;
 		}
 		
 		override public function set height(value:Number):void {
 			super.height = value;
-			_bitmap.height = _height;
+			_bitmap.height = value;
+		}
+		
+		override public function commitMeasure():void {
+			exeCallLater(changeClip);
+		}
+		
+		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		public function get sizeGrid():String {
+			if (_bitmap.sizeGrid) {
+				return _bitmap.sizeGrid.join(",");
+			}
+			return null;
+		}
+		
+		public function set sizeGrid(value:String):void {
+			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value);
 		}
 		
 		/**当前帧*/
 		public function get frame():int {
-			return _frame;
+			return _bitmap.clipIndex;
 		}
 		
 		public function set frame(value:int):void {
-			_frame = value;
-			if (_clips) {
-				_frame = (_frame < _clips.length && _frame > -1) ? _frame : 0;
-				_bitmap.bitmapData = _clips[_frame];
-				sendEvent(UIEvent.FRAME_CHANGED);
-				if (_frame == _to) {
-					stop();
-					_to = -1;
-					if (_complete != null) {
-						var handler:Handler = _complete;
-						_complete = null;
-						handler.execute();
-					}
+			_bitmap.clipIndex = value;
+			sendEvent(UIEvent.FRAME_CHANGED);
+			if (_bitmap.clipIndex == _to) {
+				stop();
+				_to = -1;
+				if (_complete != null) {
+					var handler:Handler = _complete;
+					_complete = null;
+					handler.execute();
 				}
 			}
 		}
 		
 		/**切片帧的总数*/
 		public function get totalFrame():int {
-			return _clips ? _clips.length : 0;
+			return _bitmap.clips ? _bitmap.clips.length : 0;
 		}
 		
 		/**从显示列表删除后是否自动停止播放*/
@@ -212,7 +218,7 @@ package morn.core.components {
 		/**开始播放*/
 		public function play():void {
 			_isPlaying = true;
-			frame = _frame;
+			frame = _bitmap.clipIndex;
 			App.timer.doLoop(_interval, loop);
 		}
 		
@@ -240,8 +246,7 @@ package morn.core.components {
 		
 		/**从某帧播放到某帧，播放结束发送事件
 		 * @param from 开始帧(为-1时默认为第一帧)
-		 * @param to 结束帧(为-1时默认为最后一帧)
-		 */
+		 * @param to 结束帧(为-1时默认为最后一帧) */
 		public function playFromTo(from:int = -1, to:int = -1, complete:Handler = null):void {
 			_from = from == -1 ? 0 : from;
 			_to = to == -1 ? _clipX * _clipY - 1 : to;
@@ -250,19 +255,26 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is int) {
-				frame = value as int;
+			_dataSource = value;
+			if (value is int || value is String) {
+				frame = int(value);
 			} else {
 				super.dataSource = value;
 			}
 		}
 		
-		/**销毁资源*/
-		public function destroy(clearFromLoader:Boolean = false):void {
-			App.asset.destroyClips(_url);
+		/**位图实体*/
+		public function get bitmap():AutoBitmap {
+			return _bitmap;
+		}
+		
+		/**销毁资源
+		 * @param	clearFromLoader 是否同时删除加载缓存*/
+		public function dispose(clearFromLoader:Boolean = false):void {
+			App.asset.disposeBitmapData(_url);
 			_bitmap.bitmapData = null;
 			if (clearFromLoader) {
-				ResLoader.clearResLoaded(_url);
+				App.loader.clearResLoaded(_url);
 			}
 		}
 	}

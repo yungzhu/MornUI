@@ -1,11 +1,10 @@
 /**
- * Morn UI Version 1.1.0303 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import morn.core.handlers.Handler;
-	import morn.core.utils.StringUtils;
 	
 	/**选择项改变后触发*/
 	[Event(name="select",type="flash.events.Event")]
@@ -98,9 +97,9 @@ package morn.core.components {
 		public function set labels(value:String):void {
 			if (_labels != value) {
 				_labels = value;
-				//callLater(changeLabels);
 				removeAllChild();
-				if (StringUtils.isNotEmpty(_labels)) {
+				callLater(changeLabels);
+				if (Boolean(_labels)) {
 					var a:Array = _labels.split(",");
 					var right:int = 0
 					for (var i:int = 0, n:int = a.length; i < n; i++) {
@@ -195,6 +194,10 @@ package morn.core.components {
 			}
 		}
 		
+		override public function commitMeasure():void {
+			exeCallLater(changeLabels);
+		}
+		
 		/**按钮集合*/
 		public function get items():Vector.<ISelect> {
 			return _items;
@@ -210,10 +213,12 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is int) {
-				selectedIndex = value as int;
+			_dataSource = value;
+			if (value is int || value is String) {
+				selectedIndex = int(value);
+			} else if (value is Array) {
+				labels = (value as Array).join(",");
 			} else {
-				_dataSource = value;
 				for (var prop:String in _dataSource) {
 					if (hasOwnProperty(prop)) {
 						this[prop] = _dataSource[prop];

@@ -1,3 +1,7 @@
+/**
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ */
 package morn.editor{
 	public class Builder{
 		/**对UI类库进行初始化(编辑器导入UI类库后，会默认调用此方法)

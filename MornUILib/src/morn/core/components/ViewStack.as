@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -29,6 +29,7 @@ package morn.core.components {
 		/**增加视图*/
 		public function addItem(item:DisplayObject):void {
 			item.name = "item" + _items.length;
+			addChild(item);
 			initItems();
 		}
 		
@@ -92,10 +93,10 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is int) {
-				selectedIndex = value as int;
-			} else {
-				_dataSource = value;
+			_dataSource = value;
+			if (value is int || value is String) {
+				selectedIndex = int(value);
+			} else {				
 				for (var prop:String in _dataSource) {
 					if (hasOwnProperty(prop)) {
 						this[prop] = _dataSource[prop];

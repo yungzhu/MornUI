@@ -1,3 +1,7 @@
+/**
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ */
 package morn.editor {
 	import flash.display.BitmapData;
 	import flash.display.Stage;

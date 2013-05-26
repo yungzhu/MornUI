@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -67,10 +67,10 @@ package morn.core.components {
 				_label.text = _value + "";
 				if (_direction == HORIZONTAL) {
 					_label.y = _bar.y - 20;
-					_label.x = (_bar.width - _label.width) * 0.5 + _bar.realX;
+					_label.x = (_bar.width - _label.width) * 0.5 + _bar.x;
 				} else {
 					_label.x = _bar.x + 20;
-					_label.y = (_bar.height - _label.height) * 0.5 + _bar.realY;
+					_label.y = (_bar.height - _label.height) * 0.5 + _bar.y;
 				}
 			}
 		}
@@ -89,9 +89,9 @@ package morn.core.components {
 		protected function onStageMouseMove(e:MouseEvent):void {
 			var oldValue:Number = _value;
 			if (_direction == HORIZONTAL) {
-				_value = _bar.realX / (width - _bar.width) * (_max - _min) + _min;
+				_value = _bar.x / (width - _bar.width) * (_max - _min) + _min;
 			} else {
-				_value = _bar.realY / (height - _bar.height) * (_max - _min) + _min;
+				_value = _bar.y / (height - _bar.height) * (_max - _min) + _min;
 			}
 			_value = Math.round(_value / _tick) * _tick;
 			if (_value != oldValue) {
@@ -256,8 +256,9 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is Number) {
-				this.value = value as Number;
+			_dataSource = value;
+			if (value is Number || value is String) {
+				this.value = Number(value);
 			} else {
 				super.dataSource = value;
 			}

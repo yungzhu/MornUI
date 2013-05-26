@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {
@@ -15,9 +15,9 @@ package {
 	import morn.core.managers.LangManager;
 	import morn.core.managers.LoaderManager;
 	import morn.core.managers.LogManager;
+	import morn.core.managers.RenderManager;
 	import morn.core.managers.TimerManager;
 	import morn.core.managers.TipManager;
-	import morn.core.utils.StringUtils;
 	
 	/**全局引用入口*/
 	public class App {
@@ -29,6 +29,8 @@ package {
 		public static var loader:LoaderManager = new LoaderManager();
 		/**时钟管理器*/
 		public static var timer:TimerManager = new TimerManager();
+		/**渲染管理器*/
+		public static var render:RenderManager = new RenderManager();
 		/**对话框管理器*/
 		public static var dialog:DialogManager = new DialogManager();
 		/**日志管理器*/
@@ -63,7 +65,7 @@ package {
 			stage.addChild(log);
 			
 			//如果UI视图是加载模式，则进行整体加载
-			if (StringUtils.isNotEmpty(Config.uiPath)) {
+			if (Boolean(Config.uiPath)) {
 				App.loader.loadDB(Config.uiPath, new Handler(onUIloadComplete));
 			}
 		}

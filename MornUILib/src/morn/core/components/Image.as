@@ -1,14 +1,11 @@
 /**
- * Morn UI Version 1.1.0313 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
-	import morn.core.managers.ResLoader;
-	import morn.core.utils.BitmapUtils;
 	import morn.core.utils.StringUtils;
 	
 	/**图片被加载后触发*/
@@ -16,8 +13,7 @@ package morn.core.components {
 	
 	/**图像类*/
 	public class Image extends Component {
-		protected var _bitmap:Bitmap;
-		protected var _sizeGrid:Array;
+		protected var _bitmap:AutoBitmap;
 		protected var _url:String;
 		
 		public function Image(url:String = null) {
@@ -25,7 +21,7 @@ package morn.core.components {
 		}
 		
 		override protected function createChildren():void {
-			addChild(_bitmap = new Bitmap());
+			addChild(_bitmap = new AutoBitmap(false));
 		}
 		
 		/**图片地址*/
@@ -34,12 +30,12 @@ package morn.core.components {
 		}
 		
 		public function set url(value:String):void {
-			if (_url != value && StringUtils.isNotEmpty(value)) {
+			if (_url != value && Boolean(value)) {
 				_url = value;
 				if (App.asset.hasClass(_url)) {
 					bitmapData = App.asset.getBitmapData(_url);
 				} else {
-					App.loader.loadBMD(_url, new Handler(setBitmapData));
+					App.loader.loadBMD(_url, new Handler(setBitmapData, [_url]));
 				}
 			}
 		}
@@ -50,46 +46,40 @@ package morn.core.components {
 				_contentWidth = value.width;
 				_contentHeight = value.height;
 				_bitmap.bitmapData = value;
-				callLater(changeSize);
 			}
-		}
-		
-		protected function setBitmapData(bmd:BitmapData):void {
-			bitmapData = bmd;
 			sendEvent(UIEvent.IMAGE_LOADED);
 		}
 		
-		override protected function changeSize():void {
-			if (_bitmap.bitmapData) {
-				if (_sizeGrid == null) {
-					_bitmap.width = width;
-					_bitmap.height = height;
-				} else {
-					var source:BitmapData = App.asset.getBitmapData(_url);
-					//清理临时位图数据
-					if (_bitmap.bitmapData && _bitmap.bitmapData != source) {
-						_bitmap.bitmapData.dispose();
-					}
-					_bitmap.bitmapData = BitmapUtils.scale9Bmd(source, _sizeGrid, width, height);
-				}
-				super.changeSize();
+		protected function setBitmapData(url:String, bmd:BitmapData):void {
+			if (url == _url) {
+				bitmapData = bmd;
 			}
+		}
+		
+		override public function set width(value:Number):void {
+			super.width = value;
+			_bitmap.width = width;
+		}
+		
+		override public function set height(value:Number):void {
+			super.height = value;
+			_bitmap.height = height;
 		}
 		
 		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
 		public function get sizeGrid():String {
-			if (_sizeGrid) {
-				return _sizeGrid.join(",");
+			if (_bitmap.sizeGrid) {
+				return _bitmap.sizeGrid.join(",");
 			}
 			return null;
 		}
 		
 		public function set sizeGrid(value:String):void {
-			_sizeGrid = StringUtils.fillArray([4, 4, 4, 4], value);
+			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value);
 		}
 		
-		/**位图控件*/
-		public function get bitmap():Bitmap {
+		/**位图控件实例*/
+		public function get bitmap():AutoBitmap {
 			return _bitmap;
 		}
 		
@@ -103,6 +93,7 @@ package morn.core.components {
 		}
 		
 		override public function set dataSource(value:Object):void {
+			_dataSource = value;
 			if (value is String) {
 				url = value as String;
 			} else {
@@ -110,12 +101,13 @@ package morn.core.components {
 			}
 		}
 		
-		/**销毁资源*/
-		public function destroy(clearFromLoader:Boolean = false):void {
-			App.asset.destroyBitmapData(_url);
+		/**销毁资源
+		 * @param	clearFromLoader 是否同时删除加载缓存*/
+		public function dispose(clearFromLoader:Boolean = false):void {
+			App.asset.disposeBitmapData(_url);
 			_bitmap.bitmapData = null;
 			if (clearFromLoader) {
-				ResLoader.clearResLoaded(_url);
+				App.loader.clearResLoaded(_url);
 			}
 		}
 	}

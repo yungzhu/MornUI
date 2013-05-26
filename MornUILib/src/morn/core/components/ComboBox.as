@@ -1,8 +1,9 @@
 /**
- * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
+	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -50,16 +51,15 @@ package morn.core.components {
 		override protected function initialize():void {
 			_button.btnLabel.align = "left";
 			_button.labelMargin = "5";
-			_button.toggle = true;
-			_button.clickHandler = new Handler(buttonClick);
+			_button.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 			
 			_list.addEventListener(Event.SELECT, onListSelect);
 			_scrollBar.name = "scrollBar";
-			_scrollBar.addEventListener(MouseEvent.CLICK, onScrollBarClick);
+			_scrollBar.y = 1;
 		}
 		
-		protected function onScrollBarClick(e:MouseEvent):void {
-			e.stopPropagation();
+		private function onButtonMouseDown(e:MouseEvent):void {
+			callLater(changeOpen);
 		}
 		
 		protected function onListSelect(e:Event):void {
@@ -81,14 +81,22 @@ package morn.core.components {
 		}
 		
 		protected function changeList():void {
-			_list.removeAllChild();
+			//_list.removeAllChild();
+			for (var j:int = _list.numChildren - 1; j > -1; j--) {
+				var box:Box = _list.removeChildAt(j) as Box;
+				if (box) {
+					box.removeEventListener(MouseEvent.ROLL_OVER, onListItemMouse);
+					box.removeEventListener(MouseEvent.ROLL_OUT, onListItemMouse);
+				}
+			}
 			for (var i:int = 0; i < _visibleNum; i++) {
 				var label:Label = new Label();
 				label.name = "label";
 				label.width = width - 2;
 				label.height = ITEM_HEIGHT;
+				label.color = _itemColors[2];
 				
-				var box:Box = new Box();
+				box = new Box();
 				box.name = "item" + i;
 				box.addElement(label, 1, 0);
 				box.addEventListener(MouseEvent.ROLL_OVER, onListItemMouse);
@@ -114,10 +122,6 @@ package morn.core.components {
 			}
 		}
 		
-		protected function buttonClick():void {
-			callLater(changeOpen);
-		}
-		
 		protected function changeOpen():void {
 			isOpen = !_isOpen;
 		}
@@ -139,35 +143,35 @@ package morn.core.components {
 		}
 		
 		public function set labels(value:String):void {
-			if (StringUtils.isNotEmpty(value)) {
-				var oldLabels:Array = _labels;
-				_labels = value.split(",");
-				callLater(changeItem);
-				if (oldLabels) {
+			if (Boolean(value)) {
+				if (_labels) {
 					selectedIndex = -1;
 				}
+				_labels = value.split(",");
+				callLater(changeItem);
 			}
 		}
 		
 		protected function changeItem():void {
 			//赋值之前需要先初始化列表
 			exeCallLater(changeList);
-			var a:Array = [];
-			for (var i:int = 0, n:int = _labels.length; i < n; i++) {
-				a.push({label: _labels[i]});
-			}
-			_list.array = a;
 			
 			//显示边框
-			_listHeight = Math.min(_visibleNum, a.length) * ITEM_HEIGHT;
+			_listHeight = Math.min(_visibleNum, _labels.length) * ITEM_HEIGHT;
+			_scrollBar.height = _listHeight - 2;
+			//填充背景
 			var g:Graphics = _list.graphics;
 			g.clear();
 			g.lineStyle(1, _itemColors[3]);
 			g.beginFill(_itemColors[4]);
 			g.drawRect(0, 0, width - 1, _listHeight);
 			g.endFill();
-			
-			_scrollBar.height = _listHeight;
+			//填充数据			
+			var a:Array = [];
+			for (var i:int = 0, n:int = _labels.length; i < n; i++) {
+				a.push({label: _labels[i]});
+			}
+			_list.array = a;
 		}
 		
 		/**选择索引*/
@@ -241,20 +245,20 @@ package morn.core.components {
 						_list.setPosition(p.x, p.y - _listHeight);
 					}
 					App.stage.addChild(_list);
-					App.stage.addEventListener(MouseEvent.CLICK, removeList);
+					App.stage.addEventListener(MouseEvent.MOUSE_DOWN, removeList);
 					App.stage.addEventListener(Event.REMOVED_FROM_STAGE, removeList);
 				} else {
-					removeList(null);
+					_list.remove();
+					App.stage.removeEventListener(MouseEvent.MOUSE_DOWN, removeList);
+					App.stage.removeEventListener(Event.REMOVED_FROM_STAGE, removeList);
 				}
 			}
 		}
 		
 		protected function removeList(e:Event):void {
-			_isOpen = false;
-			_button.selected = false;
-			_list.remove();
-			App.stage.removeEventListener(MouseEvent.CLICK, removeList);
-			App.stage.removeEventListener(Event.REMOVED_FROM_STAGE, removeList);
+			if (e == null || (!_scrollBar.contains(e.target as DisplayObject) && !_button.contains(e.target as DisplayObject))) {
+				isOpen = false;
+			}
 		}
 		
 		/**滚动条皮肤*/
@@ -285,9 +289,17 @@ package morn.core.components {
 			return _button;
 		}
 		
+		/**list实体*/
+		public function get list():List {
+			return _list;
+		}
+		
 		override public function set dataSource(value:Object):void {
-			if (value is int) {
-				selectedIndex = value as int;
+			_dataSource = value;
+			if (value is int || value is String) {
+				selectedIndex = int(value);
+			} else if (value is Array) {
+				labels = (value as Array).join(",");
 			} else {
 				super.dataSource = value;
 			}
@@ -300,6 +312,51 @@ package morn.core.components {
 		
 		public function set openDirection(value:String):void {
 			_openDirection = value;
+		}
+		
+		/**标签颜色(格式:upColor,overColor,downColor,disableColor)*/
+		public function get labelColors():String {
+			return _button.labelColors;
+		}
+		
+		public function set labelColors(value:String):void {
+			_button.labelColors = value;
+		}
+		
+		/**按钮标签边距(格式:左边距,上边距,右边距,下边距)*/
+		public function get labelMargin():String {
+			return _button.labelMargin;
+		}
+		
+		public function set labelMargin(value:String):void {
+			_button.labelMargin = value;
+		}
+		
+		/**按钮标签描边(格式:color,alpha,blurX,blurY,strength,quality)*/
+		public function get labelStroke():String {
+			return _button.labelStroke;
+		}
+		
+		public function set labelStroke(value:String):void {
+			_button.labelStroke = value;
+		}
+		
+		/**按钮标签大小*/
+		public function get labelSize():Object {
+			return _button.labelSize;
+		}
+		
+		public function set labelSize(value:Object):void {
+			_button.labelSize = value
+		}
+		
+		/**按钮标签粗细*/
+		public function get labelBold():Object {
+			return _button.labelBold;
+		}
+		
+		public function set labelBold(value:Object):void {
+			_button.labelBold = value
 		}
 	}
 }

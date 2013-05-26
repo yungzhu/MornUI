@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -34,24 +34,21 @@ package morn.core.managers {
 			if (_isLoading) {
 				return;
 			}
+			_isLoading = true;
 			while (_resInfos.length > 0) {
 				var resInfo:ResInfo = _resInfos.shift();
 				var content:* = ResLoader.getResLoaded(resInfo.url);
 				if (content != null) {
 					endLoad(resInfo, content);
 				} else {
-					doLoad(resInfo);
+					_resLoader.load(resInfo.url, resInfo.type, new Handler(loadComplete, [resInfo]), resInfo.progress);
 					return;
 				}
 			}
+			_isLoading = false;
 			if (hasEventListener(Event.COMPLETE)) {
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
-		}
-		
-		private function doLoad(resInfo:ResInfo):void {
-			_isLoading = true;
-			_resLoader.load(resInfo.url, resInfo.type, new Handler(loadComplete, [resInfo]), resInfo.progress);
 		}
 		
 		private function loadComplete(resInfo:ResInfo, content:*):void {
@@ -124,7 +121,7 @@ package morn.core.managers {
 				load(item.url, item.type, new Handler(loadAssetsComplete, [item.size]), new Handler(loadAssetsProgress, [item.size]));
 			}
 			
-			function loadAssetsComplete(content:*, size:int):void {
+			function loadAssetsComplete(size:int, content:*):void {
 				itemloaded++;
 				totalLoaded += size;
 				if (itemloaded == itemCount) {
@@ -134,11 +131,26 @@ package morn.core.managers {
 				}
 			}
 			
-			function loadAssetsProgress(value:Number, size:int):void {
+			function loadAssetsProgress(size:int, value:Number):void {
 				if (progress != null) {
 					value = (totalLoaded + size * value) / totalSize;
 					progress.executeWith([value]);
 				}
+			}
+		}
+		
+		/**删除已加载的资源*/
+		public function clearResLoaded(url:String):void {
+			ResLoader.clearResLoaded(url);
+		}
+		
+		/**尝试关闭加载*/
+		public function tryToCloseLoad(url:String):void {
+			if (_resLoader.url == url) {
+				_resLoader.tryToCloseLoad();
+				App.log.warn("Try to close load:", url);
+				_isLoading = false;
+				checkNext();
 			}
 		}
 	}

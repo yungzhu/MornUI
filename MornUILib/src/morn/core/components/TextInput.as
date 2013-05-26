@@ -1,34 +1,39 @@
 /**
- * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
+	import flash.events.TextEvent;
 	import flash.text.TextFieldType;
+	
+	/**当用户输入文本时调度*/
+	[Event(name="textInput",type="flash.events.TextEvent")]
 	
 	/**输入框*/
 	public class TextInput extends Label {
 		
-		public function TextInput(text:String = null) {
-			super(text);
-		}
-		
-		override protected function preinitialize():void {
-			super.preinitialize();
-			width = 128;
-			height = 22;
+		public function TextInput(text:String = "", skin:String = null) {
+			super(text, skin);
 		}
 		
 		override protected function initialize():void {
 			super.initialize();
+			width = 128;
+			height = 22;
 			selectable = true;
 			_textField.type = TextFieldType.INPUT;
 			_textField.autoSize = "none";
 			_textField.addEventListener(Event.CHANGE, onTextFieldChange);
+			_textField.addEventListener(TextEvent.TEXT_INPUT, onTextFieldTextInput);
+		}
+		
+		private function onTextFieldTextInput(e:TextEvent):void {
+			dispatchEvent(e);
 		}
 		
 		protected function onTextFieldChange(e:Event):void {
-			_text = _textField.text;
+			text = _textField.text;
 		}
 		
 		/**指示用户可以输入到控件的字符集*/

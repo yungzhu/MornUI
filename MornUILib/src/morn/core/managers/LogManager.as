@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -14,7 +14,6 @@ package morn.core.managers {
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import morn.core.utils.ObjectUtils;
-	import morn.core.utils.StringUtils;
 	
 	/**日志管理器*/
 	public class LogManager extends Sprite {
@@ -108,7 +107,7 @@ package morn.core.managers {
 		}
 		
 		private function onFilterFocusOut(e:FocusEvent):void {
-			_filters = StringUtils.isNotEmpty(_filter.text) ? _filter.text.split(",") : [];
+			_filters = Boolean(_filter.text) ? _filter.text.split(",") : [];
 			refresh(null);
 		}
 		

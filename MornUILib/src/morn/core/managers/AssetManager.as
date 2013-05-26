@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.1.0313 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -75,7 +75,7 @@ package morn.core.managers {
 		}
 		
 		/**销毁位图数据*/
-		public function destroyBitmapData(name:String):void {
+		public function disposeBitmapData(name:String):void {
 			var bmd:BitmapData = _bmdMap[name];
 			if (bmd) {
 				delete _bmdMap[name];

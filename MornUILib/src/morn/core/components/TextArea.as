@@ -1,9 +1,13 @@
 /**
- * Morn UI Version 1.1.0224 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
+	import morn.core.events.UIEvent;
+	
+	/**当滚动内容时调用*/
+	[Event(name="scroll",type="morn.core.events.UIEvent")]
 	
 	/**文本域*/
 	public class TextArea extends TextInput {
@@ -13,12 +17,6 @@ package morn.core.components {
 			super(text);
 		}
 		
-		override protected function preinitialize():void {
-			super.preinitialize();
-			width = 180;
-			height = 150;
-		}
-		
 		override protected function createChildren():void {
 			super.createChildren();
 			addChild(_scrollBar = new VScrollBar());
@@ -26,6 +24,8 @@ package morn.core.components {
 		
 		override protected function initialize():void {
 			super.initialize();
+			width = 180;
+			height = 150;
 			_textField.wordWrap = true;
 			_textField.multiline = true;
 			_textField.addEventListener(Event.SCROLL, onTextFieldScroll);
@@ -33,18 +33,27 @@ package morn.core.components {
 		}
 		
 		override protected function changeSize():void {
-			_textField.width = _width - _scrollBar.width - 4;
-			_textField.height = _height;
-			_scrollBar.height = _height;
-			_scrollBar.x = _width - _scrollBar.width;
+			_textField.width = _width - _margin[0] - _margin[2];
+			_textField.height = _height - _margin[1] - _margin[3];
+			if (Boolean(_scrollBar.skin)) {
+				_textField.width = _width - _scrollBar.width - 4 - _margin[0] - _margin[2];
+				_scrollBar.height = _height - 2 - _margin[1] - _margin[3];
+				_scrollBar.x = _width - _scrollBar.width - 1;
+				_scrollBar.y = 1;
+				App.timer.doFrameOnce(1, onTextFieldScroll, [null]);
+			}
 		}
 		
 		protected function onScrollBarChange(e:Event):void {
 			_textField.scrollV = Math.round(_scrollBar.value);
+			sendEvent(UIEvent.SCROLL);
 		}
 		
 		protected function onTextFieldScroll(e:Event):void {
-			_scrollBar.setScroll(1, _textField.maxScrollV, _textField.scrollV);
+			if (Boolean(_scrollBar.skin)) {
+				_scrollBar.setScroll(1, _textField.maxScrollV, _textField.scrollV);
+				_scrollBar.thumbPercent = (_textField.numLines - _textField.maxScrollV + 1) / _textField.numLines;
+			}
 		}
 		
 		/**滚动条皮肤*/
@@ -54,6 +63,12 @@ package morn.core.components {
 		
 		public function set scrollBarSkin(value:String):void {
 			_scrollBar.skin = value;
+			callLater(changeSize);
+		}
+		
+		/**滚动条实体*/
+		public function get scrollBar():VScrollBar {
+			return _scrollBar;
 		}
 	}
 }

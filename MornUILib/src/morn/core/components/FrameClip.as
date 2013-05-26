@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -20,7 +20,6 @@ package morn.core.components {
 		protected var _frame:int;
 		protected var _autoPlay:Boolean;
 		protected var _interval:int = Config.MOVIE_INTERVAL;
-		protected var _from:Object;
 		protected var _to:Object;
 		protected var _complete:Handler;
 		protected var _isPlaying:Boolean;
@@ -201,16 +200,21 @@ package morn.core.components {
 		 * @param to 结束帧或标签(为null时默认为最后一帧)
 		 */
 		public function playFromTo(from:Object = null, to:Object = null, complete:Handler = null):void {
-			_from = from == null ? 0 : from;
+			from == null ? 0 : from;
 			_to = to == null ? _mc.totalFrames - 1 : to;
 			_complete = complete;
-			_mc.gotoAndStop(_from);
-			gotoAndPlay(_mc.currentFrame - 1);
+			if (from is int) {
+				gotoAndPlay(from as int);
+			} else {
+				_mc.gotoAndStop(from);
+				gotoAndPlay(_mc.currentFrame - 1);
+			}
 		}
 		
 		override public function set dataSource(value:Object):void {
-			if (value is int) {
-				frame = value as int;
+			_dataSource = value;
+			if (value is int || value is String) {
+				frame = int(value);
 			} else {
 				super.dataSource = value;
 			}

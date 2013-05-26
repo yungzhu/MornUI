@@ -1,5 +1,5 @@
 /**
- * Version 1.2.0309 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -35,14 +35,15 @@ package morn.core.components {
 			}
 		}
 		
-		/**删除子显示对象*/
+		/**删除子显示对象，子对象为空或者不包含子对象时不抛出异常*/
 		public function removeElement(element:DisplayObject):void {
 			if (element && contains(element)) {
 				removeChild(element);
 			}
 		}
 		
-		/**删除所有子显示对象 @param except 例外的对象*/
+		/**删除所有子显示对象
+		 * @param except 例外的对象(不会被删除)*/
 		public function removeAllChild(except:DisplayObject = null):void {
 			for (var i:int = numChildren - 1; i > -1; i--) {
 				if (except != getChildAt(i)) {
@@ -51,33 +52,18 @@ package morn.core.components {
 			}
 		}
 		
-		/**增加显示对象到某对象上*/
+		/**增加显示对象到某对象上面*/
 		public function insertAbove(element:DisplayObject, compare:DisplayObject):void {
 			removeElement(element);
 			var index:int = getChildIndex(compare);
 			addChildAt(element, Math.min(index + 1, numChildren - 1));
 		}
 		
-		/**增加显示对象到某对象下*/
+		/**增加显示对象到某对象下面*/
 		public function insertBelow(element:DisplayObject, compare:DisplayObject):void {
 			removeElement(element);
 			var index:int = getChildIndex(compare);
 			addChildAt(element, Math.max(index, 0));
-		}
-		
-		/**立即渲染组件*/
-		override public function validate():void {
-			validateChild();
-			super.validate();
-		}
-		
-		protected function validateChild():void {
-			for (var i:int = 0, n:int = numChildren; i < n; i++) {
-				var item:Component = getChildAt(i) as Component;
-				if (item) {
-					item.validate();
-				}
-			}
 		}
 		
 		override public function set dataSource(value:Object):void {
