@@ -35,7 +35,7 @@ package {
 			var map:Object = {};
 			var str:String = "<?xml version=\"1.0\" encoding=\"utf-8\" ?><langs>";
 			//获得所有页面
-			var arr:Array = getDirectoryList(getPath(workPath, "morn/pages/"));
+			var arr:Array = getFileList(getPath(workPath, "morn/pages/"));
 			log("找到了" + arr.length + "个页面");
 			for each (var a:Array in arr) {
 				var name:String = a[0];
