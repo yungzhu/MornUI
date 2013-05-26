@@ -34,7 +34,7 @@ github托管地址：https://github.com/yungzhu/morn
 	
 目录结构:
 
-Builder-----UI编辑器
+builder-----UI编辑器
 
 MornUILib---UI库源码
 
