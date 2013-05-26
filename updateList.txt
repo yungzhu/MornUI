@@ -1,4 +1,53 @@
-﻿
+﻿2.0.0526
+----------------------
+编辑器部分:	
+	[新增]页面及页面文件夹重命名功能，并能自动替换嵌套引用 [紫琥珀姐姐]
+	[新增]页面及页面文件夹拖动移动功能
+	[新增]批量查找和替换功能(ctrl+F) 
+	[改进]代码着色程序，性能得到大幅优化 [D.E,小川]			
+	[改进]复制组件后，默认选中新复制的组件，方便进一步操作	
+	[新增]属性面板combobox和colorBox类型的配置 [随风展翅]
+	[新增]双击嵌套页面，会打开嵌套页面视图 [紫琥珀姐姐]
+	[改进]刷新页面列表时，保持已打开的节点 [紫琥珀姐姐]
+	[新增]页面组件增加默认属性设置功能(页面右键菜单内) [紫琥珀姐姐]
+	[新增]增加对自定义swc类库的支持，只要放到编辑器根目录即可 [火,joker]
+	[改进]Image和Clip组件资源缺失时，会用红色块提示
+	[改进]增强了部分错误捕捉信息 [joker]
+主要修正bug：
+	[修正]页面背景颜色不能设置为黑色的bug
+	[修正]资源默认属性设置不能为引号的bug
+	[修正]已经有参考视图后，ctrl+p修无法保存的bug
+	
+Morn UI库：
+	[改进]优化所有组件类，独立渲染管理器，进一步减少重复对象创建，提高性能	
+	[改进]增加了autoBitmap类，封装bitmap相关逻辑，减少其他组件对bitmap的依赖
+	[改进]简化了Component并增加了move，showTip，hideTip等事件
+	[新增]Button组件增加了select事件	
+	[新增]Dialog新增了closeHandler回调函数
+	[新增]Combobox组件开放了list对象实体，并增加labelColors，labelMargin，labelStroke，labelSize，labelBold等属性 [Rocky]
+	[改进]Label增加宽高自适应的支持，修正了宽高bug
+	[改进]Panel，View，Dialog等容器更改继承为Container，增加了相对定位功能
+	[改进]TextArea，List，Panel等组件的滚动条根据内容会自动变化长度
+	[新增]TextArea增加了scroll，textInput事件，公开了scrollBar实体
+	[新增]TextInput增加了textInput事件
+	[新增]View增加了reCreate(comp:Componet) 方法，重新生成内部组件
+	[新增]View增加了registerComponent方法，为组件扩展及对应关系修改提供了更为方便的方式
+	[新增]list增加了scrollSize滚动数量，selection选择组件等属性  [紫琥珀姐姐]
+	[改进]进一步增强了组件的注释及说明
+	[改进]增强了部分dataSource赋值处理
+	[改进]更改了组件宽高度量方式
+	[改进]AssetManager的destroyBitmapData方法改名为disposeBitmapData
+	[新增]增加了App.loader.clearResLoaded(url:String),App.loader.tryToCloseLoad(url:String)方法
+	[改进]时钟管理器增加是否覆盖计时的参数
+主要修正bug：
+	[修正]修复clip和image已经加载过的图片无法触发IMAGE_LOADED的bug
+	[修正]修复了frameclip的playFromTo函数bug
+	[修正]修复了panel若干bug [赵军]
+	[修正]修复了模式对话框遮挡错误 [Is me 骆]
+	[修正]修复了加载器一个比较隐含的错误
+	[修正]修复了loaderManager中loadAssetsProgress参数顺序错误的bug [小刚]
+	[修正]修正了list的page最大值计算错误的bug [西西]
+	
 1.2.0312
 ----------------------
 编辑器部分:
@@ -8,7 +57,7 @@
 	4.优化了代码模式高亮及修复了快捷键乱码
 	5.改进了view下createView的调用时机 [小川]
 	6.增加属性面板输入框跟随面板拖动而变化的效果 [梦幻长城]
-	7.选择为空的时候显示页面的属性设置 [feigema]
+	7.选择为空的时候显示页面的属性设置 [feigema]	
 主要修正bug：
 	1.修复了特定情况下选择多个组件转换为box会重复一些组件 [Is me 骆 ！]
 	2.修复了修改属性时，在没生效之前切换页面，导致切换后的页面属性跟谁变化 [紫琥珀姐姐]
@@ -132,13 +181,13 @@ Morn UI库：
 	5.增加资源默认属性设置（可以单独设置某个资源的压缩比率，双击设置）
 	6.增加了组件创建及解释报错的提示，方便调试
 	7.增加保存所有修改按钮及快捷键(Ctrl+Shift+S)
-	8.增加Shift+箭头，快速移动（10像素） 感谢健子
+	8.增加Shift+箭头，快速移动（10像素） [健子]
 	9.支持自定义view和dialog类型
 
 Morn UI库：
-	1.对位图9宫格进行优化处理 感谢Canaan
+	1.对位图9宫格进行优化处理 [Canaan]
 	2.按钮开始支持9宫格缩放了
-	3.增强clip，可以完全代替movieclip了 感谢Canaan
+	3.增强clip，可以完全代替movieclip了 [Canaan]
 	4.全新设计FrameClip，使矢量图动画基于时间控制，而非基于帧率
 	5.增强了注释和说明，增加了事件及回调函数默认返回值提示
 	6.label,textinput,textarea增加皮肤属性，并支持九宫格
@@ -155,16 +204,16 @@ Morn UI库：
 	1.增加编辑器可视化配置(F9)
 	2.隐藏左边面板(F10)
 	3.隐藏右边面板(F11)
-	4.增加UI加载模式  (感谢王端)
-	5.新增实例预览(F8)  (感谢王端)
-	6.发布时如有未保存页面，提示保存  (感谢Matt)
-	7.页面嵌套增加解释类设置  (感谢西城)
+	4.增加UI加载模式  [王端]
+	5.新增实例预览(F8)  [王端]
+	6.发布时如有未保存页面，提示保存  [Matt]
+	7.页面嵌套增加解释类设置  [西城]
 	8.增加页面参考视图及显示控制(F7)
 	10.解决了已知bug
 	11.增加了帮助教程（点击菜单-帮助显示）
 	
 Morn UI库：
-	1.解决toggle Button显示问题，简化了checkbox (感谢Canaan)
+	1.解决toggle Button显示问题，简化了checkbox [Canaan]
 	2.增加UI视图加载模式的支持
 
 0.9.2.11.11
