@@ -1,15 +1,23 @@
 package game.view.dialogs {
 	import game.ui.dialogs.DialogTestUI;
-	import morn.core.handlers.Handler;
 	
 	/**
 	 * 对话框测试
 	 */
 	public class DialogTest extends DialogTestUI {
-		public static const instance:DialogTest = new DialogTest();
+		private static var _instance:DialogTest;
 		
-		override public function DialogTest() {
-			
+		public function DialogTest() {
+		
+		}
+		
+		/**单例*/
+		public static function get instance():DialogTest {
+			if (_instance) {
+				return _instance;
+			} else {
+				return _instance = new DialogTest();
+			}
 		}
 	}
 }

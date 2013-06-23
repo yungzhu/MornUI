@@ -6,6 +6,7 @@ package {
 	/**
 	 * 主程序
 	 */
+	[SWF(width="1000",height="550",backgroundColor="#ffffff")]	
 	public class Main extends Sprite {
 		
 		public function Main() {

@@ -9,16 +9,25 @@ package game.view {
 	 * 组件使用实例
 	 */
 	public class CompTest extends CompTestUI {
-		public static const instance:CompTest = new CompTest();
+		private static var _instance:CompTest;
 		private var _testTips:TestTipsUI = new TestTipsUI();
 		
-		override public function CompTest() {
+		public function CompTest() {
 			testDataSource();
 			testTips();
 			testBtn();
 			testList();
 			testTab();
 			testLang();
+		}
+		
+		/**单例*/
+		public static function get instance():CompTest {
+			if (_instance) {
+				return _instance;
+			} else {
+				return _instance = new CompTest();
+			}
 		}
 		
 		/**测试数据赋值*/

@@ -10,7 +10,7 @@ package game.view {
 	 */
 	public class GameStage extends SceneUI {
 		
-		override public function GameStage() {
+		public function GameStage() {
 			btn1.addEventListener(MouseEvent.CLICK, onBtn1Click);
 			btn2.addEventListener(MouseEvent.CLICK, onBtn2Click);
 			btn3.addEventListener(MouseEvent.CLICK, onBtn3Click);
