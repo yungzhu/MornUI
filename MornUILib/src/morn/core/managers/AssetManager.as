@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -11,16 +11,17 @@ package morn.core.managers {
 	public class AssetManager {
 		private var _bmdMap:Object = {};
 		private var _clipsMap:Object = {};
+		private var _domain:ApplicationDomain = ApplicationDomain.currentDomain;
 		
 		/**判断是否有类的定义*/
 		public function hasClass(name:String):Boolean {
-			return ApplicationDomain.currentDomain.hasDefinition(name);
+			return _domain.hasDefinition(name);
 		}
 		
 		/**获取类*/
 		public function getClass(name:String):Class {
 			if (hasClass(name)) {
-				return ApplicationDomain.currentDomain.getDefinition(name) as Class;
+				return _domain.getDefinition(name) as Class;
 			}
 			App.log.error("Miss Asset:", name);
 			return null;

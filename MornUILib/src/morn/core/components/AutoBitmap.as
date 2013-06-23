@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -14,16 +14,9 @@ package morn.core.components {
 		private var _width:Number;
 		private var _height:Number;
 		private var _sizeGrid:Array;
-		private var _source:BitmapData;
-		
-		private var _isClip:Boolean;
+		private var _source:Vector.<BitmapData>;
 		private var _clips:Vector.<BitmapData>;
-		private var _clipSource:Vector.<BitmapData>;
-		private var _clipIndex:int;
-		
-		public function AutoBitmap(isClip:Boolean) {
-			_isClip = isClip;
-		}
+		private var _index:int;
 		
 		/**X坐标(显示时四舍五入)*/
 		override public function get x():Number {
@@ -47,34 +40,25 @@ package morn.core.components {
 		
 		/**宽度(显示时四舍五入)*/
 		override public function get width():Number {
-			return !isNaN(_width) ? _width : super.width;
+			return isNaN(_width) ? super.width : _width;
 		}
 		
 		override public function set width(value:Number):void {
 			if (_width != value) {
 				_width = value;
-				callChange();
+				App.render.callLater(changeSize);
 			}
 		}
 		
 		/**高度(显示时四舍五入)*/
 		override public function get height():Number {
-			return !isNaN(_height) ? _height : super.height;
+			return isNaN(_height) ? super.height : _height;
 		}
 		
 		override public function set height(value:Number):void {
 			if (_height != value) {
 				_height = value;
-				callChange();
-			}
-		}
-		
-		override public function set bitmapData(value:BitmapData):void {
-			_source = super.bitmapData = value;
-			App.render.callLater(changeSize);
-			if (_clips && value == null) {
-				_clips.length = 0;
-				_clipSource.length = 0;
+				App.render.callLater(changeSize);
 			}
 		}
 		
@@ -85,31 +69,17 @@ package morn.core.components {
 		
 		public function set sizeGrid(value:Array):void {
 			_sizeGrid = value;
-			callChange();
+			App.render.callLater(changeSize);
 		}
 		
-		private function callChange():void {
-			if (_isClip) {
-				App.render.callLater(changeClips);
+		override public function set bitmapData(value:BitmapData):void {
+			if (value) {
+				clips = new <BitmapData>[value];
 			} else {
-				App.render.callLater(changeSize);
-			}
-		}
-		
-		private function changeSize():void {
-			if (super.bitmapData) {
-				var w:int = Math.round(width);
-				var h:int = Math.round(height);
-				if (_sizeGrid == null) {
-					super.width = w;
-					super.height = h;
-				} else {
-					//清理临时位图数据
-					if (super.bitmapData != _source) {
-						super.bitmapData.dispose();
-					}
-					super.bitmapData = BitmapUtils.scale9Bmd(_source, _sizeGrid, w, h);
-				}
+				//清理
+				disposeTempBitmapdata();
+				_source = _clips = null;
+				super.bitmapData = null;
 			}
 		}
 		
@@ -119,48 +89,57 @@ package morn.core.components {
 		}
 		
 		public function set clips(value:Vector.<BitmapData>):void {
-			_clipSource = _clips = value;
-			if (_clips) {
-				super.bitmapData = _clipSource[0];
+			_source = value;
+			if (value && value.length > 0) {
+				super.bitmapData = value[0];
+				App.render.callLater(changeSize);
 			}
-			App.render.callLater(changeClips);
 		}
 		
 		/**当前切片索引*/
-		public function get clipIndex():int {
-			return _clipIndex;
+		public function get index():int {
+			return _index;
 		}
 		
-		public function set clipIndex(value:int):void {
-			_clipIndex = value;
-			if (_clips) {
-				_clipIndex = (_clipIndex < _clips.length && _clipIndex > -1) ? _clipIndex : 0;
-				super.bitmapData = _clips[_clipIndex];
+		public function set index(value:int):void {
+			_index = value;
+			if (_clips && _clips.length > 0) {
+				_index = (_index < _clips.length && _index > -1) ? _index : 0;
+				super.bitmapData = _clips[_index];
 			}
 		}
 		
-		protected function changeClips():void {
-			if (_clipSource) {
+		private function changeSize():void {
+			if (_source && _source.length > 0) {
 				var w:int = Math.round(width);
 				var h:int = Math.round(height);
+				//清理临时位图数据
+				disposeTempBitmapdata();
+				//重新生成新位图
 				var temp:Vector.<BitmapData> = new Vector.<BitmapData>();
-				for (var i:int = 0, n:int = _clipSource.length; i < n; i++) {
-					//清理临时位图数据
-					if (_clips[i] != _clipSource[i]) {
-						_clips[i].dispose();
-					}
+				for (var i:int = 0, n:int = _source.length; i < n; i++) {
 					if (_sizeGrid) {
-						temp.push(BitmapUtils.scale9Bmd(_clipSource[i], _sizeGrid, w, h));
+						temp.push(BitmapUtils.scale9Bmd(_source[i], _sizeGrid, w, h));
 					} else {
-						temp.push(_clipSource[i]);
+						temp.push(_source[i]);
 					}
 				}
 				_clips = temp;
-				clipIndex = _clipIndex;
-				if (_sizeGrid == null) {
-					super.width = w;
-					super.height = h;
+				index = _index;
+				super.width = w;
+				super.height = h;
+			}
+		}
+		
+		/**销毁临时位图*/
+		private function disposeTempBitmapdata():void {
+			if (_clips) {
+				for (var i:int = _clips.length - 1; i > -1; i--) {
+					if (_clips[i] != _source[i]) {
+						_clips[i].dispose();
+					}
 				}
+				_clips.length = 0;
 			}
 		}
 	}

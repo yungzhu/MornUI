@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -109,7 +109,7 @@ package morn.core.components {
 			_list.refresh();
 		}
 		
-		private function onListItemMouse(e:MouseEvent):void {
+		protected function onListItemMouse(e:MouseEvent):void {
 			var box:Box = e.currentTarget as Box;
 			var label:Label = box.getChildByName("label") as Label;
 			if (e.type == MouseEvent.ROLL_OVER) {
@@ -143,13 +143,15 @@ package morn.core.components {
 		}
 		
 		public function set labels(value:String):void {
-			if (Boolean(value)) {
-				if (_labels) {
-					selectedIndex = -1;
-				}
-				_labels = value.split(",");
-				callLater(changeItem);
+			if (_labels.length > 0) {
+				selectedIndex = -1;
 			}
+			if (Boolean(value)) {
+				_labels = value.split(",");
+			} else {
+				_labels.length = 0;
+			}
+			callLater(changeItem);
 		}
 		
 		protected function changeItem():void {
@@ -157,7 +159,7 @@ package morn.core.components {
 			exeCallLater(changeList);
 			
 			//显示边框
-			_listHeight = Math.min(_visibleNum, _labels.length) * ITEM_HEIGHT;
+			_listHeight = _labels.length > 0 ? Math.min(_visibleNum, _labels.length) * ITEM_HEIGHT : ITEM_HEIGHT;
 			_scrollBar.height = _listHeight - 2;
 			//填充背景
 			var g:Graphics = _list.graphics;
@@ -218,7 +220,7 @@ package morn.core.components {
 			callLater(changeList);
 		}
 		
-		/**项颜色(格式:overBgColor,overLabelColor,outLableColor,borderColor,,bgColor)*/
+		/**项颜色(格式:overBgColor,overLabelColor,outLableColor,borderColor,bgColor)*/
 		public function get itemColors():String {
 			return _itemColors as String;
 		}

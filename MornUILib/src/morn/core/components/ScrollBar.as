@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -186,10 +186,11 @@ package morn.core.components {
 		
 		public function set scrollSize(value:Number):void {
 			_scrollSize = value;
+			_slider.tick = value;
 		}
 		
 		override public function set dataSource(value:Object):void {
-			_dataSource = value;				
+			_dataSource = value;
 			if (value is Number || value is String) {
 				this.value = Number(value);
 			} else {

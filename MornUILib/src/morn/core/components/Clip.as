@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -41,7 +41,7 @@ package morn.core.components {
 		}
 		
 		override protected function createChildren():void {
-			addChild(_bitmap = new AutoBitmap(true));
+			addChild(_bitmap = new AutoBitmap());
 		}
 		
 		override protected function initialize():void {
@@ -58,6 +58,7 @@ package morn.core.components {
 		protected function onRemovedFromStage(e:Event):void {
 			if (_autoStopAtRemoved) {
 				stop();
+				frame = 0;
 			}
 		}
 		
@@ -99,7 +100,7 @@ package morn.core.components {
 		
 		protected function changeClip():void {
 			if (App.asset.hasClass(_url)) {
-				bitmapData = App.asset.getBitmapData(_url, false);
+				clips = App.asset.getClips(_url, _clipX, _clipY);
 			} else {
 				App.loader.loadBMD(_url, new Handler(loadComplete, [_url]));
 			}
@@ -107,14 +108,18 @@ package morn.core.components {
 		
 		protected function loadComplete(url:String, bmd:BitmapData):void {
 			if (url == _url) {
-				bitmapData = bmd;
+				clips = BitmapUtils.createClips(bmd, _clipX, _clipY);
 			}
 		}
 		
 		/**源位图数据*/
-		public function set bitmapData(value:BitmapData):void {
+		public function get clips():Vector.<BitmapData> {
+			return _bitmap.clips;
+		}
+		
+		public function set clips(value:Vector.<BitmapData>):void {
 			if (value) {
-				_bitmap.clips = BitmapUtils.createClips(value, _clipX, _clipY);
+				_bitmap.clips = value;
 				_contentWidth = _bitmap.width;
 				_contentHeight = _bitmap.height;
 			}
@@ -149,13 +154,13 @@ package morn.core.components {
 		
 		/**当前帧*/
 		public function get frame():int {
-			return _bitmap.clipIndex;
+			return _bitmap.index;
 		}
 		
 		public function set frame(value:int):void {
-			_bitmap.clipIndex = value;
+			_bitmap.index = value;
 			sendEvent(UIEvent.FRAME_CHANGED);
-			if (_bitmap.clipIndex == _to) {
+			if (_bitmap.index == _to) {
 				stop();
 				_to = -1;
 				if (_complete != null) {
@@ -218,7 +223,7 @@ package morn.core.components {
 		/**开始播放*/
 		public function play():void {
 			_isPlaying = true;
-			frame = _bitmap.clipIndex;
+			frame = _bitmap.index;
 			App.timer.doLoop(_interval, loop);
 		}
 		
@@ -271,7 +276,7 @@ package morn.core.components {
 		/**销毁资源
 		 * @param	clearFromLoader 是否同时删除加载缓存*/
 		public function dispose(clearFromLoader:Boolean = false):void {
-			App.asset.disposeBitmapData(_url);
+			App.asset.destroyClips(_url);
 			_bitmap.bitmapData = null;
 			if (clearFromLoader) {
 				App.loader.clearResLoaded(_url);

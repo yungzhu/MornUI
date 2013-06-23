@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -21,7 +21,7 @@ package morn.core.components {
 		}
 		
 		override protected function createChildren():void {
-			addChild(_bitmap = new AutoBitmap(false));
+			addChild(_bitmap = new AutoBitmap());
 		}
 		
 		/**图片地址*/
@@ -30,23 +30,31 @@ package morn.core.components {
 		}
 		
 		public function set url(value:String):void {
-			if (_url != value && Boolean(value)) {
+			if (_url != value) {
 				_url = value;
-				if (App.asset.hasClass(_url)) {
-					bitmapData = App.asset.getBitmapData(_url);
+				if (Boolean(value)) {
+					if (App.asset.hasClass(_url)) {
+						bitmapData = App.asset.getBitmapData(_url);
+					} else {
+						App.loader.loadBMD(_url, new Handler(setBitmapData, [_url]));
+					}
 				} else {
-					App.loader.loadBMD(_url, new Handler(setBitmapData, [_url]));
+					bitmapData = null;
 				}
 			}
 		}
 		
 		/**源位图数据*/
+		public function get bitmapData():BitmapData {
+			return _bitmap.bitmapData;
+		}
+		
 		public function set bitmapData(value:BitmapData):void {
 			if (value) {
 				_contentWidth = value.width;
 				_contentHeight = value.height;
-				_bitmap.bitmapData = value;
 			}
+			_bitmap.bitmapData = value;
 			sendEvent(UIEvent.IMAGE_LOADED);
 		}
 		

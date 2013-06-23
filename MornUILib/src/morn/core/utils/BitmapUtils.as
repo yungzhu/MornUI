@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.utils {
@@ -67,6 +67,9 @@ package morn.core.utils {
 		
 		/**创建切片资源*/
 		public static function createClips(bmd:BitmapData, xNum:int, yNum:int):Vector.<BitmapData> {
+			if (bmd == null) {
+				return null;
+			}
 			var clips:Vector.<BitmapData> = new Vector.<BitmapData>();
 			var width:int = Math.max(bmd.width / xNum, 1);
 			var height:int = Math.max(bmd.height / yNum, 1);

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -72,8 +72,8 @@ package morn.core.managers {
 			}
 			if (y < 0) {
 				y = 0;
-			} else if (y > stage.height - height) {
-				y = stage.stageWidth - height;
+			} else if (y > stage.stageHeight - height) {
+				y = stage.stageHeight - height;
 			}
 			this.x = x;
 			this.y = y;

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -7,19 +7,30 @@ package morn.core.managers {
 	import flash.events.EventDispatcher;
 	import morn.core.handlers.Handler;
 	
-	/**加载管理器*/
+	/**队列全部加载后触发*/
+	[Event(name="complete",type="flash.events.Event")]
+	
+	/**加载管理器(单队列顺序加载)*/
 	public class LoaderManager extends EventDispatcher {
 		private var _resInfos:Array = [];
 		private var _resLoader:ResLoader = new ResLoader();
 		private var _isLoading:Boolean;
 		private var _failRes:Object = {};
 		
-		public function load(url:String, type:uint, complete:Handler = null, progress:Handler = null):void {
+		/** 加载
+		 * @param	url 地址
+		 * @param	type 类型
+		 * @param	complete 结束回调，并返回加载内容
+		 * @param	progress 进度回调，返回进度百分率
+		 * @param	error 错误回调，返回url
+		 * @param	isCacheContent 是否缓存加载内容*/
+		public function load(url:String, type:uint, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
 			var resInfo:ResInfo = new ResInfo();
 			resInfo.url = url;
 			resInfo.type = type;
 			resInfo.complete = complete;
 			resInfo.progress = progress;
+			resInfo.error = error;
 			
 			var content:* = ResLoader.getResLoaded(resInfo.url);
 			if (content != null) {
@@ -66,6 +77,9 @@ package morn.core.managers {
 					return;
 				} else {
 					App.log.warn("load error:", resInfo.url);
+					if (resInfo.error != null) {
+						resInfo.error.executeWith([resInfo.url]);
+					}
 				}
 			}
 			if (resInfo.complete != null) {
@@ -73,41 +87,39 @@ package morn.core.managers {
 			}
 		}
 		
-		/**加载SWF*/
-		public function loadSWF(url:String, complete:Handler = null, progress:Handler = null):void {
-			load(url, ResLoader.SWF, complete, progress);
+		/**加载SWF，返回1*/
+		public function loadSWF(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
+			load(url, ResLoader.SWF, complete, progress, error, isCacheContent);
 		}
 		
-		/**加载位图*/
-		public function loadBMD(url:String, complete:Handler = null, progress:Handler = null):void {
-			load(url, ResLoader.BMD, complete, progress);
+		/**加载位图，返回Bitmapdata*/
+		public function loadBMD(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
+			load(url, ResLoader.BMD, complete, progress, error, isCacheContent);
 		}
 		
-		/**加载AMF*/
-		public function loadAMF(url:String, complete:Handler = null, progress:Handler = null):void {
-			load(url, ResLoader.AMF, complete, progress);
+		/**加载AMF，返回Object*/
+		public function loadAMF(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
+			load(url, ResLoader.AMF, complete, progress, error, isCacheContent);
 		}
 		
-		/**加载TXT*/
-		public function loadTXT(url:String, complete:Handler = null, progress:Handler = null):void {
-			load(url, ResLoader.TXT, complete, progress);
+		/**加载TXT，返回String*/
+		public function loadTXT(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
+			load(url, ResLoader.TXT, complete, progress, error, isCacheContent);
 		}
 		
-		/**加载DB*/
-		public function loadDB(url:String, complete:Handler = null, progress:Handler = null):void {
-			load(url, ResLoader.DB, complete, progress);
+		/**加载二进制数据，返回Object*/
+		public function loadDB(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
+			load(url, ResLoader.DB, complete, progress, error, isCacheContent);
 		}
 		
-		/**加载BYTE*/
-		public function loadBYTE(url:String, complete:Handler = null, progress:Handler = null):void {
-			load(url, ResLoader.BYTE, complete, progress);
+		/**加载BYTE，返回ByteArray*/
+		public function loadBYTE(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
+			load(url, ResLoader.BYTE, complete, progress, error, isCacheContent);
 		}
 		
-		/**
-		 * 加载数组里面的资源
-		 * @param arr 简单：["a.swf","b.swf"]，复杂[{url:"a.swf",type:ResLoader.SWF,size:100},{url:"a.png",type:ResLoader.BMD,size:50}]
-		 */
-		public function loadAssets(arr:Array, complete:Handler = null, progress:Handler = null):void {
+		/**加载数组里面的资源
+		 * @param arr 简单：["a.swf","b.swf"]，复杂[{url:"a.swf",type:ResLoader.SWF,size:100},{url:"a.png",type:ResLoader.BMD,size:50}]*/
+		public function loadAssets(arr:Array, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
 			var itemCount:int = arr.length;
 			var itemloaded:int = 0;
 			var totalSize:int = 0;
@@ -118,7 +130,7 @@ package morn.core.managers {
 					item = {url: item, type: ResLoader.SWF, size: 1};
 				}
 				totalSize += item.size;
-				load(item.url, item.type, new Handler(loadAssetsComplete, [item.size]), new Handler(loadAssetsProgress, [item.size]));
+				load(item.url, item.type, new Handler(loadAssetsComplete, [item.size]), new Handler(loadAssetsProgress, [item.size]), error, isCacheContent);
 			}
 			
 			function loadAssetsComplete(size:int, content:*):void {
@@ -137,6 +149,11 @@ package morn.core.managers {
 					progress.executeWith([value]);
 				}
 			}
+		}
+		
+		/**获得已加载的资源*/
+		public function getResLoaded(url:String):* {
+			ResLoader.getResLoaded(url);
 		}
 		
 		/**删除已加载的资源*/
@@ -162,4 +179,5 @@ class ResInfo {
 	public var type:int;
 	public var complete:Handler;
 	public var progress:Handler;
+	public var error:Handler;
 }

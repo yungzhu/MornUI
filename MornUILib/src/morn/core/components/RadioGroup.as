@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -25,6 +25,28 @@ package morn.core.components {
 		public function RadioGroup(labels:String = null, skin:String = null) {
 			this.skin = skin;
 			this.labels = labels;
+		}
+		
+		/**批量设置Radio*/
+		public function setItems(radios:Array):void {
+			removeAllChild();
+			var index:int = 0;
+			for (var i:int = 0, n:int = radios.length; i < n; i++) {
+				var item:RadioButton = radios[i];
+				if (item) {
+					item.name = "item" + index;
+					addChild(item);
+					index++;
+				}
+			}
+			initItems();
+		}
+		
+		/**增加Radio*/
+		public function addItem(radio:RadioButton):void {
+			radio.name = "item" + _items.length;
+			addChild(radio);
+			initItems();
 		}
 		
 		/**初始化*/

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -28,6 +28,28 @@ package morn.core.components {
 		protected var _selectedIndex:int = -1;
 		protected var _array:Array = [];
 		protected var _selectHandler:Handler;
+		
+		/**批量设置列表项*/
+		public function setItems(items:Array):void {
+			removeAllChild(_scrollBar);
+			var index:int = 0;
+			for (var i:int = 0, n:int = items.length; i < n; i++) {
+				var item:Component = items[i];
+				if (item) {
+					item.name = "item" + index;
+					addChildAt(item, 0);
+					index++;
+				}
+			}
+			initItems();
+		}
+		
+		/**增加列表项*/
+		public function addItem(item:Component):void {
+			item.name = "item" + _items.length;
+			addChildAt(item, 0);
+			initItems();
+		}
 		
 		/**初始化列表项*/
 		public function initItems():void {
@@ -237,7 +259,9 @@ package morn.core.components {
 		}
 		
 		public function set scrollSize(value:int):void {
-			_scrollSize = value;
+			if (_scrollBar) {
+				_scrollBar.scrollSize = value;
+			}
 		}
 		
 		/**最大分页数*/

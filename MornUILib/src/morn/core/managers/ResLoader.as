@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -30,7 +30,7 @@ package morn.core.managers {
 		public static const AMF:uint = 2;
 		/**加载TXT文本，返回String*/
 		public static const TXT:uint = 3;
-		/**加载经过压缩的ByteArray，返回ByteArray*/
+		/**加载经过压缩的ByteArray，返回Object*/
 		public static const DB:uint = 4;
 		/**加载未压缩的ByteArray，返回ByteArray*/
 		public static const BYTE:uint = 5;
@@ -43,6 +43,7 @@ package morn.core.managers {
 		private var _type:int;
 		private var _complete:Handler;
 		private var _progress:Handler;
+		private var _isCache:Boolean;
 		private var _isLoading:Boolean;
 		private var _loaded:Number;
 		private var _lastLoaded:Number;
@@ -108,38 +109,33 @@ package morn.core.managers {
 		}
 		
 		private function onComplete(e:Event):void {
+			var content:* = null;
 			if (_type == SWF) {
-				endLoad(_loadedMap[_url] = 1);
-				return;
-			}
-			if (_type == BMD) {
+				_loader.unloadAndStop();
+				content = 1;
+			} else if (_type == BMD) {
 				if (_urlLoader.data != null) {
 					_loader.loadBytes(_urlLoader.data);
 					_urlLoader.data = null;
 					return;
 				}
-				endLoad(_loadedMap[_url] = Bitmap(_loader.content).bitmapData);
-				return;
-			}
-			if (_type == AMF) {
-				endLoad(_loadedMap[_url] = ObjectUtils.readAMF(_urlLoader.data));
-				return;
-			}
-			if (_type == DB) {
+				content = Bitmap(_loader.content).bitmapData;
+				_loader.unloadAndStop();
+			} else if (_type == AMF) {
+				content = ObjectUtils.readAMF(_urlLoader.data);
+			} else if (_type == DB) {
 				var bytes:ByteArray = _urlLoader.data as ByteArray;
 				bytes.uncompress();
-				endLoad(_loadedMap[_url] = bytes.readObject());
-				return;
+				content = bytes.readObject();
+			} else if (_type == BYTE) {
+				content = _urlLoader.data as ByteArray;
+			} else if (_type == TXT) {
+				content = _urlLoader.data;
 			}
-			if (_type == BYTE) {
-				var byte:ByteArray = _urlLoader.data as ByteArray;
-				endLoad(_loadedMap[_url] = byte);
-				return;
+			if (_isCache) {
+				_loadedMap[_url] = content;
 			}
-			if (_type == TXT) {
-				endLoad(_loadedMap[_url] = _urlLoader.data);
-				return;
-			}
+			endLoad(content);
 		}
 		
 		private function endLoad(content:*):void {
@@ -154,7 +150,7 @@ package morn.core.managers {
 		}
 		
 		/**加载资源*/
-		public function load(url:String, type:int, complete:Handler, progress:Handler):void {
+		public function load(url:String, type:int, complete:Handler, progress:Handler, isCache:Boolean = true):void {
 			if (_isLoading) {
 				App.log.warn("Loader is try to close.", _url);
 				tryToCloseLoad();
@@ -164,6 +160,7 @@ package morn.core.managers {
 			_type = type;
 			_complete = complete;
 			_progress = progress;
+			_isCache = isCache;
 			
 			var content:* = getResLoaded(url);
 			if (content != null) {

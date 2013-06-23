@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -52,6 +52,15 @@ package morn.core.components {
 		
 		public function set editable(value:Boolean):void {
 			_textField.type = value ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
+		}
+		
+		/**最多可包含的字符数*/
+		public function get maxChars():int {
+			return _textField.maxChars;
+		}
+		
+		public function set maxChars(value:int):void {
+			_textField.maxChars = value;
 		}
 	}
 }

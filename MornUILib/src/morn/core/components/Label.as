@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -33,15 +33,18 @@ package morn.core.components {
 		override protected function preinitialize():void {
 			mouseEnabled = false;
 			mouseChildren = true;
-			_format = new TextFormat(Styles.fontName, Styles.fontSize, Styles.labelColor);
 		}
 		
 		override protected function createChildren():void {
-			addChild(_bitmap = new AutoBitmap(false));
+			addChild(_bitmap = new AutoBitmap());
 			addChild(_textField = new TextField());
 		}
 		
 		override protected function initialize():void {
+			_format = _textField.defaultTextFormat;
+			_format.font = Styles.fontName;
+			_format.size = Styles.fontSize;
+			_format.color = Styles.labelColor;
 			_textField.selectable = false;
 			_textField.autoSize = TextFieldAutoSize.LEFT;
 			_bitmap.sizeGrid = [2, 2, 2, 2];

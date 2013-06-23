@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -25,6 +25,28 @@ package morn.core.components {
 		public function Tab(labels:String = null, skin:String = null) {
 			this.skin = skin;
 			this.labels = labels;
+		}
+		
+		/**批量设置Radio*/
+		public function setItems(buttons:Array):void {
+			removeAllChild();
+			var index:int = 0;
+			for (var i:int = 0, n:int = buttons.length; i < n; i++) {
+				var item:Button = buttons[i];
+				if (item) {
+					item.name = "item" + index;
+					addChild(item);
+					index++;
+				}
+			}
+			initItems();
+		}
+		
+		/**增加Radio*/
+		public function addItem(button:Button):void {
+			button.name = "item" + _items.length;
+			addChild(button);
+			initItems();
 		}
 		
 		/**初始化*/
@@ -103,7 +125,7 @@ package morn.core.components {
 					var a:Array = _labels.split(",");
 					var right:int = 0
 					for (var i:int = 0, n:int = a.length; i < n; i++) {
-						var btn:Button = new Button(_skin, a[i]);
+						var btn:Button = createButton(_skin, a[i]);
 						btn.name = "item" + i;
 						addElement(btn, right, 0);
 						right += btn.width;
@@ -111,6 +133,10 @@ package morn.core.components {
 				}
 				initItems();
 			}
+		}
+		
+		protected function createButton(skin:String, label:String):Button {
+			return new Button(skin, label);
 		}
 		
 		/**按钮标签颜色(格式:upColor,overColor,downColor,disableColor)*/

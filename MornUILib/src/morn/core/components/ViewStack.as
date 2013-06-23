@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -12,11 +12,12 @@ package morn.core.components {
 		protected var _setIndexHandler:Handler = new Handler(setIndex);
 		protected var _selectedIndex:int;
 		
-		/**设置视图*/
-		public function setItems(... displays):void {
+		/**批量设置视图*/
+		public function setItems(views:Array):void {
+			removeAllChild();
 			var index:int = 0;
-			for (var i:int = 0, n:int = displays.length; i < n; i++) {
-				var item:DisplayObject = displays[i];
+			for (var i:int = 0, n:int = views.length; i < n; i++) {
+				var item:DisplayObject = views[i];
 				if (item) {
 					item.name = "item" + index;
 					addChild(item);
@@ -27,9 +28,9 @@ package morn.core.components {
 		}
 		
 		/**增加视图*/
-		public function addItem(item:DisplayObject):void {
-			item.name = "item" + _items.length;
-			addChild(item);
+		public function addItem(view:DisplayObject):void {
+			view.name = "item" + _items.length;
+			addChild(view);
 			initItems();
 		}
 		
@@ -96,7 +97,7 @@ package morn.core.components {
 			_dataSource = value;
 			if (value is int || value is String) {
 				selectedIndex = int(value);
-			} else {				
+			} else {
 				for (var prop:String in _dataSource) {
 					if (hasOwnProperty(prop)) {
 						this[prop] = _dataSource[prop];

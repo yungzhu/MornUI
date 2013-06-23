@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -87,7 +87,7 @@ package morn.core.components {
 					_vScrollBar.x = _width - _vScrollBar.width;
 					_vScrollBar.y = 0;
 					_vScrollBar.height = _height - (hShow ? _hScrollBar.height : 0);
-					_vScrollBar.setScroll(0, _content.height - _mask.height, 0);
+					_vScrollBar.setScroll(0, _content.height - _mask.height, _vScrollBar.value);
 					_vScrollBar.thumbPercent = _mask.height / _content.height;
 				}
 			}
@@ -97,7 +97,7 @@ package morn.core.components {
 					_hScrollBar.x = 0;
 					_hScrollBar.y = _height - _hScrollBar.height;
 					_hScrollBar.width = _width - (vShow ? _vScrollBar.width : 0);
-					_hScrollBar.setScroll(0, _content.width - _mask.width, 0);
+					_hScrollBar.setScroll(0, _content.width - _mask.width, _hScrollBar.value);
 					_hScrollBar.thumbPercent = _mask.width / _content.width;
 				}
 			}
@@ -173,6 +173,17 @@ package morn.core.components {
 		
 		override public function commitMeasure():void {
 			exeCallLater(changeScroll);
+		}
+		
+		/**滚动到某个位置*/
+		public function scroll(x:Number = 0, y:Number = 0):void {
+			exeCallLater(changeScroll);
+			if (vScrollBar) {
+				vScrollBar.value = x;
+			}
+			if (hScrollBar) {
+				hScrollBar.value = y;
+			}
 		}
 	}
 }

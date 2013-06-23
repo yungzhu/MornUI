@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -31,6 +31,8 @@ package morn.core.managers {
 		}
 		
 		private function onResize(e:Event):void {
+			_box.width = _mask.width = stage.stageWidth;
+			_box.height = _mask.height = stage.stageHeight;
 			for (var i:int = _box.numChildren - 1; i > -1; i--) {
 				var item:Dialog = _box.getChildAt(i) as Dialog;
 				if (item.popupCenter) {

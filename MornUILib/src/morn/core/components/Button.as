@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -32,7 +32,7 @@ package morn.core.components {
 		}
 		
 		override protected function createChildren():void {
-			addChild(_bitmap = new AutoBitmap(true));
+			addChild(_bitmap = new AutoBitmap());
 			addChild(_btnLabel = new Label());
 		}
 		
@@ -123,7 +123,7 @@ package morn.core.components {
 		}
 		
 		protected function changeState():void {
-			_bitmap.clipIndex = _state;
+			_bitmap.index = _state;
 			_btnLabel.color = _labelColors[_state];
 		}
 		
@@ -139,7 +139,7 @@ package morn.core.components {
 		override public function set disabled(value:Boolean):void {
 			if (_disabled != value) {
 				super.disabled = value;
-				state = stateMap["rollOut"];
+				state = _selected ? stateMap["selected"] : stateMap["rollOut"];
 				ObjectUtils.gray(this, _disabled);
 			}
 		}
