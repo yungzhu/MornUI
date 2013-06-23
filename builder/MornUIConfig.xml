@@ -74,6 +74,7 @@
 	<TextInput className="morn.core.components.TextInput" inherit="Label" defaultValue="text='TextInput'" skinLabel="skin" resName="input" icon="TextInput" drag="3">
 		<prop name="restrict" tips="可以输入的文字" type="string" default="" />
 		<prop name="editable" tips="是否可编辑" type="bool" default="true" />
+		<prop name="maxChars" tips="最多可包含的字符数" type="int" default="" />
 	</TextInput>
 	<TextArea className="morn.core.components.TextArea" inherit="TextInput" defaultValue="text='TextArea'" skinLabel="skin" resName="area" icon="TextArea"  drag="3">
 		<prop name="scrollBarSkin" tips="滚动条皮肤" type="string" default="" />
@@ -116,7 +117,7 @@
 		<prop name="labelMargin" tips="按钮标签边距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
 	</RadioGroup>
 	<ViewStack className="morn.core.components.ViewStack" inherit="Box" icon="ViewStack">
-		<prop name="selectIndex" tips="选择索引" type="int" default="" />
+		<prop name="selectedIndex" tips="选择索引" type="int" default="" />
 	</ViewStack>
 	<List className="morn.core.components.List" inherit="Box" icon="List">
 		<prop name="repeatX" tips="X方向项数量" type="int" default="" />
