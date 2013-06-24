@@ -85,10 +85,11 @@ package morn.core.components {
 		
 		/**位图切片集合*/
 		public function get clips():Vector.<BitmapData> {
-			return _clips;
+			return _source;
 		}
 		
 		public function set clips(value:Vector.<BitmapData>):void {
+			disposeTempBitmapdata();
 			_source = value;
 			if (value && value.length > 0) {
 				super.bitmapData = value[0];
