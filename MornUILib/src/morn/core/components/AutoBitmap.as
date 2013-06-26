@@ -17,6 +17,7 @@ package morn.core.components {
 		private var _source:Vector.<BitmapData>;
 		private var _clips:Vector.<BitmapData>;
 		private var _index:int;
+		private var _smoothing:Boolean;
 		
 		/**X坐标(显示时四舍五入)*/
 		override public function get x():Number {
@@ -107,6 +108,7 @@ package morn.core.components {
 			if (_clips && _clips.length > 0) {
 				_index = (_index < _clips.length && _index > -1) ? _index : 0;
 				super.bitmapData = _clips[_index];
+				super.smoothing = _smoothing;
 			}
 		}
 		
@@ -142,6 +144,15 @@ package morn.core.components {
 				}
 				_clips.length = 0;
 			}
+		}
+		
+		/**是否平滑处理*/
+		override public function get smoothing():Boolean {
+			return _smoothing;
+		}
+		
+		override public function set smoothing(value:Boolean):void {
+			super.smoothing = _smoothing = value;
 		}
 	}
 }
