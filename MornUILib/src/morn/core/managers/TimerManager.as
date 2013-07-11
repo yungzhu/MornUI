@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -31,8 +31,15 @@ package morn.core.managers {
 				if (t >= handler.exeTime) {
 					var method:Function = handler.method;
 					var args:Array = handler.args;
-					handler.repeat ? handler.exeTime += handler.delay : clearTimer(key);
-					method.apply(null, args);
+					if (handler.repeat) {
+						while (t >= handler.exeTime) {
+							handler.exeTime += handler.delay;
+							method.apply(null, args);
+						}
+					} else {
+						clearTimer(key);
+						method.apply(null, args);
+					}
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -59,6 +59,7 @@ package morn.core.managers {
 			_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onError);
 			_urlLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, onStatus);
 			_urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
+			_loaderContext.allowCodeImport = true;
 		}
 		
 		/**中止加载*/
@@ -75,11 +76,7 @@ package morn.core.managers {
 		private function doLoad():void {
 			_isLoading = true;
 			_urlRequest.url = App.getResPath(_url);
-			if (_type == SWF) {
-				_loader.load(_urlRequest, _loaderContext);
-				return;
-			}
-			if (_type == BMD || _type == AMF || _type == DB || _type == BYTE) {
+			if (_type == BMD || _type == AMF || _type == DB || _type == BYTE || _type == SWF) {
 				_urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
 				_urlLoader.load(_urlRequest);
 				return;
@@ -110,17 +107,19 @@ package morn.core.managers {
 		
 		private function onComplete(e:Event):void {
 			var content:* = null;
-			if (_type == SWF) {
-				_loader.unloadAndStop();
-				content = 1;
-			} else if (_type == BMD) {
+			if (_type == SWF || _type == BMD) {
 				if (_urlLoader.data != null) {
-					_loader.loadBytes(_urlLoader.data);
+					_loader.loadBytes(_urlLoader.data, _loaderContext);
 					_urlLoader.data = null;
 					return;
 				}
-				content = Bitmap(_loader.content).bitmapData;
-				_loader.unloadAndStop();
+				if (_type == SWF) {
+					_loader.unloadAndStop();
+					content = 1;
+				} else {
+					content = Bitmap(_loader.content).bitmapData;
+					_loader.unloadAndStop();
+				}
 			} else if (_type == AMF) {
 				content = ObjectUtils.readAMF(_urlLoader.data);
 			} else if (_type == DB) {

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.utils {
@@ -74,10 +74,10 @@ package morn.core.utils {
 			var width:int = Math.max(bmd.width / xNum, 1);
 			var height:int = Math.max(bmd.height / yNum, 1);
 			var point:Point = new Point();
-			for (var i:int = 0; i < xNum; i++) {
-				for (var j:int = 0; j < yNum; j++) {
+			for (var i:int = 0; i < yNum; i++) {
+				for (var j:int = 0; j < xNum; j++) {
 					var item:BitmapData = new BitmapData(width, height);
-					item.copyPixels(bmd, new Rectangle(i * width, j * height, width, height), point);
+					item.copyPixels(bmd, new Rectangle(j * width, i * height, width, height), point);
 					clips.push(item);
 				}
 			}

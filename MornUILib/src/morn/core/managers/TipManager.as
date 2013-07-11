@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -13,6 +13,8 @@ package morn.core.managers {
 	
 	/**鼠标提示管理类*/
 	public class TipManager extends Sprite {
+		public static var offsetX:int = 10;
+		public static var offsetY:int = 15;
 		private var _tipBox:Sprite;
 		private var _tipText:TextField;
 		
@@ -63,8 +65,8 @@ package morn.core.managers {
 		}
 		
 		private function onStageMouseMove(e:MouseEvent):void {
-			var x:int = stage.mouseX + 10;
-			var y:int = stage.mouseY + 15;
+			var x:int = stage.mouseX + offsetX;
+			var y:int = stage.mouseY + offsetY;
 			if (x < 0) {
 				x = 0;
 			} else if (x > stage.stageWidth - width) {

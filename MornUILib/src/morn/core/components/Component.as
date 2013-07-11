@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -9,6 +9,7 @@ package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import morn.core.events.UIEvent;
+	import morn.core.utils.ObjectUtils;
 	import morn.editor.core.IComponent;
 	
 	/**重置大小后触发*/
@@ -193,6 +194,7 @@ package morn.core.components {
 				_disabled = value;
 				mouseEnabled = !value;
 				super.mouseChildren = value ? false : _mouseChildren;
+				ObjectUtils.gray(this, _disabled);
 			}
 		}
 		

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -81,6 +81,7 @@ package morn.core.components {
 			var hShow:Boolean = _hScrollBar && _content.width > _width;
 			_mask.width = vShow ? _width - _vScrollBar.width : _width;
 			_mask.height = hShow ? _height - _hScrollBar.height : _height;
+			_content.x = _content.y = 0;
 			if (_vScrollBar) {
 				_vScrollBar.visible = _content.height > _height;
 				if (_vScrollBar.visible) {
