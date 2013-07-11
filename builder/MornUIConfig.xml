@@ -22,6 +22,7 @@
 		<prop name="buttonMode" tips="buttonMode" type="bool" default="" />
 		<prop name="rotationX" tips="X旋转" type="number" default="" />
 		<prop name="rotationY" tips="Y旋转" type="number" default="" />
+		<prop name="rotation" tips="旋转" type="number" default="" />
 	</Component>
 	<Box className="morn.core.components.Box" inherit="Component" resName="box" icon="Box" drag="3" />
 	<Container className="morn.core.components.Container" inherit="Box" resName="container" icon="Canvas" drag="3">
