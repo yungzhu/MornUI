@@ -21,6 +21,8 @@ package morn.core.components {
 		public static var labelColor:uint = 0x000000;
 		/**标签描边[color,alpha,blurX,blurY,strength,quality]*/
 		public static var labelStroke:Array = [0x170702, 0.8, 2, 2, 10, 1];
+		/**字间距*/
+		public static var letterSpacing:Object = null;
 		
 		//-----------------Button-----------------
 		/**按钮标签颜色[upColor,overColor,downColor,disableColor]*/
