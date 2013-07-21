@@ -71,6 +71,7 @@
 		<prop name="leading" tips="段落空行" type="int" default="" />
 		<prop name="indent" tips="第一个字符的缩进" type="int" default="" />
 		<prop name="asPassword" tips="是否是密码" type="bool" default="false" />
+		<prop name="letterSpacing" tips="字间距" type="int" default="" />
 	</Label>
 	<TextInput className="morn.core.components.TextInput" inherit="Label" defaultValue="text='TextInput'" skinLabel="skin" resName="input" icon="TextInput" drag="3">
 		<prop name="restrict" tips="可以输入的文字" type="string" default="" />
@@ -90,7 +91,10 @@
 		<prop name="labelSize" tips="标签大小" type="int" default="" />
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="selected" tips="是否选择" type="bool" default="false" />
-		<prop name="toggle" tips="toggle" type="bool" default="false" />		
+		<prop name="toggle" tips="toggle" type="bool" default="false" />
+		<prop name="letterSpacing" tips="字间距" type="int" default="" />
+		<prop name="useDisableClip" tips="是否使用失效帧" type="bool" default="false" />
+		<prop name="useDisableGray" tips="是否使用失效变灰" type="bool" default="true" />
 	</Button>
 	<LinkButton className="morn.core.components.LinkButton" inherit="Button" defaultValue="label='label'" resName="link" icon="LinkButton" />
 	<CheckBox className="morn.core.components.CheckBox" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="check" icon="CheckBox" />
@@ -106,6 +110,7 @@
 		<prop name="labelSize" tips="标签大小" type="int" default="" />
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="labelMargin" tips="按钮标签边距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="direction" tips="排列方向" type="option" option="horizontal,vertical" default="horizontal" />
 	</Tab>
 	<RadioGroup className="morn.core.components.RadioGroup" inherit="Box" skinLabel="skin" defaultValue="labels='label1,label2'" resName="radiogroup" icon="RadioButtonGroup">
 		<prop name="skin" tips="皮肤" type="string" default="" />
