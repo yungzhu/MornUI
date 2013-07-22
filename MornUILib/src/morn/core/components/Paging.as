@@ -84,8 +84,6 @@ package morn.core.components
 		
 		public function set skin(value:String):void {
 			if (_skin != value) {
-				compositeXML = null;
-				
 				_skin = value;
 				_bg.url = _skin;
 				_upButton.skin = _skin + "$up";
