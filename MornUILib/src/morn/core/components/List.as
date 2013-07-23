@@ -28,6 +28,7 @@ package morn.core.components {
 		protected var _selectedIndex:int = -1;
 		protected var _array:Array = [];
 		protected var _selectHandler:Handler;
+		protected var _paging:Paging;
 		
 		/**批量设置列表项*/
 		public function setItems(items:Array):void {
@@ -74,6 +75,8 @@ package morn.core.components {
 				_items.push(item);
 			}
 			_itemCount = _items.length;
+
+			initPaging();
 		}
 		
 		protected function onMouseWheel(e:MouseEvent):void {
@@ -164,6 +167,9 @@ package morn.core.components {
 			_page = (value < 0 ? 0 : (value >= _totalPage - 1 ? _totalPage - 1 : value));
 			_startIndex = _page * _itemCount;
 			callLater(refresh);
+			if(_paging){
+				_paging.page = _page;
+			}
 		}
 		
 		/**开始索引*/
@@ -219,7 +225,7 @@ package morn.core.components {
 		public function set array(value:Array):void {
 			_array = value || [];
 			var length:int = _array.length;
-			_totalPage = Math.ceil(length / _itemCount);
+			totalPage = Math.ceil(length / _itemCount);
 			//重设当前选择项
 			selectedIndex = _selectedIndex;
 			//重设开始相
@@ -271,6 +277,27 @@ package morn.core.components {
 		
 		public function set totalPage(value:int):void {
 			_totalPage = value;
+			if(_paging){
+				_paging.totalPage = _totalPage;
+			}
 		}
+		
+		//update by coamy 2013.07
+		
+		/**初始化翻页条*/
+		public function initPaging():void{
+			_paging  = getChildByName("pagingBar") as Paging;
+			if(_paging){
+				_paging.pageChangeHandler = new Handler(setPage);
+			}
+		}
+		
+		/**当前页设置处理器(默认接收参数page:int)*/
+		protected function setPage(_page:int):void {
+			if(page != _page){
+				page = _page;
+			}
+		}
+		
 	}
 }
