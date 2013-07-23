@@ -89,6 +89,7 @@
 		<prop name="labelColors" tips="标签颜色(格式:upColor,overColor,downColor,disableColor)" type="string" default="" />
 		<prop name="labelMargin" tips="标签间距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
 		<prop name="labelSize" tips="标签大小" type="int" default="" />
+		<prop name="labelFont" tips="字体" type="comboBox" option="宋体,Arial,微软雅黑" default="" />
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="selected" tips="是否选择" type="bool" default="false" />
 		<prop name="toggle" tips="toggle" type="bool" default="false" />
