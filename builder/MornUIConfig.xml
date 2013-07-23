@@ -96,6 +96,18 @@
 		<prop name="useDisableClip" tips="是否使用失效帧" type="bool" default="false" />
 		<prop name="useDisableGray" tips="是否使用失效变灰" type="bool" default="true" />
 	</Button>
+	<Paging className="morn.core.components.Paging" inherit="Component" skinLabel="skin" defaultValue="label='0/0'" resName="paging" icon="Button" drag="3">
+		<prop name="skin" tips="皮肤" type="string" default="" />
+		<prop name="label" tips="按钮标签" type="string" default="" />
+		<prop name="labelBold" tips="标签加粗" type="bool" default="false" />
+		<prop name="labelColor" tips="标签颜色" type="color" default="" />
+		<prop name="labelSize" tips="标签大小" type="int" default="" />
+		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
+		<prop name="letterSpacing" tips="字间距" type="int" default="" />
+		<prop name="currentPage" tips="当前页(如果没有数据为0,有数据从1开始)" type="int" default="1" />
+		<prop name="totalPage" tips="总页数" type="int" default="1" />
+		<prop name="compositeXML" tips="组合组件的描述(XML)" type="string" default="" />
+	</Paging>
 	<LinkButton className="morn.core.components.LinkButton" inherit="Button" defaultValue="label='label'" resName="link" icon="LinkButton" />
 	<CheckBox className="morn.core.components.CheckBox" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="check" icon="CheckBox" />
 	<RadioButton className="morn.core.components.RadioButton" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="radio" icon="RadioButton">
