@@ -199,6 +199,15 @@ package morn.core.components {
 			callLater(changeLabelSize);
 		}
 		
+		/**按钮标签字体*/
+		public function get labelFont():String {
+			return _btnLabel.font;
+		}
+		
+		public function set labelFont(value:String):void {
+			_btnLabel.font = value
+		}
+		
 		/**按钮标签粗细*/
 		public function get labelBold():Object {
 			return _btnLabel.bold;
