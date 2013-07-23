@@ -1,6 +1,6 @@
 package morn.core.components
 {
-  import flash.events.MouseEvent;
+	import flash.events.MouseEvent;
 	import flash.text.TextFieldAutoSize;
 	
 	import morn.core.handlers.Handler;
@@ -41,6 +41,8 @@ package morn.core.components
 			_pageLabel.selectable = false;
 			_pageLabel.align = TextFieldAutoSize.CENTER;
 			_pageLabel.text = "0/0";
+			_prevButton.disabled = true;
+			_nextButton.disabled = true;
 			_prevButton.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 			_nextButton.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 			callLater(resetPosition);
@@ -103,16 +105,16 @@ package morn.core.components
 		
 		private function updatePage():void
 		{
-			_prevButton.disabled = false;
-			_nextButton.disabled = false;
 			if(_page <= 0){
 				_page = 0;
-				_prevButton.disabled = true;
 			}
+			_prevButton.disabled = _page <= 0;
+				
 			if(_page >= _totalPage - 1){
 				_page = _totalPage - 1;
-				_nextButton.disabled = true;
 			}
+			_nextButton.disabled = _page >= _totalPage - 1;
+			
 			_pageLabel.text = _page+1 + " / " + _totalPage;
 		}
 		
