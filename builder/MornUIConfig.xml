@@ -189,4 +189,12 @@
 		<prop name="vScrollBarSkin" tips="垂直滚动条皮肤" type="string" default="" />
 		<prop name="hScrollBarSkin" tips="水平滚动条皮肤" type="string" default="" />
 	</Panel>
+	<Paging className="morn.core.components.Paging" inherit="Component" skinLabel="skin" resName="paging" icon="" drag="0">
+		<prop name="skin" tips="皮肤" type="string" default="" />
+		<prop name="color" tips="颜色" type="color" default="" />
+		<prop name="font" tips="字体" type="comboBox" option="宋体,隶书,幼圆,Arial,微软雅黑" default="" />
+		<prop name="size" tips="大小" type="string" default="" />
+		<prop name="stroke" tips="描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
+		<prop name="space" tips="间隔" type="int" default="3" />
+	</Paging>
 </uiComp>
