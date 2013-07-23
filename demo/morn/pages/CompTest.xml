@@ -37,4 +37,11 @@
     <RadioButton label="自定义" skin="png.comp.radio" x="55" layer="1" name="item1" labelBold="true"/>
     <RadioButton label="自定义" skin="png.comp.radio" x="113" layer="1" name="item2" labelColors="0xff0000"/>
   </RadioGroup>
+  <List layers="1,1,0" layer="2" x="365" y="361" repeatX="4" repeatY="2" spaceX="3" spaceY="3" var="paging">
+    <Box layers="1,1,0" layer="1" name="render" x="0" y="0">
+      <Image url="png.comp.blank" layer="1" x="0" y="0" width="30" height="20"/>
+      <Label text="0" x="0.5" y="0.5" layer="1" name="label" width="29" height="20" align="center" color="0xffff00"/>
+    </Box>
+    <Paging skin="png.comp.paging" y="51" layer="1" name="pagingBar" x="4"/>
+  </List>
 </Dialog>
