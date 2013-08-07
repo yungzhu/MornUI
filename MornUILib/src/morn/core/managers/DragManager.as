@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -16,20 +16,24 @@ package morn.core.managers {
 		private var _dragImage:Sprite;
 		private var _data:Object;
 		
-		/**
-		 * 开始拖动
+		/**开始拖动
 		 * @param dragInitiator 拖动的源对象
 		 * @param dragImage 显示拖动的图片，如果为null，则是源对象本身
 		 * @param data 拖动传递的数据
-		 */
-		public function doDrag(dragInitiator:DisplayObject, dragImage:Sprite = null, data:Object = null):void {
+		 * @param offset 鼠标居拖动图片的偏移*/
+		public function doDrag(dragInitiator:Sprite, dragImage:Sprite = null, data:Object = null, offset:Point = null):void {
 			_dragInitiator = dragInitiator;
-			_dragImage = dragImage ? dragImage : dragInitiator as Sprite;
+			_dragImage = dragImage ? dragImage : dragInitiator;
 			_data = data;
 			if (_dragImage != _dragInitiator) {
-				var p:Point = _dragInitiator.localToGlobal(new Point());
-				_dragImage.x = _dragInitiator.x;
-				_dragImage.y = _dragInitiator.y;
+				if (offset) {
+					_dragImage.x = App.stage.mouseX - offset.x;
+					_dragImage.y = App.stage.mouseY - offset.y;
+				} else {
+					var p:Point = _dragInitiator.localToGlobal(new Point());
+					_dragImage.x = p.x;
+					_dragImage.y = p.y;
+				}
 				App.stage.addChild(_dragImage);
 			}
 			_dragImage.startDrag();

@@ -1,11 +1,10 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
 	import morn.core.handlers.Handler;
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
@@ -15,7 +14,7 @@ package morn.core.components {
 	
 	/**按钮类*/
 	public class Button extends Component implements ISelect {
-		protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2, "disable":3};
+		protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
 		protected var _bitmap:AutoBitmap;
 		protected var _btnLabel:Label;
 		protected var _clickHandler:Handler;
@@ -26,9 +25,6 @@ package morn.core.components {
 		protected var _selected:Boolean;
 		protected var _skin:String;
 		protected var _autoSize:Boolean = true;
-		protected var _letterSpacing:uint = 0;
-		protected var _useDisableClip:Boolean = false;
-		protected var _useDisableGray:Boolean = true;
 		
 		public function Button(skin:String = null, label:String = "") {
 			this.skin = skin;
@@ -89,11 +85,7 @@ package morn.core.components {
 		public function set skin(value:String):void {
 			if (_skin != value) {
 				_skin = value;
-				if(_useDisableClip == false){
-					_bitmap.clips = App.asset.getClips(_skin, 1, 3);
-				}else{
-					_bitmap.clips = App.asset.getClips(_skin, 1, 4);
-				}
+				_bitmap.clips = App.asset.getClips(_skin, 1, 3);
 				if (_autoSize) {
 					_contentWidth = _bitmap.width;
 					_contentHeight = _bitmap.height;
@@ -147,17 +139,19 @@ package morn.core.components {
 		override public function set disabled(value:Boolean):void {
 			if (_disabled != value) {
 				super.disabled = value;
-				if(_useDisableClip == false){
-					state = _selected ? stateMap["selected"] : stateMap["rollOut"];
-				}else{
-					state = stateMap["disable"];
-				}
-				if(_useDisableGray){
-					ObjectUtils.gray(this, _disabled);
-				}else{
-					ObjectUtils.gray(this, false);
-				}
+				state = _selected ? stateMap["selected"] : stateMap["rollOut"];
+				ObjectUtils.gray(this, _disabled);
 			}
+		}
+		
+		/**按钮标签字体*/
+		public function get labelFont():String {
+			return _btnLabel.font;
+		}
+		
+		public function set labelFont(value:String):void {
+			_btnLabel.font = value
+			callLater(changeLabelSize);
 		}
 		
 		/**按钮标签颜色(格式:upColor,overColor,downColor,disableColor)*/
@@ -209,6 +203,16 @@ package morn.core.components {
 			callLater(changeLabelSize);
 		}
 		
+		/**字间距*/
+		public function get letterSpacing():Object {
+			return _btnLabel.letterSpacing;
+		}
+		
+		public function set letterSpacing(value:Object):void {
+			_btnLabel.letterSpacing = value
+			callLater(changeLabelSize);
+		}
+		
 		/**点击处理器(无默认参数)*/
 		public function get clickHandler():Handler {
 			return _clickHandler;
@@ -257,66 +261,6 @@ package morn.core.components {
 				label = String(value);
 			} else {
 				super.dataSource = value;
-			}
-		}
-		
-		public function get letterSpacing():Object 
-		{
-			return btnLabel.letterSpacing;
-		}
-		
-		public function set letterSpacing(value:Object):void 
-		{
-			btnLabel.letterSpacing = value;
-		}
-
-		/**
-		 * 是否使用失效帧
-		 */
-		public function get useDisableClip():Boolean
-		{
-			return _useDisableClip;
-		}
-
-		public function set useDisableClip(value:Boolean):void
-		{
-			if(_useDisableClip != value)
-			{
-				_useDisableClip = value;
-				if(_useDisableClip == false){
-					state = _selected ? stateMap["selected"] : stateMap["rollOut"];
-				}else{
-					state = stateMap["disable"];
-				}
-				callLater(changeState);
-				//重新切图
-				if(_useDisableClip == false){
-					_bitmap.clips = App.asset.getClips(_skin, 1, 3);
-				}else{
-					_bitmap.clips = App.asset.getClips(_skin, 1, 4);
-				}
-				if (_autoSize) {
-					_contentWidth = _bitmap.width;
-					_contentHeight = _bitmap.height;
-				}
-				callLater(changeLabelSize);
-			}
-			
-		}
-
-		/**
-		 * 是否使用失效变灰
-		 */
-		public function get useDisableGray():Boolean
-		{
-			return _useDisableGray;
-		}
-
-		public function set useDisableGray(value:Boolean):void
-		{
-			if(_useDisableGray != value){
-				_useDisableGray = value;
-				ObjectUtils.gray(this, _disabled);
 			}
 		}
 	}

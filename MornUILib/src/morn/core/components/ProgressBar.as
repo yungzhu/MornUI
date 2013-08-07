@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -35,7 +35,6 @@ package morn.core.components {
 			_barLabel.align = "center";
 			_barLabel.stroke = "0x004080";
 			_barLabel.color = 0xffffff;
-			sizeGrid = "4,4,4,4";
 		}
 		
 		/**皮肤*/
@@ -78,7 +77,17 @@ package morn.core.components {
 		}
 		
 		protected function changeValue():void {
-			_bar.width = width * _value;
+			if (sizeGrid) {
+				var grid:Array = sizeGrid.split(",");
+				var left:Number = grid[0];
+				var right:Number = grid[2];
+				var max:Number = width - left - right;
+				var sw:Number = max * _value;
+				_bar.width = left + right + sw;
+				_bar.visible = _bar.width > left + right;
+			} else {
+				_bar.width = width * _value;
+			}
 		}
 		
 		/**标签*/

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -23,21 +23,14 @@ package morn.core.managers {
 		private function onValidate(e:Event):void {
 			App.stage.removeEventListener(Event.RENDER, onValidate);
 			App.stage.removeEventListener(Event.ENTER_FRAME, onValidate);
-			render();
+			renderAll();
 			App.stage.dispatchEvent(new Event(UIEvent.RENDER_COMPLETED));
 		}
 		
-		private function render():void {
+		/**执行所有延迟调用*/
+		public function renderAll():void {
 			for (var method:Object in _methods) {
 				exeCallLater(method as Function);
-			}
-		}
-		
-		public function exeCallLater(method:Function):void {
-			if (_methods[method] != null) {
-				var args:Array = _methods[method];
-				delete _methods[method];
-				method.apply(null, args);
 			}
 		}
 		
@@ -46,6 +39,15 @@ package morn.core.managers {
 			if (_methods[mothod] == null) {
 				_methods[mothod] = args || [];
 				invalidate();
+			}
+		}
+		
+		/**执行延迟调用*/
+		public function exeCallLater(method:Function):void {
+			if (_methods[method] != null) {
+				var args:Array = _methods[method];
+				delete _methods[method];
+				method.apply(null, args);
 			}
 		}
 	}

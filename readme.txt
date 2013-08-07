@@ -21,7 +21,7 @@ github托管地址：https://github.com/yungzhu/morn
 目录结构:
 builder-----UI编辑器
 MornUILib---UI库源码
+ExtendLib---UI扩展库及源码
 demo--------示例代码
-help--------文档及教程
-PluginDemo--编辑器插件实例源码
-plugins-----分享插件目录
+doc---------文档及教程
+plugins-----编辑器插件及源码

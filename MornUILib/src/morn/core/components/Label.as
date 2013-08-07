@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -45,7 +45,6 @@ package morn.core.components {
 			_format.font = Styles.fontName;
 			_format.size = Styles.fontSize;
 			_format.color = Styles.labelColor;
-			_format.letterSpacing = Styles.letterSpacing;
 			_textField.selectable = false;
 			_textField.autoSize = TextFieldAutoSize.LEFT;
 			_bitmap.sizeGrid = [2, 2, 2, 2];
@@ -259,6 +258,16 @@ package morn.core.components {
 			callLater(changeText);
 		}
 		
+		/**字间距*/
+		public function get letterSpacing():Object {
+			return _format.letterSpacing;
+		}
+		
+		public function set letterSpacing(value:Object):void {
+			_format.letterSpacing = value;
+			callLater(changeText);
+		}
+		
 		/**边距(格式:左边距,上边距,右边距,下边距)*/
 		public function get margin():String {
 			return _margin.join(",");
@@ -349,17 +358,6 @@ package morn.core.components {
 			} else {
 				super.dataSource = value;
 			}
-		}
-		
-		public function get letterSpacing():Object 
-		{
-			return _format.letterSpacing;
-		}
-		
-		public function set letterSpacing(value:Object):void 
-		{
-			_format.letterSpacing = value;
-			callLater(changeText);
 		}
 	}
 }

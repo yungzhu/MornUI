@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -8,6 +8,7 @@ package morn.core.managers {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import morn.core.components.Styles;
 	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
 	
@@ -17,14 +18,17 @@ package morn.core.managers {
 		public static var offsetY:int = 15;
 		private var _tipBox:Sprite;
 		private var _tipText:TextField;
+		private var _defaultTipHandler:Function;
 		
 		public function TipManager() {
 			_tipBox = new Sprite();
 			_tipBox.addChild(_tipText = new TextField());
 			_tipText.autoSize = "left";
+			_tipText.textColor = Styles.tipTextColor;
 			_tipText.multiline = true;
 			_tipText.x = _tipText.y = 5;
 			mouseEnabled = mouseChildren = false;
+			_defaultTipHandler = showDefaultTip;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -95,11 +99,20 @@ package morn.core.managers {
 			_tipText.htmlText = text;
 			var g:Graphics = _tipBox.graphics;
 			g.clear();
-			g.lineStyle(1, 0xC0C0C0);
-			g.beginFill(0xFFFFFF);
+			g.lineStyle(1, Styles.tipBorderColor);
+			g.beginFill(Styles.tipBgColor);
 			g.drawRoundRect(0, 0, _tipText.width + 10, _tipText.height + 10, 4, 4);
 			g.endFill();
 			addChild(_tipBox);
+		}
+		
+		/**默认鼠标提示函数*/
+		public function get defaultTipHandler():Function {
+			return _defaultTipHandler;
+		}
+		
+		public function set defaultTipHandler(value:Function):void {
+			_defaultTipHandler = value;
 		}
 	}
 }

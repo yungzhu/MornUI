@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -20,7 +20,6 @@ package morn.core.components {
 		public static const UP:String = "up";
 		/**向下方向*/
 		public static const DOWN:String = "down";
-		protected static const ITEM_HEIGHT:int = 22;
 		protected var _visibleNum:int = 6;
 		protected var _button:Button;
 		protected var _list:List;
@@ -93,7 +92,7 @@ package morn.core.components {
 				var label:Label = new Label();
 				label.name = "label";
 				label.width = width - 2;
-				label.height = ITEM_HEIGHT;
+				label.height = Styles.comboBoxItemHeight;
 				label.color = _itemColors[2];
 				
 				box = new Box();
@@ -101,7 +100,7 @@ package morn.core.components {
 				box.addElement(label, 1, 0);
 				box.addEventListener(MouseEvent.ROLL_OVER, onListItemMouse);
 				box.addEventListener(MouseEvent.ROLL_OUT, onListItemMouse);
-				_list.addElement(box, 0, i * ITEM_HEIGHT);
+				_list.addElement(box, 0, i * Styles.comboBoxItemHeight);
 			}
 			_scrollBar.x = width - _scrollBar.width - 1;
 			_list.addChild(_scrollBar);
@@ -159,7 +158,7 @@ package morn.core.components {
 			exeCallLater(changeList);
 			
 			//显示边框
-			_listHeight = _labels.length > 0 ? Math.min(_visibleNum, _labels.length) * ITEM_HEIGHT : ITEM_HEIGHT;
+			_listHeight = _labels.length > 0 ? Math.min(_visibleNum, _labels.length) * Styles.comboBoxItemHeight : Styles.comboBoxItemHeight;
 			_scrollBar.height = _listHeight - 2;
 			//填充背景
 			var g:Graphics = _list.graphics;

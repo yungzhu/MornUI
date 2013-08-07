@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -28,6 +28,11 @@ package morn.core.components {
 		protected var _selectedIndex:int = -1;
 		protected var _array:Array = [];
 		protected var _selectHandler:Handler;
+		protected var _itemRender:Class;
+		protected var _repeatX:int
+		protected var _repeatY:int;
+		protected var _spaceX:int;
+		protected var _spaceY:int;
 		
 		/**批量设置列表项*/
 		public function setItems(items:Array):void {
@@ -203,6 +208,7 @@ package morn.core.components {
 		
 		/**刷新列表*/
 		public function refresh():void {
+			exeCallLater(changeItems);
 			startIndex = _startIndex;
 		}
 		
@@ -227,9 +233,9 @@ package morn.core.components {
 			if (_scrollBar) {
 				//自动隐藏滚动条
 				_scrollBar.visible = length > _itemCount;
-				_scrollBar.setScroll(0, Math.max(length - _itemCount, 0), _startIndex);
 				if (_scrollBar.visible) {
 					_scrollBar.thumbPercent = _itemCount / length;
+					_scrollBar.setScroll(0, Math.max(length - _itemCount, 0), _startIndex);
 				}
 			}
 		}
@@ -271,6 +277,89 @@ package morn.core.components {
 		
 		public function set totalPage(value:int):void {
 			_totalPage = value;
+		}
+		
+		/**项渲染器，可以赋值为类或类字符串路径*/
+		public function get itemRender():Object {
+			return _itemRender;
+		}
+		
+		public function set itemRender(value:Object):void {
+			if (value is String) {
+				_itemRender = App.asset.getClass(value as String);
+			} else {
+				_itemRender = value as Class;
+			}
+			callLater(changeItems);
+		}
+		
+		/**X方向项数量*/
+		public function get repeatX():int {
+			return _repeatX;
+		}
+		
+		public function set repeatX(value:int):void {
+			_repeatX = value;
+			callLater(changeItems);
+		}
+		
+		/**Y方向项数量*/
+		public function get repeatY():int {
+			return _repeatY;
+		}
+		
+		public function set repeatY(value:int):void {
+			_repeatY = value;
+			callLater(changeItems);
+		}
+		
+		/**X方向项间隔*/
+		public function get spaceX():int {
+			return _spaceX;
+		}
+		
+		public function set spaceX(value:int):void {
+			_spaceX = value;
+			callLater(changeItems);
+		}
+		
+		/**Y方向项间隔*/
+		public function get spaceY():int {
+			return _spaceY;
+		}
+		
+		public function set spaceY(value:int):void {
+			_spaceY = value;
+			callLater(changeItems);
+		}
+		
+		override public function commitMeasure():void {
+			exeCallLater(changeItems);
+		}
+		
+		protected function changeItems():void {
+			if (_itemRender) {
+				//removeAllChild();
+				for each (var item:Component in _items) {
+					item.removeEventListener(MouseEvent.MOUSE_DOWN, onItemMouse);
+					item.removeEventListener(MouseEvent.ROLL_OVER, onItemMouse);
+					item.removeEventListener(MouseEvent.ROLL_OUT, onItemMouse);
+					item.remove();
+				}
+				for (var k:int = 0; k < _repeatY; k++) {
+					for (var l:int = 0; l < _repeatX; l++) {
+						item = new _itemRender();
+						item.name = "item" + (l + k * _repeatX);
+						item.x += l * (_spaceX + item.width);
+						item.y += k * (_spaceY + item.height);
+						addChild(item);
+					}
+				}
+				if (_scrollBar) {
+					addChild(_scrollBar);
+				}
+				initItems();
+			}
 		}
 	}
 }

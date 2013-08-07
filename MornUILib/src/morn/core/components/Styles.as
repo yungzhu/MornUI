@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -21,8 +21,6 @@ package morn.core.components {
 		public static var labelColor:uint = 0x000000;
 		/**标签描边[color,alpha,blurX,blurY,strength,quality]*/
 		public static var labelStroke:Array = [0x170702, 0.8, 2, 2, 10, 1];
-		/**字间距*/
-		public static var letterSpacing:Object = null;
 		
 		//-----------------Button-----------------
 		/**按钮标签颜色[upColor,overColor,downColor,disableColor]*/
@@ -37,5 +35,21 @@ package morn.core.components {
 		//-----------------ComboBox-----------------
 		/**下拉框项颜色[overBgColor,overLabelColor,outLabelColor,borderColor,bgColor]*/
 		public static var comboBoxItemColors:Array = [0x5e95b6, 0xffffff, 0x000000, 0x8fa4b1, 0xffffff];
+		/**单元格大小*/
+		public static var comboBoxItemHeight:int = 22;
+		
+		//-----------------ScrollBar-----------------
+		/**滚动条最小值*/
+		public static var scrollBarMinNum:int = 15;
+		/**长按按钮，等待时间，使其可激活连续滚动*/
+		public static var scrollBarDelayTime:int = 500;
+		
+		//-----------------DefaultToolTip-----------------
+		/**默认鼠标提示文本颜色*/
+		public static var tipTextColor:uint = 0x000000;
+		/**默认鼠标提示边框颜色*/
+		public static var tipBorderColor:uint = 0xC0C0C0;
+		/**默认鼠标提示背景颜色*/
+		public static var tipBgColor:uint = 0xFFFFFF;
 	}
 }

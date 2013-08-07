@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -37,7 +37,7 @@ package morn.core.components {
 			_textField.height = _height - _margin[1] - _margin[3];
 			if (Boolean(_scrollBar.skin)) {
 				_textField.width = _width - _scrollBar.width - 4 - _margin[0] - _margin[2];
-				_scrollBar.height = _height - 2 - _margin[1] - _margin[3];
+				_scrollBar.height = _height - 2;
 				_scrollBar.x = _width - _scrollBar.width - 2;
 				_scrollBar.y = 1;
 				App.timer.doFrameOnce(1, onTextFieldScroll, [null]);
@@ -55,8 +55,8 @@ package morn.core.components {
 					_scrollBar.visible = false;
 				} else {
 					_scrollBar.visible = true;
-					_scrollBar.setScroll(1, _textField.maxScrollV, _textField.scrollV);
 					_scrollBar.thumbPercent = (_textField.numLines - _textField.maxScrollV + 1) / _textField.numLines;
+					_scrollBar.setScroll(1, _textField.maxScrollV, _textField.scrollV);
 				}
 			}
 		}
@@ -74,6 +74,17 @@ package morn.core.components {
 		/**滚动条实体*/
 		public function get scrollBar():VScrollBar {
 			return _scrollBar;
+		}
+		
+		/**垂直滚动最大值*/
+		public function get maxScrollV():int {
+			return _textField.maxScrollV;
+		}
+		
+		/**滚动到某个位置*/
+		public function scroll(value:int):void {
+			commitMeasure();
+			_scrollBar.value = value;
 		}
 	}
 }
