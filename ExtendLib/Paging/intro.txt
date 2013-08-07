@@ -1,0 +1,3 @@
+控件介绍：分页控件
+控件作者：醉人的烟圈(齐小伟) QQ:7379076 Email:gamefriends@qq.com
+使用方法：拷贝bin下文件到编辑器swcs目录

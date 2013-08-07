@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<uiComp>
+	<!-- drag:0-不能拖动，1-水平，2-垂直，3-全部 -->
+	<Base>
+		<prop name="var" tips="命名" type="string" default="" />
+		<prop name="name" tips="名称" type="string" default="" />
+		<prop name="x" tips="x坐标" type="int" default="0" />
+		<prop name="y" tips="y坐标" type="int" default="0" />
+		<prop name="width" tips="宽度" type="int" default="" />
+		<prop name="height" tips="高度" type="int" default="" />
+	</Base>
+	<Component className="morn.core.components.Component" drag="3">
+		<prop name="alpha" tips="透明度" type="number" default="" />		
+		<prop name="disabled" tips="是否禁用" type="bool" default="false" />
+		<prop name="mouseChildren" tips="子对象是否接收鼠标" type="bool" default="" />
+		<prop name="mouseEnabled" tips="是否接收鼠标" type="bool" default="" />
+		<prop name="scale" tips="缩放" type="int" default="" />
+		<prop name="scaleX" tips="缩放x" type="int" default="" />
+		<prop name="scaleY" tips="缩放y" type="int" default="" />
+		<prop name="toolTip" tips="鼠标提示" type="string" default="" />
+		<prop name="visible" tips="是否显示" type="bool" default="true" />
+		<prop name="buttonMode" tips="buttonMode" type="bool" default="" />
+		<prop name="rotationX" tips="X旋转" type="number" default="" />
+		<prop name="rotationY" tips="Y旋转" type="number" default="" />
+		<prop name="rotation" tips="旋转" type="number" default="" />
+	</Component>
+	<Paging className="morn.core.components.Paging" inherit="Component" skinLabel="skin" resName="paging" icon="" drag="0">
+		<prop name="skin" tips="皮肤" type="string" default="" />
+		<prop name="color" tips="颜色" type="color" default="" />
+		<prop name="font" tips="字体" type="comboBox" option="Arial,SimSun,Microsoft YaHei" default="" />
+		<prop name="size" tips="大小" type="string" default="" />
+		<prop name="stroke" tips="描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
+		<prop name="space" tips="间隔" type="int" default="3" />
+	</Paging>
+</uiComp>
