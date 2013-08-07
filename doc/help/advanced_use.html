@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Morn常见问题解答及技巧</title>
+<style type="text/css">
+body{width:800px; line-height:150%;}
+h4{margin:0 2px 0 0}
+p{margin-top:2px;}
+</style>
+<body>
+<br/>
+<div><a href="how_to_use.html">Morn配置及简单使用教程</a></div>
+<br/>
+<div style="border-bottom:1px dotted;width:400px;"></div>
+<h1>Morn常见问题解答及技巧</h1>
+<div>
+<h4>怎么使用Example示例</h4>
+<p>打开编辑器，快捷键Ctrl+O打开项目，选择Example文件夹下的MornExample.Morn项目文件即可打开</p>
+<h4>怎么看到资源，组件在哪里</h4>
+<p>Morn里面，资源即组件<br/>打开编辑器，在资源面板上点击“添加资源”，弹出资源目录，把资源放到此目录即可<br/>特别提醒：<br/>
+1.位图要以文件夹的方式存放，编辑器会以文件夹为单位生成对应的swf<br/>
+2.Morn编辑器会根据资源的前缀自动识别为对应组件，前缀命名规则参考Builder/MornUIConfig.xml文件设置<br/>比如前缀为button或btn的图片会被识别为Button组件
+</p>
+<h4>怎么刷新资源</h4>
+<p>资源放到目录后，编辑器内使用快捷键F5刷新资源视图</p>
+<h4>怎么发布资源和UI代码</h4>
+<p>在编辑器内使用F12快捷键发布资源和代码</p>
+<h4>为什么运行时看不到资源</h4>
+<p>如果编译项目后只看到文字看不到资源，是因为资源没有加载，请先加载资源后再实例化页面</p>
+<h4>怎么直接打开.morn项目文件</h4>
+<p>只需执行Builder下的Project_support.bat添加.Morn和编辑器的注册，就能直接双击.morn项目文件打开项目了</p>
+<h4>怎么转换为Box,Container,Tab,RadioGroup,List等容器</h4>
+<p>选中组件，快捷键Ctrl+B转换为容器，容器的类型可以通过F9配置</p>
+<h4>怎么去除容器</h4>
+<p>选中容器，通过快捷键Ctrl+U打散容器</p>
+<h4>怎么自定义Tab，Radiogroup，List</h4>
+<p>在页面内摆放几个按钮，每个按钮的位置颜色等属性可以随意设置，然后把按钮的name属性分别命名为item0，tiem1，item2...，选中这些按钮，Ctrl+B转换为Tab，这样就完成了自定义的Tab，RadioGroup，List类同</p>
+<h4>怎么设置9宫格</h4>
+<p>组件有gridSize属性(格式:左边距,上边距,右边距,下边距)，例如可以设置为4,5,4,5</p>
+<h4>Box,Container,Panel的区别</h4>
+<p>Container继承自Box，Container是一个相对定位的容器，增加了定位属性，比如left,right,top,bottom，还增加了centerX，centerY剧中对齐等属性<br/>
+Panel继承自Box，实现了遮罩效果和滚动条
+</p>
+<h4>View和Dialog的区别</h4>
+<p>Dialog继承自View，Dialog是对话框，增加了show，close等弹出关闭窗口的方法</p>
+<h4>怎么自定义的View和Dialog类</h4>
+<p>Morn Builder支持自定义页面的View和Dialog类，通过F9打开项目设置面板进行相关设置</p>
+<h4>怎么设置Dialog对话框可拖动</h4>
+<p>		1)窗口默认是不能拖动的<br/>		
+		2)在编辑器内拖动一个可视对象，命名为drag，即可实现拖动块的设置(实际运行中拖动块不可见)<br/>	
+		3)或者通过代码视图直接设置拖拽区域(dragArea)属性即可使窗体拖动<br/></p>
+<h4>什么是赋值，怎么赋值</h4>
+<p>赋值是对组件属性修改的简化操作，类似flex里面的数据绑定。赋值是通过dataSource属性设置的<br/>
+例如页面内有一个name属性为“labe1”的文本，和一个name属性为"btn2"的按钮<br/><br/>
+<font color="#ff0000">简单赋值:</font>this.dataSource={{"labe1":"设置文本的text属性"},{"btn2":"按钮名称"}};<br/>
+通过上述操作，就改变了label的text属性和button的label属性<br/><br/>
+<font color="#ff0000">复杂赋值:</font>this.dataSource={{"labe1":{text:"设置text",size:12}},{"btn2":{label:"按钮名称",alpha:0.5}}};<br/>
+</p>
+<h4>list怎么用</h4>
+<p>例子:添加一个label并选中，Ctrl+B转换为Box，设置box的name属性为render，再把box转换为List，设置List的行数，列数和间隔属性即可(分别为repeatX,repeatY,spaceX,spaceY)。还可以自定义list，参考怎么自定义Tab，Radiogroup，List</p>
+<h4>怎么对list赋值</h4>
+<p>代码中通过dataSource进行赋值，比如list.dataSource=[{label:"1"},{label:"2"},{label:"2"}]<br/>
+或者list.array=[{label:"1"},{label:"2"},{label:"2"}]
+</p>
+<h4>怎么自定义list的渲染方式，怎么使用renderHandler</h4>
+<p>list可以通过renderHandler函数自定义list渲染，如下图，详细可参看Example示例
+<p><img src="./images/listrender.jpg"></p>
+<h4>怎么在list内添加滚动条</h4>
+<p>双击list，进入list内部，拖动一个滚动条到list内，修改name属性为scrollBar，即可自动识别，详细可参看Example示例</p>
+<h4>怎么在list内添加鼠标经过效果</h4>
+<p>双击进入list的item内部，添加一个两帧的clip(over状态，select状态)，命名为selectBox，list即可自动识别，详细可参看Example示例</p>
+<h4>怎么自定义组件，怎么扩展组件</h4>
+<p>
+	自定义组件有三个步骤:<br/>
+	1.书写组件类，实现IComponent接口（或者直接继承Component类），如果是容器，实现IBox接口(或者直接继承Box类)<br/>
+	2.修改View类添加对应的映射<br/>
+	3.修改编辑器Builder/MornUIConfig.xml添加对应的配置
+</p>
+<h4>怎么自定义控件</h4>
+<p>Morn支持自定义控件(又称页面嵌套)，实现页面的复用，只需拖动页面到另外一个页面内部，即可实现控件复用，还可通过修改此控件的runtime属性来设置控件的逻辑类</p>
+<h4>怎么批量复制组件</h4>
+<p>通过快捷键Ctrl+R可实现组件的批量复制</p>
+<h4>怎么方便的调整组件的顺序及控制组件在编辑器的显示和隐藏</h4>
+<p>可以通过层对组件层次和是否显示进行控制，使用快捷键可以调整组件在同层的顺序和及切换到其他层，快捷键参考图层菜单</p>
+<h4>怎么自定义资源，代码的发布目录</h4>
+<p>快捷键F9打开项目设置，里面可以修改很多个性化设置</p>
+<h4>什么是内嵌模式，什么是加载模式</h4>
+<p>内嵌模式和加载模式都是针对UIXML而言的，内嵌模式是将UI视图结构内嵌在UI类里面，加载模式是把UI视图结构压缩打包为ui.swf，使用时再加载解析<br/>
+内嵌模式简单清晰，加载模式实现了UI和主程序分离，所以可以让美术直接修改UI导出，而无需编译主程序即可看到效果
+</p>
+<h4>怎么预览动画(Clip和FrameClip)</h4>
+<p>Clip和FrameClip可以在编辑器内进行预览，选择组件，按回车键控制播放</p>
+<h4>都有哪些快捷键</h4>
+<p>常用快捷键：刷新资源(F5)，发布代码(F12)，转换为容器(Ctrl+B)，打散容器(Ctrl+U),拖动视图(鼠标右键)等等,更多快捷键可以从菜单提示内找到</p>
+<h4>怎么扩展Morn UI编辑器</h4>
+<p>只要继承至编辑器扩展基类PluginBase即可，详细参考PluginDemo扩展实例源码</p>
+<h4>获得更多帮助</h4>
+<p>如需更多帮助，可以加入Morn交流群51451081，如发现bug，请在<a href="https://github.com/yungzhu/morn">https://github.com/yungzhu/morn</a>或<a href="http://code.google.com/p/morn">http://code.google.com/p/morn</a>进行反馈</p>
+<br>
+<br>
+</div>
+</body>
+</html>
