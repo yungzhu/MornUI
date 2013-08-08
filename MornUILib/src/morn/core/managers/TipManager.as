@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -50,7 +50,7 @@ package morn.core.managers {
 			if (tip is String) {
 				var text:String = tip as String;
 				if (Boolean(text)) {
-					showDefaultTip(text);
+					_defaultTipHandler(text);
 				}
 			} else if (tip is Handler) {
 				(tip as Handler).execute();
