@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -10,6 +10,7 @@ package morn.core.components {
 		/**加载模式使用，存储uixml*/
 		public static var xmlMap:Object = {};
 		protected static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "ComboBox": ComboBox, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "Panel": Panel, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider};
+		protected static var viewClassMap:Object = {};
 		
 		protected function createView(xml:XML):void {
 			createComp(xml, this);
@@ -53,12 +54,11 @@ package morn.core.components {
 			return comp;
 		}
 		
+		/**获得组件实例*/
 		protected function getCompInstance(xml:XML):Component {
-			var compClass:Class = Boolean(String(xml.@runtime)) ? App.asset.getClass(xml.@runtime) : uiClassMap[xml.name()];
-			if (compClass != null) {
-				return new compClass();
-			}
-			return null;
+			var runtime:String = xml.@runtime;
+			var compClass:Class = Boolean(runtime) ? viewClassMap[runtime] : uiClassMap[xml.name()];
+			return compClass ? new compClass() : null;
 		}
 		
 		/**加载UI(用于加载模式)*/
