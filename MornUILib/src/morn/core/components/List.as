@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.3.0810 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -279,17 +279,13 @@ package morn.core.components {
 			_totalPage = value;
 		}
 		
-		/**项渲染器，可以赋值为类或类字符串路径*/
-		public function get itemRender():Object {
+		/**项渲染器*/
+		public function get itemRender():Class {
 			return _itemRender;
 		}
 		
-		public function set itemRender(value:Object):void {
-			if (value is String) {
-				_itemRender = App.asset.getClass(value as String);
-			} else {
-				_itemRender = value as Class;
-			}
+		public function set itemRender(value:Class):void {
+			_itemRender = value;
 			callLater(changeItems);
 		}
 		

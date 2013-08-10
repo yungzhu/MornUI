@@ -21,19 +21,23 @@ package morn.core.components {
 			comp.comXml = xml;
 			for (var i:int = 0, m:int = xml.children().length(); i < m; i++) {
 				var node:XML = xml.children()[i];
-				if (comp is IList && node.@name == "render") {
-					var row:int = int(xml.@repeatX);
-					var column:int = int(xml.@repeatY);
-					var spaceX:int = int(xml.@spaceX);
-					var spaceY:int = int(xml.@spaceY);
-					for (var k:int = 0; k < column; k++) {
-						for (var l:int = 0; l < row; l++) {
-							var item:Component = createComp(node);
-							item.name = "item" + (l + k * row);
-							item.x += l * (spaceX + item.width);
-							item.y += k * (spaceY + item.height);
-							comp.addChild(item);
+				if (comp is List && node.@name == "render") {
+					if (node.name() == "Box") {
+						var row:int = int(xml.@repeatX);
+						var column:int = int(xml.@repeatY);
+						var spaceX:int = int(xml.@spaceX);
+						var spaceY:int = int(xml.@spaceY);
+						for (var k:int = 0; k < column; k++) {
+							for (var l:int = 0; l < row; l++) {
+								var item:Component = createComp(node);
+								item.name = "item" + (l + k * row);
+								item.x += l * (spaceX + item.width);
+								item.y += k * (spaceY + item.height);
+								comp.addChild(item);
+							}
 						}
+					} else {
+						List(comp).itemRender = viewClassMap[node.@runtime];
 					}
 				} else {
 					comp.addChild(createComp(node));
