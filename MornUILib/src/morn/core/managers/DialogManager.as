@@ -4,12 +4,12 @@
  */
 package morn.core.managers {
 	import flash.display.Bitmap;
-import flash.display.DisplayObject;
-import flash.display.Sprite;
+    import flash.display.DisplayObject;
+    import flash.display.Sprite;
 	import flash.events.Event;
-import flash.utils.Dictionary;
+    import flash.utils.Dictionary;
 
-import morn.core.components.Box;
+    import morn.core.components.Box;
 	import morn.core.components.Dialog;
 	import morn.core.utils.ObjectUtils;
 
