@@ -41,7 +41,7 @@ package morn.core.components {
 		
 		/**宽度(显示时四舍五入)*/
 		override public function get width():Number {
-			return isNaN(_width) ? super.width : _width;
+			return isNaN(_width) ? (super.bitmapData ? super.bitmapData.width : super.width ) : _width;
 		}
 		
 		override public function set width(value:Number):void {
@@ -53,7 +53,7 @@ package morn.core.components {
 		
 		/**高度(显示时四舍五入)*/
 		override public function get height():Number {
-			return isNaN(_height) ? super.height : _height;
+			return isNaN(_height) ? (super.bitmapData ? super.bitmapData.height : super.height) : _height;
 		}
 		
 		override public function set height(value:Number):void {
