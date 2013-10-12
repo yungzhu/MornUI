@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<uiComp>
+	<!-- drag:0-不能拖动，1-水平，2-垂直，3-全部 -->
+	<Base>
+		<prop name="var" tips="命名" type="string" default="" />
+		<prop name="name" tips="名称" type="string" default="" />
+		<prop name="x" tips="x坐标" type="int" default="0" />
+		<prop name="y" tips="y坐标" type="int" default="0" />
+		<prop name="width" tips="宽度" type="int" default="" />
+		<prop name="height" tips="高度" type="int" default="" />
+	</Base>
+	<Component className="morn.core.components.Component" drag="3">
+		<prop name="alpha" tips="透明度" type="number" default="" />		
+		<prop name="disabled" tips="是否禁用" type="bool" default="false" />
+		<prop name="mouseChildren" tips="子对象是否接收鼠标" type="bool" default="" />
+		<prop name="mouseEnabled" tips="是否接收鼠标" type="bool" default="" />
+		<prop name="scale" tips="缩放" type="int" default="" />
+		<prop name="scaleX" tips="缩放x" type="int" default="" />
+		<prop name="scaleY" tips="缩放y" type="int" default="" />
+		<prop name="toolTip" tips="鼠标提示" type="string" default="" />
+		<prop name="visible" tips="是否显示" type="bool" default="true" />
+		<prop name="buttonMode" tips="buttonMode" type="bool" default="" />
+		<prop name="rotationX" tips="X旋转" type="number" default="" />
+		<prop name="rotationY" tips="Y旋转" type="number" default="" />
+		<prop name="rotation" tips="旋转" type="number" default="" />
+	</Component>
+	<Box className="morn.core.components.Box" inherit="Component" resName="box" icon="Box" drag="3" />
+	<Container className="morn.core.components.Container" inherit="Box" resName="container" icon="Canvas" drag="3">
+		<prop name="left" tips="居父容器左边的距离" type="number" default="" />
+		<prop name="right" tips="居父容器右边的距离" type="number" default="" />
+		<prop name="top" tips="居父容器上边的距离" type="number" default="" />
+		<prop name="bottom" tips="居父容器底边的距离" type="number" default="" />
+		<prop name="centerX" tips="水平剧中偏移位置" type="number" default="" />
+		<prop name="centerY" tips="垂直剧中偏移位置" type="number" default="" />
+	</Container>
+	<View className="morn.core.components.View" inherit="Container" drag="3" />
+	<StarBar className="com.xiyou.mornextend.StarBar" inherit="View" skinLabel="skin" resName="starbar" icon="" drag="0">
+		<prop name="skin" tips="皮肤" type="string" default="" />
+		<prop name="max" tips="数量" type="int" default="3" />
+		<prop name="spaceX" tips="间隔" type="int" default="" />
+		<prop name="value" tips="值(必须是0.5的倍数)" type="string" default="1.5" />
+	</StarBar>
+</uiComp>
