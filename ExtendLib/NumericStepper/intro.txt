@@ -1,0 +1,5 @@
+﻿控件介绍：NumericStepper控件
+控件作者：H大仙 QQ:70863687 Email:lihandi@gmail.com
+使用方法：拷贝bin下文件到编辑器swcs目录 
+	  拷贝bin下assets内资源文件到项目MornBuilder 资源目录
+          拷贝src/morn/core/components/NumericStepper.as 到项目morn库目录
