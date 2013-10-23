@@ -1,0 +1,116 @@
+﻿覆盖文件到MornUILib库即可
+
+
+-------------------------------------------------------------
+
+manager包下 增加MenuManager.as
+
+	
+--------------------------------------------------------------
+
+App.as  增加menu管理器 
+
+/菜单管理器/
+public static var menu:MenuManager = new MenuManager();
+
+stage.addChild(menu);
+
+--------------------------------------------------------------
+
+UIEvent.as 增加了两个事件
+
+/显示菜单/
+public static const SHOW_MENU:String = "showMenu";
+/隐藏菜单/
+public static const HIDE_MENU:String = "hideMenu";
+
+
+--------------------------------------------------------------
+
+Component.as 增加_menuTip属性
+
+protected var _menuTip:Object;
+
+public function get menuTip():Object {
+	return _menuTip;
+}
+		
+public function set menuTip(value:Object):void {
+	if (value && _menuTip != value) {
+		_menuTip = value;
+		addEventListener(MouseEvent.CLICK, onMenuMouse);
+		addEventListener(MouseEvent.ROLL_OUT, onMenuMouse);
+	}else {
+		removeEventListener(MouseEvent.CLICK, onMenuMouse);
+		removeEventListener(MouseEvent.ROLL_OUT, onMenuMouse);
+	}
+}
+
+protected function onMenuMouse(e:MouseEvent):void {
+	if (e.type == MouseEvent.CLICK) {
+		dispatchEvent(new UIEvent(UIEvent.SHOW_MENU, _menuTip, true));
+	}
+	if (e.type == MouseEvent.ROLL_OUT) {
+		dispatchEvent(new UIEvent(UIEvent.HIDE_MENU, _menuTip, true));
+	}
+}
+
+
+-----------------------------------------------------------------
+使用说明
+/**菜单提示
+ * 可以赋值为Object及函数，以实现自定义菜单提示和参数携带等
+ * @example 下面例子展示了菜单提示
+ * <listing version="3.0">
+ *	private var _testTips:TestTipsUI = new TestTipsUI();
+ *	private function testMenus():void {
+ *		//简单菜单
+ *		btn0.menuTip = {"labels":[
+ * 									{"title":"卖出","name":"sellBtn","color":0xFF00000},
+ *								    {"title":"使用","name":"useBtn"}
+ * 								 ],
+ *						"hanlder": new Handler(onMenuClick0,[goodsID]) //自定义的点击菜单按钮执行的Handler
+ * 						}
+ *		//自定义的菜单
+ *		btn1.menuTip = showMenuTips1;
+ *     
+ *		//带参数的自定义菜单
+ *		clip.menuTip = new Handler(showMenuTips2, ["clip"]);
+ * 
+ * 
+ *      //加入延时显示 默认为0 点击立即显示
+ *      btn0.menuDelay = 1000; //鼠标按下 1秒后 显示菜单
+ *      btn1.menuDelay = 200; //鼠标按下 0.2秒后显示菜单
+ *	}
+ *	private function showMenuTips1():void {
+ *      var _testMenu:TestMenuUI = new TestMenuUI();
+ *      _testMenu.label.name = "testBtn";
+ *		_testMenu.label.text = "这里是按钮";
+ *      App.menu.clickHandler = new Handler(onMenuClick1) //自定义的点击菜单按钮执行的Handler
+ *		App.menu.addChild(_testMenu);
+ *	}
+ *	private function showMenuTips2(name:String):void {
+ *      _testTips.label.name = name;
+ *		_testTips.label.text = "这里是" + name;
+ *      App.menu.clickHandler = new Handler(onMenuClick2,[name]) //自定义的点击菜单按钮执行的Handler
+ *		App.menu.addChild(_testTips);
+ *	}
+ *  
+ *  private function onMenuClick0(gid:Int,e:MouseEvent):void{
+ *  	trace(gid);
+ *      switch(e.target.name){
+ *      	case "sellBtn": sellGoods(gid);break;
+ *          case "useBtn": useGoods(gid);break;
+ *      }
+ *  }
+ * 
+ *  private function onMenuClick1(e:MouseEvent):void{
+ *      trace(e.target.name); // "testBtn"
+ *  }
+ * 
+ *  private function onMenuClick2(s:String,e:MouseEvent):void{
+ *      trace(s); // "clip"
+ *  }
+ *
+ * </listing>*/
+
