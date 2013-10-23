@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -184,6 +184,11 @@ package morn.core.managers {
 		/**获取已加载的资源*/
 		public static function getResLoaded(url:String):* {
 			return _loadedMap[url];
+		}
+		
+		/**设置资源*/
+		public static function setResLoaded(url:String, content:*):void {
+			_loadedMap[url] = content;
 		}
 		
 		/**删除已加载的资源*/

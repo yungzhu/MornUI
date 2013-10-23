@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -96,8 +96,7 @@ package morn.core.managers {
 		}
 		
 		private function onClearClick(e:MouseEvent):void {
-			_msgs.length = 0;
-			_textField.htmlText = "";
+			clear();
 		}
 		
 		private function onFilterKeyDown(e:KeyboardEvent):void {
@@ -115,6 +114,12 @@ package morn.core.managers {
 			if (e.ctrlKey && e.keyCode == Keyboard.L) {
 				toggle();
 			}
+		}
+		
+		/**清理所有日志*/
+		public function clear():void {
+			_msgs.length = 0;
+			_textField.htmlText = "";
 		}
 		
 		/**信息*/

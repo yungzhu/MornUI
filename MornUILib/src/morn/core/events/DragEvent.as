@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.0.0526 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.events {
@@ -12,10 +12,10 @@ package morn.core.events {
 		public static const DRAG_DROP:String = "dragDrop";
 		public static const DRAG_COMPLETE:String = "dragComplete";
 		
-		protected var _data:Object;
+		protected var _data:*;
 		protected var _dragInitiator:DisplayObject;
 		
-		public function DragEvent(type:String, dragInitiator:DisplayObject = null, data:Object = null, bubbles:Boolean = false, cancelable:Boolean = false) {
+		public function DragEvent(type:String, dragInitiator:DisplayObject = null, data:* = null, bubbles:Boolean = true, cancelable:Boolean = false) {
 			super(type, bubbles, cancelable);
 			_dragInitiator = dragInitiator;
 			_data = data;
@@ -31,11 +31,11 @@ package morn.core.events {
 		}
 		
 		/**拖动传递的数据*/
-		public function get data():Object {
+		public function get data():* {
 			return _data;
 		}
 		
-		public function set data(value:Object):void {
+		public function set data(value:*):void {
 			_data = value;
 		}
 		

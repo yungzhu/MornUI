@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://www.mornui.com/
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -53,10 +53,10 @@ package morn.core.components {
 		protected function onButtonMouseDown(e:MouseEvent):void {
 			App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 			App.stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
-			if (_direction == HORIZONTAL) {
-				_bar.startDrag(false, new Rectangle(0, _bar.y, width - _bar.width, 0));
-			} else {
+			if (_direction == VERTICAL) {
 				_bar.startDrag(false, new Rectangle(_bar.x, 0, 0, height - _bar.height));
+			} else {
+				_bar.startDrag(false, new Rectangle(0, _bar.y, width - _bar.width, 0));
 			}
 			//显示提示
 			showValueText();
@@ -65,12 +65,12 @@ package morn.core.components {
 		protected function showValueText():void {
 			if (_showLabel) {
 				_label.text = _value + "";
-				if (_direction == HORIZONTAL) {
-					_label.y = _bar.y - 20;
-					_label.x = (_bar.width - _label.width) * 0.5 + _bar.x;
-				} else {
+				if (_direction == VERTICAL) {
 					_label.x = _bar.x + 20;
 					_label.y = (_bar.height - _label.height) * 0.5 + _bar.y;
+				} else {
+					_label.y = _bar.y - 20;
+					_label.x = (_bar.width - _label.width) * 0.5 + _bar.x;
 				}
 			}
 		}
@@ -88,10 +88,10 @@ package morn.core.components {
 		
 		protected function onStageMouseMove(e:MouseEvent):void {
 			var oldValue:Number = _value;
-			if (_direction == HORIZONTAL) {
-				_value = _bar.x / (width - _bar.width) * (_max - _min) + _min;
-			} else {
+			if (_direction == VERTICAL) {
 				_value = _bar.y / (height - _bar.height) * (_max - _min) + _min;
+			} else {
+				_value = _bar.x / (width - _bar.width) * (_max - _min) + _min;
 			}
 			_value = Math.round(_value / _tick) * _tick;
 			if (_value != oldValue) {
@@ -131,10 +131,10 @@ package morn.core.components {
 		}
 		
 		protected function setBarPoint():void {
-			if (_direction == HORIZONTAL) {
-				_bar.y = (_back.height - _bar.height) * 0.5;
-			} else {
+			if (_direction == VERTICAL) {
 				_bar.x = (_back.width - _bar.width) * 0.5;
+			} else {
+				_bar.y = (_back.height - _bar.height) * 0.5;
 			}
 		}
 		
@@ -150,21 +150,22 @@ package morn.core.components {
 		protected function changeValue():void {
 			_value = Math.round(_value / _tick) * _tick;
 			_value = _value > _max ? _max : _value < _min ? _min : _value;
-			if (_direction == HORIZONTAL) {
-				_bar.x = (_value - _min) / (_max - _min) * (width - _bar.width);
-			} else {
+			if (_direction == VERTICAL) {
 				_bar.y = (_value - _min) / (_max - _min) * (height - _bar.height);
+			} else {
+				_bar.x = (_value - _min) / (_max - _min) * (width - _bar.width);
 			}
 		}
 		
 		/**设置滑动条*/
 		public function setSlider(min:Number, max:Number, value:Number):void {
+			_value = 0;
 			_min = min;
 			_max = max > min ? max : min;
 			this.value = value < min ? min : value > max ? max : value;
 		}
 		
-		/**刻度值*/
+		/**刻度值，默认值为1*/
 		public function get tick():Number {
 			return _tick;
 		}
@@ -248,10 +249,10 @@ package morn.core.components {
 		}
 		
 		protected function onBackBoxMouseDown(e:MouseEvent):void {
-			if (_direction == HORIZONTAL) {
-				value = _back.mouseX / (width - _bar.width) * (_max - _min) + _min;
-			} else {
+			if (_direction == VERTICAL) {
 				value = _back.mouseY / (height - _bar.height) * (_max - _min) + _min;
+			} else {
+				value = _back.mouseX / (width - _bar.width) * (_max - _min) + _min;
 			}
 		}
 		
@@ -267,6 +268,15 @@ package morn.core.components {
 		/**控制按钮*/
 		public function get bar():Button {
 			return _bar;
+		}
+		
+		/**数据变化处理器*/
+		public function get changeHandler():Handler {
+			return _changeHandler;
+		}
+		
+		public function set changeHandler(value:Handler):void {
+			_changeHandler = value;
 		}
 	}
 }

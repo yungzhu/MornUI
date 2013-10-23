@@ -1,10 +1,12 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import morn.core.handlers.Handler;
 	
 	/**滚动位置变化后触发*/
@@ -22,7 +24,11 @@ package morn.core.components {
 		protected var _downButton:Button;
 		protected var _slider:Slider;
 		protected var _changeHandler:Handler;
-		protected var _thumbPercent:Number;
+		protected var _thumbPercent:Number = 1;
+		protected var _target:Component;
+		protected var _touchScrollEnable:Boolean = Config.touchScrollEnable;
+		protected var _lastPoint:Point;
+		protected var _lastOffset:Number;
 		
 		public function ScrollBar(skin:String = null):void {
 			this.skin = skin;
@@ -41,6 +47,7 @@ package morn.core.components {
 		override protected function initialize():void {
 			_slider.showLabel = false;
 			_slider.addEventListener(Event.CHANGE, onSliderChange);
+			_slider.setSlider(0, 0, 0);
 			_upButton.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 			_downButton.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 		}
@@ -98,7 +105,6 @@ package morn.core.components {
 			} else {
 				_slider.x = _upButton.width;
 			}
-			this
 			resetButtonPosition();
 		}
 		
@@ -184,7 +190,7 @@ package morn.core.components {
 		
 		public function set scrollSize(value:Number):void {
 			_scrollSize = value;
-			_slider.tick = value;
+			//_slider.tick = value;
 		}
 		
 		override public function set dataSource(value:Object):void {
@@ -205,9 +211,82 @@ package morn.core.components {
 			exeCallLater(changeSize);
 			_thumbPercent = value;
 			if (_slider.direction == VERTICAL) {
-				_slider.bar.height = Math.max(_slider.height * value, Styles.scrollBarMinNum);
+				_slider.bar.height = Math.max(int(_slider.height * value), Styles.scrollBarMinNum);
 			} else {
-				_slider.bar.width = Math.max(_slider.width * value, Styles.scrollBarMinNum);
+				_slider.bar.width = Math.max(int(_slider.width * value), Styles.scrollBarMinNum);
+			}
+		}
+		
+		/**滚动对象*/
+		public function get target():Component {
+			return _target;
+		}
+		
+		public function set target(value:Component):void {
+			if (_target) {
+				_target.removeEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+				_target.removeEventListener(MouseEvent.MOUSE_DOWN, onTargetMouseDown);
+			}
+			_target = value;
+			if (value) {
+				_target.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+				if (_touchScrollEnable) {
+					_target.addEventListener(MouseEvent.MOUSE_DOWN, onTargetMouseDown);
+				}
+			}
+		}
+		
+		/**是否触摸滚动，默认为true*/
+		public function get touchScrollEnable():Boolean {
+			return _touchScrollEnable;
+		}
+		
+		public function set touchScrollEnable(value:Boolean):void {
+			_touchScrollEnable = value;
+		}
+		
+		protected function onTargetMouseDown(e:MouseEvent):void {
+			_target.mouseChildren = true;
+			App.timer.clearTimer(tweenMove);
+			if (!this.contains(e.target as DisplayObject)) {
+				App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp2);
+				App.stage.addEventListener(Event.ENTER_FRAME, onStageEnterFrame);
+				_lastPoint = new Point(App.stage.mouseX, App.stage.mouseY);
+			}
+		}
+		
+		protected function onStageEnterFrame(e:Event):void {
+			_lastOffset = _slider.direction == VERTICAL ? App.stage.mouseY - _lastPoint.y : App.stage.mouseX - _lastPoint.x;
+			if (Math.abs(_lastOffset) >= 1) {
+				_lastPoint.x = App.stage.mouseX;
+				_lastPoint.y = App.stage.mouseY;
+				_target.mouseChildren = false;
+				value -= _lastOffset;
+			}
+		}
+		
+		protected function onStageMouseUp2(e:MouseEvent):void {
+			App.stage.removeEventListener(MouseEvent.MOUSE_UP, onStageMouseUp2);
+			App.stage.removeEventListener(Event.ENTER_FRAME, onStageEnterFrame);
+			if (Math.abs(_lastOffset) > 50) {
+				_lastOffset = 50 * (_lastOffset > 0 ? 1 : -1);
+			}
+			App.timer.doFrameLoop(1, tweenMove);
+		}
+		
+		private function tweenMove():void {
+			_lastOffset = _lastOffset * 0.92;
+			value -= _lastOffset;
+			if (Math.abs(_lastOffset) < 0.5) {
+				_target.mouseChildren = true;
+				App.timer.clearTimer(tweenMove);
+			}
+		}
+		
+		protected function onMouseWheel(e:MouseEvent):void {
+			value += (e.delta < 0 ? 1 : -1) * _thumbPercent * (max - min);
+			if (value < max && value > min) {
+				e.stopPropagation();
 			}
 		}
 	}

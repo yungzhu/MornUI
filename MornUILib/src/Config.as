@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {
@@ -19,6 +19,8 @@ package {
 		/**鼠标提示延迟(毫秒)*/
 		public static var tipDelay:int = 200;
 		/**提示是否跟随鼠标移动*/
-		public static var tipFollowMove:Boolean = true;				
+		public static var tipFollowMove:Boolean = true;
+		/**是否开启触摸*/
+		public static var touchScrollEnable:Boolean = true;
 	}
 }

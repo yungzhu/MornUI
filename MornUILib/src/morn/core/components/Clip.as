@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -293,6 +293,15 @@ package morn.core.components {
 			} else {
 				super.dataSource = value;
 			}
+		}
+		
+		/**是否对位图进行平滑处理*/
+		public function get smoothing():Boolean {
+			return _bitmap.smoothing;
+		}
+		
+		public function set smoothing(value:Boolean):void {
+			_bitmap.smoothing = value;
 		}
 		
 		/**位图实体*/

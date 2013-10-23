@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1021 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -44,7 +44,9 @@ package morn.core.components {
 		override protected function createChildren():void {
 			addChild(_button = new Button());
 			_list = new List();
+			_list.mouseHandler = new Handler(onlistItemMouse);
 			_scrollBar = new VScrollBar();
+			_list.addChild(_scrollBar);
 		}
 		
 		override protected function initialize():void {
@@ -80,44 +82,29 @@ package morn.core.components {
 		}
 		
 		protected function changeList():void {
-			//_list.removeAllChild();
-			for (var j:int = _list.numChildren - 1; j > -1; j--) {
-				var box:Box = _list.removeChildAt(j) as Box;
-				if (box) {
-					box.removeEventListener(MouseEvent.ROLL_OVER, onListItemMouse);
-					box.removeEventListener(MouseEvent.ROLL_OUT, onListItemMouse);
-				}
-			}
-			for (var i:int = 0; i < _visibleNum; i++) {
-				var label:Label = new Label();
-				label.name = "label";
-				label.width = width - 2;
-				label.height = Styles.comboBoxItemHeight;
-				label.color = _itemColors[2];
-				
-				box = new Box();
-				box.name = "item" + i;
-				box.addElement(label, 1, 0);
-				box.addEventListener(MouseEvent.ROLL_OVER, onListItemMouse);
-				box.addEventListener(MouseEvent.ROLL_OUT, onListItemMouse);
-				_list.addElement(box, 0, i * Styles.comboBoxItemHeight);
-			}
+			var labelWidth:Number = width - 2;
+			var labelHeight:Number = Styles.comboBoxItemHeight;
+			var labelColor:Number = _itemColors[2];
+			list.itemRender = new XML("<Box><Label name='label' width='" + labelWidth + "' height='" + labelHeight + "' color='" + labelColor + "' x='1' /></Box>");
+			list.repeatY = _visibleNum;
+			
 			_scrollBar.x = width - _scrollBar.width - 1;
-			_list.addChild(_scrollBar);
-			_list.initItems();
 			_list.refresh();
 		}
 		
-		protected function onListItemMouse(e:MouseEvent):void {
-			var box:Box = e.currentTarget as Box;
+		protected function onlistItemMouse(type:String, index:int):void {
+			var box:Box = list.getCell(index);
 			var label:Label = box.getChildByName("label") as Label;
-			if (e.type == MouseEvent.ROLL_OVER) {
+			if (type == MouseEvent.ROLL_OVER) {
 				label.background = true;
 				label.backgroundColor = _itemColors[0];
 				label.color = _itemColors[1];
 			} else {
 				label.background = false;
 				label.color = _itemColors[2];
+			}
+			if (type == MouseEvent.CLICK) {
+				isOpen = false;
 			}
 		}
 		
@@ -184,10 +171,10 @@ package morn.core.components {
 			if (_selectedIndex != value) {
 				_list.selectedIndex = _selectedIndex = value;
 				_button.label = selectedLabel;
-				sendEvent(Event.SELECT);
 				if (_selectHandler != null) {
 					_selectHandler.executeWith([_selectedIndex]);
 				}
+				sendEvent(Event.SELECT);
 			}
 		}
 		
@@ -221,7 +208,7 @@ package morn.core.components {
 		
 		/**项颜色(格式:overBgColor,overLabelColor,outLableColor,borderColor,bgColor)*/
 		public function get itemColors():String {
-			return _itemColors as String;
+			return String(_itemColors);
 		}
 		
 		public function set itemColors(value:String):void {
@@ -240,14 +227,12 @@ package morn.core.components {
 				_button.selected = _isOpen;
 				if (_isOpen) {
 					var p:Point = localToGlobal(new Point());
-					if (_openDirection == DOWN) {
-						_list.setPosition(p.x, p.y + height);
-					} else {
-						_list.setPosition(p.x, p.y - _listHeight);
-					}
+					_list.setPosition(p.x, p.y + (_openDirection == DOWN ? height : -_listHeight));
 					App.stage.addChild(_list);
 					App.stage.addEventListener(MouseEvent.MOUSE_DOWN, removeList);
 					App.stage.addEventListener(Event.REMOVED_FROM_STAGE, removeList);
+					//处理定位
+					_list.scrollTo((_selectedIndex + _visibleNum) < _list.length ? _selectedIndex : _list.length - _visibleNum);
 				} else {
 					_list.remove();
 					App.stage.removeEventListener(MouseEvent.MOUSE_DOWN, removeList);
@@ -257,7 +242,7 @@ package morn.core.components {
 		}
 		
 		protected function removeList(e:Event):void {
-			if (e == null || (!_scrollBar.contains(e.target as DisplayObject) && !_button.contains(e.target as DisplayObject))) {
+			if (e == null || (!_button.contains(e.target as DisplayObject) && !_list.contains(e.target as DisplayObject))) {
 				isOpen = false;
 			}
 		}

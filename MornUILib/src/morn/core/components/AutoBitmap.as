@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.2.0707 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -18,6 +18,9 @@ package morn.core.components {
 		private var _clips:Vector.<BitmapData>;
 		private var _index:int;
 		private var _smoothing:Boolean;
+		
+		public function AutoBitmap() {
+		}
 		
 		/**X坐标(显示时四舍五入)*/
 		override public function get x():Number {
@@ -41,7 +44,7 @@ package morn.core.components {
 		
 		/**宽度(显示时四舍五入)*/
 		override public function get width():Number {
-			return isNaN(_width) ? (super.bitmapData ? super.bitmapData.width : super.width ) : _width;
+			return isNaN(_width) ? (super.bitmapData ? super.bitmapData.width : super.width) : _width;
 		}
 		
 		override public function set width(value:Number):void {

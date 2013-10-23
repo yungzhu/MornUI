@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://www.mornui.com/
+ * Morn UI Version 2.4.1021 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -9,60 +9,11 @@ package morn.core.components {
 	public class View extends Container {
 		/**加载模式使用，存储uixml*/
 		public static var xmlMap:Object = {};
-		protected static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "ComboBox": ComboBox, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "Panel": Panel, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider};
+		protected static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "ComboBox": ComboBox, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "Panel": Panel, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider, "HBox": HBox, "VBox": VBox};
 		protected static var viewClassMap:Object = {};
 		
 		protected function createView(xml:XML):void {
-			createComp(xml, this);
-		}
-		
-		protected function createComp(xml:XML, comp:Component = null):Component {
-			comp = comp || getCompInstance(xml);
-			comp.comXml = xml;
-			for (var i:int = 0, m:int = xml.children().length(); i < m; i++) {
-				var node:XML = xml.children()[i];
-				if (comp is List && node.@name == "render") {
-					if (node.name() == "Box") {
-						var row:int = int(xml.@repeatX);
-						var column:int = int(xml.@repeatY);
-						var spaceX:int = int(xml.@spaceX);
-						var spaceY:int = int(xml.@spaceY);
-						for (var k:int = 0; k < column; k++) {
-							for (var l:int = 0; l < row; l++) {
-								var item:Component = createComp(node);
-								item.name = "item" + (l + k * row);
-								item.x += l * (spaceX + item.width);
-								item.y += k * (spaceY + item.height);
-								comp.addChild(item);
-							}
-						}
-					} else {
-						List(comp).itemRender = viewClassMap[node.@runtime];
-					}
-				} else {
-					comp.addChild(createComp(node));
-				}
-			}
-			for each (var attrs:XML in xml.attributes()) {
-				var prop:String = attrs.name().toString();
-				var value:String = attrs;
-				if (comp.hasOwnProperty(prop)) {
-					comp[prop] = (value == "true" ? true : (value == "false" ? false : value))
-				} else if (prop == "var" && hasOwnProperty(value)) {
-					this[value] = comp;
-				}
-			}
-			if (comp is IItem) {
-				IItem(comp).initItems();
-			}
-			return comp;
-		}
-		
-		/**获得组件实例*/
-		protected function getCompInstance(xml:XML):Component {
-			var runtime:String = xml.@runtime;
-			var compClass:Class = Boolean(runtime) ? viewClassMap[runtime] : uiClassMap[xml.name()];
-			return compClass ? new compClass() : null;
+			createComp(xml, this, this);
 		}
 		
 		/**加载UI(用于加载模式)*/
@@ -73,6 +24,43 @@ package morn.core.components {
 			}
 		}
 		
+		/** 根据xml实例组件
+		 * @param	xml 视图xml
+		 * @param	comp 组件本体，如果为空，会新创建一个
+		 * @param	view 组件所在的视图实例，用来注册var全局变量，为空则不注册*/
+		public static function createComp(xml:XML, comp:Component = null, view:View = null):Component {
+			comp = comp || getCompInstance(xml);
+			comp.comXml = xml;
+			for (var i:int = 0, m:int = xml.children().length(); i < m; i++) {
+				var node:XML = xml.children()[i];
+				if (comp is List && node.@name == "render") {
+					List(comp).itemRender = node;
+				} else {
+					comp.addChild(createComp(node, null, view));
+				}
+			}
+			for each (var attrs:XML in xml.attributes()) {
+				var prop:String = attrs.name().toString();
+				var value:String = attrs;
+				if (comp.hasOwnProperty(prop)) {
+					comp[prop] = (value == "true" ? true : (value == "false" ? false : value))
+				} else if (prop == "var" && view && view.hasOwnProperty(value)) {
+					view[value] = comp;
+				}
+			}
+			if (comp is IItem) {
+				IItem(comp).initItems();
+			}
+			return comp;
+		}
+		
+		/**获得组件实例*/
+		protected static function getCompInstance(xml:XML):Component {
+			var runtime:String = xml.@runtime;
+			var compClass:Class = Boolean(runtime) ? viewClassMap[runtime] : uiClassMap[xml.name()];
+			return compClass ? new compClass() : null;
+		}
+		
 		/**重新创建组件(通过修改组件的xml，实现动态更改UI视图)
 		 * @param comp 需要重新生成的组件 comp为null时，重新创建整个视图*/
 		public function reCreate(comp:Component = null):void {
@@ -81,7 +69,7 @@ package morn.core.components {
 			if (comp is Box) {
 				Box(comp).removeAllChild();
 			}
-			createComp(comp.comXml, comp);
+			createComp(comp.comXml, comp, this);
 			comp.dataSource = dataSource;
 		}
 		

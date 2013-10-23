@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -16,6 +16,10 @@ package morn.core.managers {
 		private var _resLoader:ResLoader = new ResLoader();
 		private var _isLoading:Boolean;
 		private var _failRes:Object = {};
+		private var _retryNum:int = 1;
+		
+		public function LoaderManager() {
+		}
 		
 		/** 加载
 		 * @param	url 地址
@@ -31,6 +35,7 @@ package morn.core.managers {
 			resInfo.complete = complete;
 			resInfo.progress = progress;
 			resInfo.error = error;
+			resInfo.isCacheContent = isCacheContent;
 			
 			var content:* = ResLoader.getResLoaded(resInfo.url);
 			if (content != null) {
@@ -52,7 +57,7 @@ package morn.core.managers {
 				if (content != null) {
 					endLoad(resInfo, content);
 				} else {
-					_resLoader.load(resInfo.url, resInfo.type, new Handler(loadComplete, [resInfo]), resInfo.progress);
+					_resLoader.load(resInfo.url, resInfo.type, new Handler(loadComplete, [resInfo]), resInfo.progress, resInfo.isCacheContent);
 					return;
 				}
 			}
@@ -69,10 +74,11 @@ package morn.core.managers {
 		}
 		
 		private function endLoad(resInfo:ResInfo, content:*):void {
-			//如果加载后为空，放入队列末尾重试一次
+			//如果加载后为空，放入队列末尾重试次
 			if (content == null) {
-				if (_failRes[resInfo.url] == null) {
-					_failRes[resInfo.url] = 1;
+				var errorCount:int = _failRes[resInfo.url] || 0;
+				if (errorCount < _retryNum) {
+					_failRes[resInfo.url] = errorCount + 1;
 					_resInfos.push(resInfo);
 					return;
 				} else {
@@ -170,14 +176,26 @@ package morn.core.managers {
 				checkNext();
 			}
 		}
+		
+		/**加载出错后的重试次数，默认重试一次*/
+		public function get retryNum():int {
+			return _retryNum;
+		}
+		
+		public function set retryNum(value:int):void {
+			_retryNum = value;
+		}
 	}
 }
 import morn.core.handlers.Handler;
 
 class ResInfo {
+	public function ResInfo() {
+	}
 	public var url:String;
 	public var type:int;
 	public var complete:Handler;
 	public var progress:Handler;
 	public var error:Handler;
+	public var isCacheContent:Boolean;
 }

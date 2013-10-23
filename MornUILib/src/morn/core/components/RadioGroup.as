@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://code.google.com/p/morn https://github.com/yungzhu/morn
+ * Morn UI Version 2.4.1020 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -199,7 +199,7 @@ package morn.core.components {
 		}
 		
 		protected function changeLabels():void {
-			var right:int = 0
+			var left:Number = 0
 			for (var i:int = 0, n:int = _items.length; i < n; i++) {
 				var radio:RadioButton = _items[i];
 				if (_skin)
@@ -216,12 +216,12 @@ package morn.core.components {
 					radio.labelMargin = _labelMargin;
 				if (_direction == HORIZENTAL) {
 					radio.y = 0;
-					radio.x = right;
-					right += radio.width;
+					radio.x = left;
+					left += radio.width;
 				} else {
 					radio.x = 0;
-					radio.y = right;
-					right += radio.height;
+					radio.y = left;
+					left += radio.height;
 				}
 			}
 		}
