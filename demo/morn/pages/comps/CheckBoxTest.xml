@@ -1,0 +1,8 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,1,0,第 2 层;1,1,1,0,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="235" height="179"/>
+  <Button skin="png.comp.btn_close" x="198" y="3" layer="1" name="close"/>
+  <CheckBox label="我被选中了" skin="png.comp.checkbox" x="62" y="61" layer="2" selected="true" var="check"/>
+  <CheckBox label="改变字体颜色" skin="png.comp.checkbox" x="62" y="94" layer="1" labelColors="0xff0000,0x5eb10c,0xfe9705"/>
+  <CheckBox label="被禁用了" skin="png.comp.checkbox" x="62" y="127" layer="1" labelColors="0x" disabled="true" selected="true"/>
+  <Image url="png.comp.blank" x="0" y="0" layer="1" width="195" height="26" name="drag"/>
+</Dialog>

@@ -1,0 +1,8 @@
+<res>
+  <item name="png.comp.bg" compress="0" quality="80" props="sizeGrid=4,30,4,4"/>
+  <item name="png.comp.clip_num" compress="0" quality="80" props="clipX=10"/>
+  <item name="png.comp.combobox_blue" compress="0" quality="80" props="sizeGrid=4,4,25,4"/>
+  <item name="png.comp.clip_selectBox" compress="0" quality="80" props="clipY=2"/>
+  <item name="png.comp.progress_blue" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
+  <item name="png.comp.bg2" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
+</res>

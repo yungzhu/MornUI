@@ -1,0 +1,11 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,0,0,第 2 层;1,1,0,1,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="400" height="350"/>
+  <Button skin="png.comp.btn_close" x="365" y="3" layer="1" name="close"/>
+  <Image url="png.comp.blank" x="0" y="0" layer="1" width="360" height="26" name="drag"/>
+  <Label text="This is a label" x="55" y="97" layer="2" toolTip="这里是文本"/>
+  <Button label="Button" skin="png.comp.button" x="55" y="161" layer="2" toolTip="这里是按钮"/>
+  <Clip url="png.comp.clip_num" x="230" y="225" layer="2" clipX="10" var="clip" frame="5"/>
+  <Image url="png.comp.bg" x="229" y="96" layer="2" sizeGrid="4,30,4,4" var="image"/>
+  <CheckBox label="label" skin="png.comp.checkbox" x="291" y="231" layer="2" var="check"/>
+  <TextInput skin="png.comp.textinput" x="55" y="229" layer="2" toolTip="请在这里输入"/>
+</Dialog>

@@ -1,0 +1,23 @@
+<View sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="1,1,0,0,第 1 层">
+  <Button label="按钮" skin="png.comp.button" x="35" y="60" layer="1"/>
+  <Button label="多选框" skin="png.comp.button" x="35" y="98" layer="1"/>
+  <Button label="位图切片" skin="png.comp.button" x="35" y="136" layer="1"/>
+  <Button label="矢量动画" skin="png.comp.button" x="35" y="174" layer="1"/>
+  <Button label="下拉框" skin="png.comp.button" x="35" y="212" layer="1"/>
+  <Button label="相对定位" skin="png.comp.button" x="35" y="250" layer="1"/>
+  <Button label="文本" skin="png.comp.button" x="35" y="288" layer="1"/>
+  <Button label="布局容器" skin="png.comp.button" x="35" y="326" layer="1"/>
+  <Button label="列表" skin="png.comp.button" x="35" y="364" layer="1"/>
+  <Button label="面板" skin="png.comp.button" x="139" y="60" layer="1"/>
+  <Button label="进度条" skin="png.comp.button" x="139" y="98" layer="1"/>
+  <Button label="滑动条" skin="png.comp.button" x="139" y="136" layer="1"/>
+  <Button label="单选框" skin="png.comp.button" x="139" y="174" layer="1"/>
+  <Button label="标签" skin="png.comp.button" x="139" y="212" layer="1"/>
+  <Button label="输入框" skin="png.comp.button" x="139" y="250" layer="1"/>
+  <Button label="文本域" skin="png.comp.button" x="139" y="288" layer="1"/>
+  <Button label="多视图" skin="png.comp.button" x="139" y="326" layer="1"/>
+  <Label text="Morn UI测试Demo" x="34" y="22" layer="1" size="16" color="0xff0000"/>
+  <Button label="赋值" skin="png.comp.button" x="269" y="60" layer="1"/>
+  <Button label="鼠标提示" skin="png.comp.button" x="269" y="98" layer="1"/>
+  <Button label="多语言" skin="png.comp.button" x="269" y="136" layer="1"/>
+</View>

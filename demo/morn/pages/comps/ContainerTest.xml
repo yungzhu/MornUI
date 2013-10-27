@@ -1,0 +1,17 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,1,0,第 2 层;1,1,1,0,第 1 层" width="600" height="400">
+  <Container layers="1,1,0" layer="1" x="263" y="88" right="10" top="5">
+    <Button skin="png.comp.btn_close" layer="1" name="close"/>
+  </Container>
+  <Container layers="1,1,0" layer="2" x="63" y="86" centerX="0" centerY="0">
+    <Image url="png.comp.bg" layer="1" sizeGrid="4,30,4,4"/>
+    <Label text="居中定位" x="24" y="39" layer="1"/>
+  </Container>
+  <Container layers="1,1,0" layer="2" x="177" y="201" bottom="10" right="10">
+    <Image url="png.comp.bg" layer="1" sizeGrid="4,30,4,4"/>
+    <Label text="右下角定位" x="20" y="38" layer="1" width="66" height="18"/>
+  </Container>
+  <Container layers="1,1,0" layer="2" x="48" y="211" left="10" bottom="10">
+    <Image url="png.comp.bg" layer="1" sizeGrid="4,30,4,4"/>
+    <Label text="左下角定位" x="20" y="38" layer="1" width="66" height="18"/>
+  </Container>
+</Dialog>

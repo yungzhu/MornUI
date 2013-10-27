@@ -1,0 +1,4 @@
+<View sceneWidth="400" sceneHeight="300" sceneColor="0xffffff" sceneBg="" layers="1,1,0,0,第 1 层">
+  <Label text="label" x="31" y="3.5" layer="1" width="80" name="label"/>
+  <Clip url="png.comp.clip_num" x="0" y="0" layer="1" clipX="10" name="icon"/>
+</View>

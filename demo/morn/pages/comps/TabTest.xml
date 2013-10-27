@@ -1,0 +1,14 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,0,0,第 2 层;1,1,0,1,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="400" height="350"/>
+  <Button skin="png.comp.btn_close" x="365" y="3" layer="1" name="close"/>
+  <Image url="png.comp.blank" x="0" y="0" layer="1" width="360" height="26" name="drag"/>
+  <Tab labels="label1,label2,label3,label4" skin="png.comp.tab" x="54" y="95" layer="2" var="tab"/>
+  <Tab layers="1,1,0" layer="2" x="54" y="215" selectedIndex="1">
+    <Button label="武器" skin="png.comp.btn_tab" layer="1" name="item0" x="0"/>
+    <Button label="上衣" skin="png.comp.btn_tab" x="78" layer="1" name="item1" y="0"/>
+    <Button label="裤子" skin="png.comp.btn_tab" x="156" layer="1" labelColors="0xff0000,0xff0000,0xff0000" name="item2" y="0"/>
+    <Button label="鞋子" skin="png.comp.btn_tab" x="234" layer="1" labelColors="0xff0000,0xff0000,0xff0000" name="item3" y="0"/>
+  </Tab>
+  <Label text="设置labels的Tab" x="53" y="70" layer="2"/>
+  <Label text="自定义的Tab" x="54" y="191" layer="2"/>
+</Dialog>

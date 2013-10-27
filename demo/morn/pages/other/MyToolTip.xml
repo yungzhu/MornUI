@@ -1,0 +1,4 @@
+<View sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="1,1,0,0,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="133" height="105"/>
+  <Label x="9" y="41" layer="1" width="114" height="47" var="label" multiline="true" wordWrap="true" color="0x66cc" leading="8" text="label"/>
+</View>

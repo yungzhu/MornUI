@@ -1,0 +1,7 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,0,0,第 2 层;1,1,0,1,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="400" height="350"/>
+  <Button skin="png.comp.btn_close" x="365" y="3" layer="1" name="close"/>
+  <Image url="png.comp.blank" x="0" y="0" layer="1" width="360" height="26" name="drag"/>
+  <TextArea text="请输入" skin="png.comp.textarea" x="27" y="54" layer="2" margin="1,1,1,1" scrollBarSkin="png.comp.vscroll" width="349" height="112" var="area1"/>
+  <TextArea text="测试自动滚动到底部" skin="png.comp.textarea" x="27" y="195" layer="2" margin="1,1,1,1" scrollBarSkin="png.comp.vscroll" width="349" height="112" var="area2"/>
+</Dialog>

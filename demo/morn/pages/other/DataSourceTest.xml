@@ -1,0 +1,31 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,0,0,第 2 层;1,1,0,1,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="398" height="500"/>
+  <Button skin="png.comp.btn_close" x="365" y="3" layer="1" name="close"/>
+  <Image url="png.comp.blank" x="0" y="0" layer="1" width="360" height="26" name="drag"/>
+  <Box layers="1,1,0" layer="2" x="24" y="69" var="box1">
+    <Image url="png.comp.bg2" layer="1" sizeGrid="4,4,4,4" width="351" height="104"/>
+    <Label text="This is label1" x="31" y="23" layer="1" width="117" height="19" name="label1"/>
+    <CheckBox label="checkbox" skin="png.comp.checkbox" x="31" y="62" layer="1" name="check"/>
+    <ProgressBar skin="png.comp.progress" x="190" y="62" layer="1" width="110" height="14" name="progress" sizeGrid="2,2,2,2"/>
+    <Label text="This is label2" x="190" y="23" layer="1" width="117" height="19" name="label2"/>
+  </Box>
+  <Box layers="1,1,0" layer="2" x="24" y="204" var="box2">
+    <Image url="png.comp.bg2" layer="1" sizeGrid="4,4,4,4" width="351" height="104"/>
+    <Label text="This is label1" x="31" y="23" layer="1" width="154" height="19" name="label1"/>
+    <CheckBox label="checkbox" skin="png.comp.checkbox" x="31" y="62" layer="1" name="check"/>
+    <ProgressBar skin="png.comp.progress" x="190" y="62" layer="1" width="110" height="14" name="progress" sizeGrid="2,2,2,2"/>
+    <Label text="This is label2" x="190" y="23" layer="1" width="117" height="19" name="label2"/>
+  </Box>
+  <List layers="1,1,0" layer="2" x="24" y="345" repeatX="1" repeatY="5" spaceX="4" spaceY="0" var="list">
+    <VScrollBar skin="png.comp.vscroll" x="121" layer="1" height="135" name="scrollBar" y="0"/>
+    <Box layers="2,1,0,0,第 2 层;1,1,0,0,第 1 层" layer="1" name="render">
+      <Clip url="png.comp.clip_selectBox" x="26" y="0" layer="1" clipY="2" width="90" name="selectBox" height="27"/>
+      <Clip url="png.comp.clip_num" layer="1" clipX="10" name="icon"/>
+      <Label text="label" x="26" y="3" layer="2" width="90" name="label"/>
+    </Box>
+  </List>
+  <Label text="List赋值" x="23" y="321" layer="2"/>
+  <Label text="默认属性赋值" x="23" y="45" layer="2"/>
+  <Label text="任意属性赋值" x="23" y="183" layer="2"/>
+  <Button label="点击这里进行赋值" skin="png.comp.button" x="209" y="387" layer="2" width="150" var="btn" labelColors="0xff0000" height="40"/>
+</Dialog>

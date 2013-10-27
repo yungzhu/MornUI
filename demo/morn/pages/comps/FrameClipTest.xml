@@ -1,0 +1,6 @@
+<Dialog sceneWidth="600" sceneHeight="400" sceneColor="0xffffff" sceneBg="" layers="2,1,1,0,第 2 层;1,1,1,1,第 1 层">
+  <Image url="png.comp.bg" x="0" y="0" layer="1" sizeGrid="4,30,4,4" width="300" height="289"/>
+  <Button skin="png.comp.btn_close" x="265" y="3" layer="1" name="close"/>
+  <FrameClip skin="assets.frameclip_Bear" x="41" y="67" layer="2" var="mc"/>
+  <Image url="png.comp.blank" x="0" y="0" layer="1" width="261" height="26" name="drag"/>
+</Dialog>
