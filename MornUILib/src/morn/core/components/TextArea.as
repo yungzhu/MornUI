@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1021 http://www.mornui.com/
+ * Morn UI Version 2.4.1027 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -73,6 +73,7 @@ package morn.core.components {
 					_scrollBar.setScroll(_lineHeight, _textField.maxScrollV * _lineHeight, _textField.scrollV * _lineHeight);
 				}
 			}
+			sendEvent(UIEvent.SCROLL);
 		}
 		
 		/**滚动条皮肤*/

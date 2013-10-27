@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1021 http://www.mornui.com/
+ * Morn UI Version 2.4.1027 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -8,7 +8,9 @@ package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.text.TextFormat;
 	import morn.core.handlers.Handler;
+	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
 	
 	/**选择项改变后触发*/
@@ -26,10 +28,12 @@ package morn.core.components {
 		protected var _isOpen:Boolean;
 		protected var _scrollBar:VScrollBar;
 		protected var _itemColors:Array = Styles.comboBoxItemColors;
+		protected var _itemSize:int = Styles.fontSize;
 		protected var _labels:Array = [];
 		protected var _selectedIndex:int = -1;
 		protected var _selectHandler:Handler;
 		protected var _openDirection:String = DOWN;
+		protected var _itemHeight:Number;
 		protected var _listHeight:Number;
 		
 		public function ComboBox(skin:String = null, labels:String = null) {
@@ -83,28 +87,29 @@ package morn.core.components {
 		
 		protected function changeList():void {
 			var labelWidth:Number = width - 2;
-			var labelHeight:Number = Styles.comboBoxItemHeight;
 			var labelColor:Number = _itemColors[2];
-			list.itemRender = new XML("<Box><Label name='label' width='" + labelWidth + "' height='" + labelHeight + "' color='" + labelColor + "' x='1' /></Box>");
+			_itemHeight = ObjectUtils.getTextField(new TextFormat(Styles.fontName, _itemSize)).height + 3;
+			list.itemRender = new XML("<Box><Label name='label' width='" + labelWidth + "' size='" + _itemSize + "' height='" + _itemHeight + "' color='" + labelColor + "' x='1' /></Box>");
 			list.repeatY = _visibleNum;
-			
 			_scrollBar.x = width - _scrollBar.width - 1;
 			_list.refresh();
 		}
 		
 		protected function onlistItemMouse(type:String, index:int):void {
-			var box:Box = list.getCell(index);
-			var label:Label = box.getChildByName("label") as Label;
-			if (type == MouseEvent.ROLL_OVER) {
-				label.background = true;
-				label.backgroundColor = _itemColors[0];
-				label.color = _itemColors[1];
-			} else {
-				label.background = false;
-				label.color = _itemColors[2];
-			}
-			if (type == MouseEvent.CLICK) {
-				isOpen = false;
+			if (type == MouseEvent.CLICK || type == MouseEvent.ROLL_OVER || type == MouseEvent.ROLL_OUT) {
+				var box:Box = list.getCell(index);
+				var label:Label = box.getChildByName("label") as Label;
+				if (type == MouseEvent.ROLL_OVER) {
+					label.background = true;
+					label.backgroundColor = _itemColors[0];
+					label.color = _itemColors[1];
+				} else {
+					label.background = false;
+					label.color = _itemColors[2];
+				}
+				if (type == MouseEvent.CLICK) {
+					isOpen = false;
+				}
 			}
 		}
 		
@@ -145,7 +150,7 @@ package morn.core.components {
 			exeCallLater(changeList);
 			
 			//显示边框
-			_listHeight = _labels.length > 0 ? Math.min(_visibleNum, _labels.length) * Styles.comboBoxItemHeight : Styles.comboBoxItemHeight;
+			_listHeight = _labels.length > 0 ? Math.min(_visibleNum, _labels.length) * _itemHeight : _itemHeight;
 			_scrollBar.height = _listHeight - 2;
 			//填充背景
 			var g:Graphics = _list.graphics;
@@ -213,6 +218,16 @@ package morn.core.components {
 		
 		public function set itemColors(value:String):void {
 			_itemColors = StringUtils.fillArray(_itemColors, value);
+			callLater(changeList);
+		}
+		
+		/**项字体大小*/
+		public function get itemSize():int {
+			return _itemSize;
+		}
+		
+		public function set itemSize(value:int):void {
+			_itemSize = value;
 			callLater(changeList);
 		}
 		

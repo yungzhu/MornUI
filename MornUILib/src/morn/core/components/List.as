@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 2.4.1027 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -18,7 +18,7 @@ package morn.core.components {
 	[Event(name="listRender",type="morn.core.events.UIEvent")]
 	
 	/**列表*/
-	public class List extends Box implements IList {
+	public class List extends Box implements IList, IItem {
 		protected var _content:Box;
 		protected var _scrollBar:ScrollBar;
 		protected var _itemRender:*;
@@ -133,6 +133,8 @@ package morn.core.components {
 					cell.removeEventListener(MouseEvent.CLICK, onCellMouse);
 					cell.removeEventListener(MouseEvent.ROLL_OVER, onCellMouse);
 					cell.removeEventListener(MouseEvent.ROLL_OUT, onCellMouse);
+					cell.removeEventListener(MouseEvent.MOUSE_DOWN, onCellMouse);
+					cell.removeEventListener(MouseEvent.MOUSE_UP, onCellMouse);
 					cell.remove();
 				}
 				_cells.length = 0;
@@ -140,28 +142,49 @@ package morn.core.components {
 				scrollBar = getChildByName("scrollBar") as ScrollBar;
 				//创建新单元格				
 				var numX:int = _isVerticalLayout ? _repeatX : _repeatY;
-				var numY:int = (_isVerticalLayout ? _repeatY : _repeatX) + 1;
+				var numY:int = (_isVerticalLayout ? _repeatY : _repeatX) + (_scrollBar ? 1 : 0);
 				for (var k:int = 0; k < numY; k++) {
 					for (var l:int = 0; l < numX; l++) {
 						cell = _itemRender is XML ? View.createComp(_itemRender) as Box : new _itemRender();
 						cell.x = (_isVerticalLayout ? l : k) * (_spaceX + cell.width);
 						cell.y = (_isVerticalLayout ? k : l) * (_spaceY + cell.height);
 						_content.addChild(cell);
-						//处理单元格事件
-						cell.addEventListener(MouseEvent.CLICK, onCellMouse);
-						cell.addEventListener(MouseEvent.ROLL_OVER, onCellMouse);
-						cell.addEventListener(MouseEvent.ROLL_OUT, onCellMouse);
-						_cells.push(cell);
+						addCell(cell);
 					}
 				}
-				var cellWidth:Number = cell.width + spaceX;
-				var cellHeight:Number = cell.height + spaceY;
-				_cellSize = _isVerticalLayout ? cellHeight : cellWidth;
-				setContentSize(cellWidth * _repeatX, cellHeight * _repeatY);
+				if (_scrollBar) {
+					var cellWidth:Number = cell.width + spaceX;
+					var cellHeight:Number = cell.height + spaceY;
+					_cellSize = _isVerticalLayout ? cellHeight : cellWidth;
+					setContentSize(cellWidth * _repeatX, cellHeight * _repeatY);
+				}
 			}
 		}
 		
-		protected function setContentSize(widht:Number, height:Number):void {
+		protected function addCell(cell:Box):void {
+			cell.addEventListener(MouseEvent.CLICK, onCellMouse);
+			cell.addEventListener(MouseEvent.ROLL_OVER, onCellMouse);
+			cell.addEventListener(MouseEvent.ROLL_OUT, onCellMouse);
+			cell.addEventListener(MouseEvent.MOUSE_DOWN, onCellMouse);
+			cell.addEventListener(MouseEvent.MOUSE_UP, onCellMouse);
+			_cells.push(cell);
+		}
+		
+		public function initItems():void {
+			if (!_itemRender) {
+				for (var i:int = 0; i < int.MAX_VALUE; i++) {
+					var cell:Box = getChildByName("item" + i) as Box;
+					if (cell) {
+						addCell(cell);
+						continue;
+					}
+					break;
+				}
+			}
+		}
+		
+		/**设置可视区域大小*/
+		public function setContentSize(widht:Number, height:Number):void {
 			var g:Graphics = _content.graphics;
 			g.clear();
 			g.beginFill(0xffff00, 0);
@@ -173,16 +196,18 @@ package morn.core.components {
 		}
 		
 		protected function onCellMouse(e:MouseEvent):void {
-			var cell:Box = e.currentTarget as Box;
-			var index:int = _startIndex + _cells.indexOf(cell);
-			if (e.type == MouseEvent.CLICK) {
-				if (_selectEnable) {
-					selectedIndex = index;
-				} else {
-					changeCellState(cell, true, 0);
+			if (e.type == MouseEvent.CLICK || e.type == MouseEvent.ROLL_OVER || e.type == MouseEvent.ROLL_OUT) {
+				var cell:Box = e.currentTarget as Box;
+				var index:int = _startIndex + _cells.indexOf(cell);
+				if (e.type == MouseEvent.CLICK) {
+					if (_selectEnable) {
+						selectedIndex = index;
+					} else {
+						changeCellState(cell, true, 0);
+					}
+				} else if (_selectedIndex != index) {
+					changeCellState(cell, e.type == MouseEvent.ROLL_OVER, 0);
 				}
-			} else if (_selectedIndex != index) {
-				changeCellState(cell, e.type == MouseEvent.ROLL_OVER, 0);
 			}
 			if (_mouseHandler != null) {
 				_mouseHandler.executeWith([e.type, index]);
@@ -362,6 +387,7 @@ package morn.core.components {
 		
 		public function set page(value:int):void {
 			_page = value > 0 ? value : 0;
+			_page = _page < _totalPage ? _page : _totalPage - 1;
 			startIndex = _page * _repeatX * _repeatY;
 		}
 		

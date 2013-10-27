@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://www.mornui.com/
+ * Morn UI Version 2.0.1027 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -95,7 +95,7 @@ package morn.core.components {
 			return parent != null;
 		}
 		
-		/**是否剧中弹出*/
+		/**是否居中弹出*/
 		public function get popupCenter():Boolean {
 			return _popupCenter;
 		}

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://www.mornui.com/
+ * Morn UI Version 2.4.1027 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -324,6 +324,7 @@ package morn.core.components {
 		}
 		
 		override public function commitMeasure():void {
+			exeCallLater(changeText);
 			exeCallLater(changeSize);
 		}
 		

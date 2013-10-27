@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://www.mornui.com/
+ * Morn UI Version 2.1.1027 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -76,7 +76,7 @@ package morn.core.components {
 			callLater(resetPosition);
 		}
 		
-		/**水平剧中偏移位置*/
+		/**水平居中偏移位置*/
 		public function get centerX():Number {
 			return _centerX;
 		}
@@ -86,7 +86,7 @@ package morn.core.components {
 			callLater(resetPosition);
 		}
 		
-		/**垂直剧中偏移位置*/
+		/**垂直居中偏移位置*/
 		public function get centerY():Number {
 			return _centerY;
 		}
