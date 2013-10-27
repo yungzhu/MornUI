@@ -57,7 +57,7 @@
 	<Label className="morn.core.components.Label" inherit="Component" defaultValue="text='label'" resName="label" icon="Label" drag="3">
 		<prop name="text" tips="文本" type="string" default="" />
 		<prop name="align" tips="对齐" type="option" option="left,center,right" default="" />		
-		<prop name="autoSize" tips="自适应" type="string" default="" />
+		<prop name="autoSize" tips="自适应" type="option" option="none,left,center,right" default=""/>
 		<prop name="bold" tips="是否粗体" type="bool" default="false" />
 		<prop name="color" tips="颜色" type="color" default="" />
 		<prop name="font" tips="字体" type="comboBox" option="Arial,SimSun,Microsoft YaHei" default="" />
@@ -177,6 +177,7 @@
 		<prop name="skin" tips="皮肤" type="string" default="" />
 		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
 		<prop name="labels" tips="标签集合" type="string" default="" />
+		<prop name="itemSize" tips="项字体大小" type="int" default="" />
 		<prop name="itemColors" tips="项颜色(格式:overBgColor,overLabelColor,outLableColor,borderColor,bgColor)" type="string" default="" />
 		<prop name="scrollBarSkin" tips="滚动条" type="string" default="" />
 		<prop name="selectedIndex" tips="选择索引" type="int" default="" />
