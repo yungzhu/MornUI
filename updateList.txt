@@ -1,4 +1,64 @@
-﻿2.3.0810
+﻿2.4.1027
+----------------------
+编辑器部分:	
+	[改进]点击页面列表面板头部，会取消页面列表选择(再添加新页面，会到根目录)
+主要修正bug：
+	[修正]修正了编辑器var丢失问题
+	[修正]修正了编辑器剪切复制会导致层级错乱的bug
+	
+Morn UI库：	
+	[新增]ComboBox增加项字体大小设置itemSize
+	[改进]改进了HBox和VBox排序问题(编辑器的显示顺序就是排序顺序)
+	[改进]改进了List，支持自定义List项
+	[改进]改进了List，如果不设置滚动条，不再有遮罩
+主要修正bug：
+	[修正]修正了label宽高获取有时不对的bug
+
+
+2.4.1020
+----------------------
+Morn UI编辑器：
+	[改进]UI类增加对默认构造函数的生成(SDK4.7需求)
+	[改进]copy组件不会再复制var属性
+主要修正bug：
+	[修正]修复了删除图层不能及时保存的bug [小蚂蚁]
+	
+Morn UI库:	
+	[新增]增加了对移动设备的支持，无论是网页还是移动设备均能正确支持
+	[新增]增加了HBox和VBox等布局容器，方便UI布局
+	[新增]LogManager增加了clear方法，方便清理日志	
+	[新增]LoaderManager增加错误重试次数属性retryNum
+	[新增]clip增加平滑属性smoothing [最怕猫猫]
+	[新增]Config类增加是否触摸滚动属性touchScrollEnable
+	[改进]优化了tooltip，设置为空时，会删除事件监听 [H大仙]
+	[改进]事件data的类型由object改为* [紫琥珀姐姐]
+	[改进]dragevent事件改为冒泡事件 [左岸右转]
+	[改进]ComboBox设置selectedIndex后，再打开，会自动定位选择的位置，方便查看
+	[改进]ScrollBar增加缓动滑动效果
+	[改进]优化了panel类
+	[改进]优化了slider类
+	[改进]优化了TextArea类
+	[改进]重构了List类，功能更强大，使用更加方便，主要改变如下：
+		1.list改为像素级别，实现手机等移动设备支持
+		2.增加mouseHandler，方便处理项事件
+		3.同时支持横向和纵向滚动，由滚动条决定
+		4.增加scrollTo方法，方便滚动定位
+		5.增加getItem，changeItem，addItem，addItemAt，deleteItem等方法，方便更新项数据，并节省性能
+		6.统一了itemRender，同时支持类和xml
+		7.增加了selectEable属性，控制list项是否有选中效果
+		8.改进了滑轮滚动效果
+		9.增加touch缓动滚动效果
+主要修正bug：
+	[修正]修正了slider及滚动条value大于max的bug [魔鬼游戏]
+	[修正]修正了FrameClip的playFromTo方法bug [joker]
+	[修正]修正了LoaderManager的isCacheContent属性没有生效的bug
+	[修正]修正了list的scrollSize编辑器设置无效的bug
+	[修正]修正了list滚轮滚动的bug [紫琥珀姐姐]
+	[修正]修复了缩放对宽高度量的影响的bug [Hú+]
+	[修正]修正了panel滑动条在一些操作后位置不对的bug [H大仙]
+	[修正]修正了combobox赋值后，立即设置selectedIndex无效的bug [紫琥珀姐姐]	
+
+2.3.0810
 ----------------------
 Morn UI编辑器：
 	[改进]图层增加批量锁定解锁按钮，批量隐藏显示按钮
