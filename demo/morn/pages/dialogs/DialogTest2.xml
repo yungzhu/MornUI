@@ -1,5 +1,0 @@
-<Dialog sceneWidth="400" sceneHeight="300" sceneColor="0xffffff" sceneBg="" layers="1,1,0">
-  <Image url="png.comp.bg" x="0" y="0" layer="1" width="400" height="400" sizeGrid="4,26,4,4"/>
-  <Button skin="png.comp.btn_close" x="361" y="3" layer="1" name="close"/>
-  <Label text="label" x="161" y="196" layer="1"/>
-</Dialog>
