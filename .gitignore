@@ -7,3 +7,4 @@ bin-release/
 .flexProperties
 .settings/
 .project
+/builder/data
