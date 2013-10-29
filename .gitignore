@@ -8,3 +8,5 @@ bin-release/
 .settings/
 .project
 /builder/data
+
+/MornUILib/bin/MornUILib.swc
