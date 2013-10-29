@@ -10,3 +10,5 @@ bin-release/
 /builder/data
 
 /MornUILib/bin/MornUILib.swc
+
+/builder/builder.xml
