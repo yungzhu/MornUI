@@ -190,6 +190,7 @@
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="editEnabled" tips="内容是否可以编辑" type="bool" default="false"/>
 		<prop name="editTextMargin" tips="标签间距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="text" tips="文本框中显示的文本" type="string" default="" />
 	</ComboBox>
 	<Panel className="morn.core.components.Panel" inherit="Container" icon="Panel" drag="3">
 		<prop name="vScrollBarSkin" tips="垂直滚动条皮肤" type="string" default="" />

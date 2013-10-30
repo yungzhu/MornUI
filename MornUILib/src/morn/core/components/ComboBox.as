@@ -9,6 +9,7 @@ package morn.core.components {
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextFormat;
+	
 	import morn.core.handlers.Handler;
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
@@ -35,6 +36,18 @@ package morn.core.components {
 		protected var _openDirection:String = DOWN;
 		protected var _itemHeight:Number;
 		protected var _listHeight:Number;
+		
+		/**
+		 *是否可以编辑 
+		 */		
+		protected var _editEnabled:Boolean = false;
+		
+		/**
+		 *文本编辑框 
+		 */		
+		protected var _inputTxt:TextInput;
+		
+		
 		
 		public function ComboBox(skin:String = null, labels:String = null) {
 			this.skin = skin;
@@ -85,6 +98,52 @@ package morn.core.components {
 			}
 		}
 		
+		/**
+		 *是否充许编辑 
+		 * @return 
+		 * 
+		 */		
+		public function get editEnabled():Boolean{
+			return this._editEnabled;
+		}
+		
+		public function set editEnabled(value:Boolean):void{
+			
+			if(this._editEnabled == value)return;
+			
+			if(value){
+				
+				if(this._inputTxt == null){
+					this._inputTxt = new TextInput();
+					this._inputTxt.width = this.width;
+					this._inputTxt.height = this.height;
+					
+					if(this.editTextMargin == ""){
+						this.editTextMargin = "5";
+					}
+					
+					this.addChild(this._inputTxt);
+				}else{
+					this._inputTxt.visible = false;
+					this.addChild(this._inputTxt);
+				}
+				
+				this._inputTxt.text = this.selectedLabel;
+				this._button.label = "";
+				
+			}else{
+				
+				if(this._inputTxt){
+					this._inputTxt.visible = true;
+					this.removeChild(this._inputTxt);
+				}
+				
+				this._button.label = this.selectedLabel;
+			}
+			
+			this._editEnabled = value;
+		}
+		
 		protected function changeList():void {
 			var labelWidth:Number = width - 2;
 			var labelColor:Number = _itemColors[2];
@@ -120,12 +179,15 @@ package morn.core.components {
 		override public function set width(value:Number):void {
 			super.width = value;
 			_button.width = _width;
+			
+			if(this._editEnabled)this._inputTxt.width = _width;
 			callLater(changeList);
 		}
 		
 		override public function set height(value:Number):void {
 			super.height = value;
 			_button.height = _height;
+			if(this._editEnabled)this._inputTxt.width = _height;
 		}
 		
 		/**标签集合*/
@@ -175,7 +237,13 @@ package morn.core.components {
 		public function set selectedIndex(value:int):void {
 			if (_selectedIndex != value) {
 				_list.selectedIndex = _selectedIndex = value;
-				_button.label = selectedLabel;
+				
+				if(this._editEnabled){
+					this._inputTxt.text = selectedLabel;
+				}else{
+					_button.label = selectedLabel;
+				}
+				
 				if (_selectHandler != null) {
 					_selectHandler.executeWith([_selectedIndex]);
 				}
@@ -199,6 +267,46 @@ package morn.core.components {
 		
 		public function set selectedLabel(value:String):void {
 			selectedIndex = _labels.indexOf(value);
+		}
+		
+		/**
+		 *设置或获取combobox上面显示的文本
+		 * 如果设置的值不在下拉列表内，那么，selectIndex就会为-1; 
+		 * 与selectedLabel的区别在，selectedLabel设置值如果不在list列表内，那么文本框就会为NULL
+		 * 而这个属性设置的值如果不在列表内，selectedIndex的属性会为-1,但文本框内会显示设置的值。
+		 * @return 
+		 * 
+		 */		
+		public function get text():String{
+			
+			if(this._editEnabled){
+				return this._inputTxt.text;
+			}else{
+				return this._button.label;
+			}
+		}
+		
+		public function set text(value:String):void{
+			
+			if(value == null)value = "";
+			
+			if(this._editEnabled){
+				if(value == this._inputTxt.text )return;
+				this.selectedLabel = value;
+				
+				if(this._inputTxt.text == ""){
+					this._inputTxt.text = value;
+				}
+				
+			}else{
+				
+				if(value == this._button.label)return;
+				this.selectedLabel = value;
+				
+				if(this._button.label == ""){
+					this._button.label = value;
+				}
+			}
 		}
 		
 		/**可见项数量*/
@@ -322,6 +430,7 @@ package morn.core.components {
 		
 		public function set labelColors(value:String):void {
 			_button.labelColors = value;
+			if(this._editEnabled)this._inputTxt.color = value;
 		}
 		
 		/**按钮标签边距(格式:左边距,上边距,右边距,下边距)*/
@@ -333,6 +442,19 @@ package morn.core.components {
 			_button.labelMargin = value;
 		}
 		
+		/**
+		 *编辑框，跟上下左右的间距 
+		 * @return 
+		 * 
+		 */		
+		public function get editTextMargin():String{
+			return this._inputTxt.margin;
+		}
+		
+		public function set editTextMargin(value:String):void{
+			this._inputTxt.margin = value;
+		}
+		
 		/**按钮标签描边(格式:color,alpha,blurX,blurY,strength,quality)*/
 		public function get labelStroke():String {
 			return _button.labelStroke;
@@ -340,6 +462,7 @@ package morn.core.components {
 		
 		public function set labelStroke(value:String):void {
 			_button.labelStroke = value;
+			if(this._editEnabled)this._inputTxt.stroke = value;
 		}
 		
 		/**按钮标签大小*/
@@ -348,7 +471,8 @@ package morn.core.components {
 		}
 		
 		public function set labelSize(value:Object):void {
-			_button.labelSize = value
+			_button.labelSize = value;
+			if(this._editEnabled)this._inputTxt;
 		}
 		
 		/**按钮标签粗细*/
@@ -358,6 +482,7 @@ package morn.core.components {
 		
 		public function set labelBold(value:Object):void {
 			_button.labelBold = value
+			if(this._editEnabled)this._inputTxt.bold = value;
 		}
 	}
 }
