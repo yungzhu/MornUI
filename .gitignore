@@ -7,3 +7,8 @@ bin-release/
 .flexProperties
 .settings/
 .project
+/builder/data
+
+/MornUILib/bin/MornUILib.swc
+
+/builder/builder.xml
