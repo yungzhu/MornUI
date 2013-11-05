@@ -29,7 +29,7 @@ package morn.core.components
 		public var fixedNum:int = 0;
 		
 		public function NumericStepper(skin:String = null) {
-			this._skin = skin;
+			_skin = skin;
 		}
 		
 		override protected function preinitialize():void {
@@ -55,10 +55,12 @@ package morn.core.components
 		
 		
 		protected function onChange(e:Event = null):void {
-			sendEvent(Event.CHANGE);
+			var c:Number = Number(_input.text);
+			value = Math.max(Math.min(c,max),min);
 			if (_changeHandler != null) {
 				_changeHandler.executeWith([value]);
 			}
+			sendEvent(Event.CHANGE);
 		}
 		
 		protected function onButtonMouseDown(e:MouseEvent):void {
@@ -263,9 +265,6 @@ package morn.core.components
 				_upButton.x = _downButton.width + _input.width;
 				_upButton.y = _downButton.y = 0;
 			}
-			
-			
-			
 		}
 		
 		
