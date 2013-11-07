@@ -370,10 +370,12 @@ package morn.core.components {
 		}
 		
 		public function set menuTip(value:Object):void {
-			if (value && _menuTip != value) {
-				_menuTip = value;
-				addEventListener(MouseEvent.CLICK, onMenuMouse);
-				addEventListener(MouseEvent.ROLL_OUT, onMenuMouse);
+			if (value) {
+				if(_menuTip != value){
+					_menuTip = value;
+					addEventListener(MouseEvent.CLICK, onMenuMouse);
+					addEventListener(MouseEvent.ROLL_OUT, onMenuMouse);
+				}
 			}else {
 				removeEventListener(MouseEvent.CLICK, onMenuMouse);
 				removeEventListener(MouseEvent.ROLL_OUT, onMenuMouse);
@@ -386,6 +388,7 @@ package morn.core.components {
 		public function set menuDelay(value:int):void {
 			_menuDelay = value;
 			if (_menuDelay > 0) {
+				removeEventListener(MouseEvent.CLICK, onMenuMouse);
 				addEventListener(MouseEvent.MOUSE_DOWN, onMenuMouse);
 				addEventListener(MouseEvent.MOUSE_UP, onMenuMouse);
 			}else {
