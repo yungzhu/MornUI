@@ -2,15 +2,15 @@
 
 Having the following characteristics
 
-1 Lightweight, Morn UI libraries to streamline and intuitive for the design, code, lightweight, fast to use, reducing learning costs, Morn UI 30K less than the total size of all the libraries
+1 Lightweight, Morn UI library design with streamlined and intuitive, code is lightweight and fast to use, reducing learning costs,the total size of all the libraries is less than 40K
 
 2 Visualization, Morn UI provides a powerful visual editor, layout and properties can be set in the editor and intuitive to achieve separation of UI and logic, so that art and program co Easy
 
-3 High performance, Morn UI initial design to performance as the main goal, to bitmap based on the use deferred rendering mechanisms to achieve high performance
+3 High performance, Morn UI designed by high performance goal, based on bitmap,and use deferred rendering mechanisms to achieve high performance
 
-4 Easy to expand, whether or editor plug-in UI components, are very easy to expand, editor supports that the change that is used, easy customization
+4 Easy to expand, whether UI components or editor plug-in, all are very easy to expand, easy customization
 
-5 Automatic resource management, Morn editor automatically manage UI resources, packaged in a flexible manner resources (jpg + alpha)
+5 Automatic resource management, Morn editor automatically manage UI resources, packaged in a flexible manner resources (jpg alpha)
 
 6 Supports both bitmap and vector graphics, and automatically generate the UI code
 
@@ -18,7 +18,7 @@ Having the following characteristics
 
 8 Multi-language support, built-in language package manager and extraction tools, rapid internationalization
 
-9.Morn than flex lightweight and efficient, than the flash IDE component-based development easier
+9.Morn is  lightweight and efficient than flex, and component-based development easier than the flash IDE 
 
 ![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main.jpg "screenshot")
 	
