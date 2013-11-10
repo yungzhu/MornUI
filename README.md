@@ -1,4 +1,4 @@
-## Morn UI is a lightweight, high performance actionScript 3 UI Components for Flash, and has a visual ui editor
+## Morn UI is a lightweight, high performance actionScript 3 UI Components for Flash, and has a visual UI editor
 
 Having the following characteristics
 
