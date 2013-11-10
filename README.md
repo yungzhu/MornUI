@@ -8,15 +8,15 @@ Having the following characteristics
 
 3 High performance, Morn UI initial design to performance as the main goal, to bitmap based on the use deferred rendering mechanisms to achieve high performance
 
-4 easy to expand, whether or editor plug-in UI components, are very easy to expand, editor supports that the change that is used, easy customization
+4 Easy to expand, whether or editor plug-in UI components, are very easy to expand, editor supports that the change that is used, easy customization
 
-5 automatic resource management, Morn editor automatically manage UI resources, packaged in a flexible manner resources (jpg + alpha)
+5 Automatic resource management, Morn editor automatically manage UI resources, packaged in a flexible manner resources (jpg + alpha)
 
-6 supports both bitmap and vector graphics, and automatically generate the UI code
+6 Supports both bitmap and vector graphics, and automatically generate the UI code
 
-7 supports multi-project, multi-view development, support for code view, support for collaborative development and svn.
+7 Supports multi-project, multi-view development, support for code view, support for collaborative development and svn.
 
-8 multi-language support, built-in language package manager and extraction tools, rapid internationalization
+8 Multi-language support, built-in language package manager and extraction tools, rapid internationalization
 
 9.Morn than flex lightweight and efficient, than the flash IDE component-based development easier
 
