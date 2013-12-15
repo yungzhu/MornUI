@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -132,6 +132,7 @@ package morn.core.components {
 		
 		/**设置滚动条*/
 		public function setScroll(min:Number, max:Number, value:Number):void {
+			exeCallLater(changeSize);
 			_slider.setSlider(min, max, value);
 			_upButton.disabled = max <= 0;
 			_downButton.disabled = max <= 0;

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -103,24 +103,24 @@ package morn.core.components {
 		protected function resetPosition():void {
 			if (parent) {
 				if (!isNaN(_centerX)) {
-					x = (parent.width - width) * 0.5 + _centerX;
+					x = (parent.width - displayWidth) * 0.5 + _centerX;
 				} else if (!isNaN(_left)) {
 					x = _left;
 					if (!isNaN(_right)) {
 						width = parent.width - _left - _right;
 					}
 				} else if (!isNaN(_right)) {
-					x = parent.width - width - _right;
+					x = parent.width - displayWidth - _right;
 				}
 				if (!isNaN(_centerY)) {
-					y = (parent.height - height) * 0.5 + _centerY;
+					y = (parent.height - displayHeight) * 0.5 + _centerY;
 				} else if (!isNaN(_top)) {
 					y = _top;
 					if (!isNaN(_bottom)) {
 						height = parent.height - _top - _bottom;
 					}
 				} else if (!isNaN(_bottom)) {
-					y = parent.height - height - _bottom;
+					y = parent.height - displayHeight - _bottom;
 				}
 			}
 		}

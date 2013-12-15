@@ -54,8 +54,8 @@ package view {
 		}
 		
 		/**处理选择框选中效果*/
-		private function onCheckListMouse(type:String, index:int):void {
-			if (type == MouseEvent.CLICK) {
+		private function onCheckListMouse(e:MouseEvent, index:int):void {
+			if (e.type == MouseEvent.CLICK) {
 				var cell:Box = checkList.getCell(index);
 				var checkBox:CheckBox = cell.getChildByName("check") as CheckBox;
 				cell.dataSource["check"] = checkBox.selected;

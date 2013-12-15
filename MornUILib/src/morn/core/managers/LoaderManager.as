@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -74,7 +74,7 @@ package morn.core.managers {
 		}
 		
 		private function endLoad(resInfo:ResInfo, content:*):void {
-			//如果加载后为空，放入队列末尾重试次
+			//如果加载后为空，放入队列末尾重试
 			if (content == null) {
 				var errorCount:int = _failRes[resInfo.url] || 0;
 				if (errorCount < _retryNum) {
@@ -108,7 +108,7 @@ package morn.core.managers {
 			load(url, ResLoader.AMF, complete, progress, error, isCacheContent);
 		}
 		
-		/**加载TXT，返回String*/
+		/**加载TXT,XML，返回String*/
 		public function loadTXT(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
 			load(url, ResLoader.TXT, complete, progress, error, isCacheContent);
 		}
@@ -121,6 +121,35 @@ package morn.core.managers {
 		/**加载BYTE，返回ByteArray*/
 		public function loadBYTE(url:String, complete:Handler = null, progress:Handler = null, error:Handler = null, isCacheContent:Boolean = true):void {
 			load(url, ResLoader.BYTE, complete, progress, error, isCacheContent);
+		}
+		
+		/**获得已加载的资源*/
+		public function getResLoaded(url:String):* {
+			return ResLoader.getResLoaded(url);
+		}
+		
+		/**删除已加载的资源*/
+		public function clearResLoaded(url:String):void {
+			ResLoader.clearResLoaded(url);
+		}
+		
+		/**尝试关闭加载*/
+		public function tryToCloseLoad(url:String):void {
+			if (_resLoader.url == url) {
+				_resLoader.tryToCloseLoad();
+				App.log.warn("Try to close load:", url);
+				_isLoading = false;
+				checkNext();
+			}
+		}
+		
+		/**加载出错后的重试次数，默认重试一次*/
+		public function get retryNum():int {
+			return _retryNum;
+		}
+		
+		public function set retryNum(value:int):void {
+			_retryNum = value;
 		}
 		
 		/**加载数组里面的资源
@@ -156,42 +185,12 @@ package morn.core.managers {
 				}
 			}
 		}
-		
-		/**获得已加载的资源*/
-		public function getResLoaded(url:String):* {
-			ResLoader.getResLoaded(url);
-		}
-		
-		/**删除已加载的资源*/
-		public function clearResLoaded(url:String):void {
-			ResLoader.clearResLoaded(url);
-		}
-		
-		/**尝试关闭加载*/
-		public function tryToCloseLoad(url:String):void {
-			if (_resLoader.url == url) {
-				_resLoader.tryToCloseLoad();
-				App.log.warn("Try to close load:", url);
-				_isLoading = false;
-				checkNext();
-			}
-		}
-		
-		/**加载出错后的重试次数，默认重试一次*/
-		public function get retryNum():int {
-			return _retryNum;
-		}
-		
-		public function set retryNum(value:int):void {
-			_retryNum = value;
-		}
 	}
 }
 import morn.core.handlers.Handler;
 
 class ResInfo {
-	public function ResInfo() {
-	}
+	public function ResInfo() {}
 	public var url:String;
 	public var type:int;
 	public var complete:Handler;

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {
@@ -15,6 +15,7 @@ package {
 	import morn.core.managers.LangManager;
 	import morn.core.managers.LoaderManager;
 	import morn.core.managers.LogManager;
+	import morn.core.managers.MassLoaderManager;
 	import morn.core.managers.RenderManager;
 	import morn.core.managers.TimerManager;
 	import morn.core.managers.TipManager;
@@ -41,6 +42,8 @@ package {
 		public static var drag:DragManager = new DragManager();
 		/**语言管理器*/
 		public static var lang:LangManager = new LangManager();
+		/**多线程加载管理器*/
+		public static var mloader:MassLoaderManager = new MassLoaderManager();
 		
 		public static function init(main:Sprite):void {
 			stage = main.stage;

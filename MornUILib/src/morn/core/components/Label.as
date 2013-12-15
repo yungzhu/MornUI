@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -47,6 +47,7 @@ package morn.core.components {
 			_format.color = Styles.labelColor;
 			_textField.selectable = false;
 			_textField.autoSize = TextFieldAutoSize.LEFT;
+			_textField.embedFonts = Styles.embedFonts;
 			_bitmap.sizeGrid = [2, 2, 2, 2];
 		}
 		
@@ -278,6 +279,15 @@ package morn.core.components {
 			_textField.x = _margin[0];
 			_textField.y = _margin[1];
 			callLater(changeSize);
+		}
+		
+		/**是否嵌入*/
+		public function get embedFonts():Boolean {
+			return _textField.embedFonts;
+		}
+		
+		public function set embedFonts(value:Boolean):void {
+			_textField.embedFonts = value;
 		}
 		
 		/**格式*/

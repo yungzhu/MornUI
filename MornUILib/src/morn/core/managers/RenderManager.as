@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -35,9 +35,9 @@ package morn.core.managers {
 		}
 		
 		/**延迟调用*/
-		public function callLater(mothod:Function, args:Array = null):void {
-			if (_methods[mothod] == null) {
-				_methods[mothod] = args || [];
+		public function callLater(method:Function, args:Array = null):void {
+			if (_methods[method] == null) {
+				_methods[method] = args || [];
 				invalidate();
 			}
 		}

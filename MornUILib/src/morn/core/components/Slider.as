@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -159,7 +159,7 @@ package morn.core.components {
 		
 		/**设置滑动条*/
 		public function setSlider(min:Number, max:Number, value:Number):void {
-			_value = 0;
+			_value = -1;
 			_min = min;
 			_max = max > min ? max : min;
 			this.value = value < min ? min : value > max ? max : value;

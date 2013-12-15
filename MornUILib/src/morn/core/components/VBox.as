@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -22,7 +22,7 @@ package morn.core.components {
 				var item:Component = getChildAt(i) as Component;
 				if (item) {
 					items.push(item);
-					maxWidth = Math.max(maxWidth, item.width * item.scaleX);
+					maxWidth = Math.max(maxWidth, item.displayWidth);
 				}
 			}
 			
@@ -30,13 +30,13 @@ package morn.core.components {
 			var top:Number = 0;
 			for each (item in items) {
 				item.y = top;
-				top += item.height * item.scaleY + _space;
+				top += item.displayHeight + _space;
 				if (_align == LEFT) {
 					item.x = 0;
 				} else if (_align == CENTER) {
-					item.x = (maxWidth - item.width * item.scaleX) * 0.5;
+					item.x = (maxWidth - item.displayWidth) * 0.5;
 				} else if (_align == RIGHT) {
-					item.x = maxWidth - item.width * item.scaleX;
+					item.x = maxWidth - item.displayWidth;
 				}
 			}
 			changeSize();

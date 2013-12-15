@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -61,6 +61,7 @@ package morn.core.managers {
 					return null;
 				}
 				clips = BitmapUtils.createClips(bmd, xNum, yNum);
+				bmd.dispose();
 				if (cache) {
 					_clipsMap[name] = clips;
 				}

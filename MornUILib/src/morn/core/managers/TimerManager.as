@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.2.0707 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -32,7 +32,7 @@ package morn.core.managers {
 					var method:Function = handler.method;
 					var args:Array = handler.args;
 					if (handler.repeat) {
-						while (t >= handler.exeTime) {
+						while (t >= handler.exeTime && key in _handlers) {
 							handler.exeTime += handler.delay;
 							method.apply(null, args);
 						}

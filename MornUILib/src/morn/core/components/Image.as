@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -112,8 +112,8 @@ package morn.core.components {
 		/**销毁资源
 		 * @param	clearFromLoader 是否同时删除加载缓存*/
 		public function dispose(clearFromLoader:Boolean = false):void {
-			App.asset.disposeBitmapData(_url);
 			_bitmap.bitmapData = null;
+			App.asset.disposeBitmapData(_url);
 			if (clearFromLoader) {
 				App.loader.clearResLoaded(_url);
 			}

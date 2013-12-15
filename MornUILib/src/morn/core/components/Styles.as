@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -15,6 +15,8 @@ package morn.core.components {
 		public static var fontName:String = "Arial";
 		/**字体大小*/
 		public static var fontSize:int = 12;
+		/**是否是嵌入字体*/
+		public static var embedFonts:Boolean = false;
 		
 		//-----------------Label-----------------
 		/**标签颜色*/

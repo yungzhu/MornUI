@@ -1,41 +1,51 @@
-## Morn UI is a lightweight, high performance actionScript 3 UI Components for Flash, and has a visual UI editor
+## Morn UI是flash轻量级，高性能，可视化UI解决方案
 
-Having the following characteristics
+官方地址：http://www.mornui.com/
 
-1 Lightweight, Morn UI library design with streamlined and intuitive, code is lightweight and fast to use, reducing learning costs,the total size of all the libraries is less than 40K
+google code托管地址：http://code.google.com/p/morn/
 
-2 Visualization, Morn UI provides a powerful visual editor, layout and properties can be set in the editor and intuitive to achieve separation of UI and logic, so that art and program co Easy
+具有以下优势：
 
-3 High performance, Morn UI designed by high performance goal, based on bitmap,and use deferred rendering mechanisms to achieve high performance
+1.轻量级，Morn UI库以精简，直观为设计理念，代码轻量，能快速上手，减少学习成本，Morn UI全部库总大小不到30K
 
-4 Easy to expand, whether UI components or editor plug-in, all are very easy to expand, easy customization
+2.可视化，Morn UI提供强大的可视化编辑器，布局及属性均可在编辑器直观设置，实现UI和逻辑分离，让美术和程序轻松合作
 
-5 Automatic resource management, Morn editor automatically manage UI resources, packaged in a flexible manner resources (jpg alpha)
+3.高性能，Morn UI设计之初就以高性能为主要目标，以位图为基础，利用延迟渲染机制，实现了高性能
 
-6 Supports both bitmap and vector graphics, and automatically generate the UI code
+4.易扩展，无论UI组件还是编辑器插件，都非常易于扩展，编辑器支持即改即用，轻松实现个性化
 
-7 Supports multi-project, multi-view development, support for code view, support for collaborative development and svn.
+5.自动资源管理，Morn编辑器自动管理UI资源，以灵活的方式打包资源（jpg+alpha）
 
-8 Multi-language support, built-in language package manager and extraction tools, rapid internationalization
+6.同时支持位图和矢量图，并自动生成UI代码
 
-9.Morn is  lightweight and efficient than flex, and component-based development easier than the flash IDE 
+7.支持多项目，支持多视图开发，支持代码视图，支持协同开发及svn管理
+
+8.支持多语言，内置语言包管理器及提取工具，快速国际化
+
+9.Morn比flex轻量高效，比flash IDE组件化开发更为方便
 
 ![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main.jpg "screenshot")
 	
 ![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main1.jpg "screenshot")
 
+如果遇到BUG欢迎反馈
+反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
+	
+google code 托管地址：http://code.google.com/p/morn/
+	
+github托管地址：https://github.com/yungzhu/morn
 
 	
-Directory structure:
+目录结构:
 
-builder ----- UI Editor
+builder-----UI编辑器
 
-MornUILib --- UI library source
+MornUILib---UI库源码
 
-ExtendLib --- UI extension library and source code
+ExtendLib---UI扩展库及源码
 
-demo -------- Sample Code
+demo--------示例代码
 
-doc --------- documentation and tutorials
+doc---------文档及教程
 
-plugins ----- editor plug-ins and source code
+plugins-----编辑器插件及源码

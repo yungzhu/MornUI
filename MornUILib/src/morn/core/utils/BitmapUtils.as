@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.2.0707 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.utils {
@@ -18,7 +18,7 @@ package morn.core.utils {
 		/**获取9宫格拉伸位图数据*/
 		public static function scale9Bmd(bmd:BitmapData, sizeGrid:Array, width:int, height:int):BitmapData {
 			if (bmd.width == width && bmd.height == height) {
-				return bmd;
+				return bmd.clone();
 			}
 			
 			width = width > 1 ? width : 1;

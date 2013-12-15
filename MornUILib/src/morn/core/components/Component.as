@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -115,6 +115,11 @@ package morn.core.components {
 			}
 		}
 		
+		/**显示的宽度(width * scaleX)*/
+		public function get displayWidth():Number {
+			return width * scaleX;
+		}
+		
 		protected function get measureWidth():Number {
 			commitMeasure();
 			var max:Number = 0;
@@ -143,6 +148,11 @@ package morn.core.components {
 			} else {
 				return measureHeight;
 			}
+		}
+		
+		/**显示的高度(height * scaleY)*/
+		public function get displayHeight():Number {
+			return height * scaleY;
 		}
 		
 		protected function get measureHeight():Number {

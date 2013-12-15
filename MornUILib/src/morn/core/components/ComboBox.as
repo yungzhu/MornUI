@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -95,7 +95,8 @@ package morn.core.components {
 			_list.refresh();
 		}
 		
-		protected function onlistItemMouse(type:String, index:int):void {
+		protected function onlistItemMouse(e:MouseEvent, index:int):void {
+			var type:String = e.type;
 			if (type == MouseEvent.CLICK || type == MouseEvent.ROLL_OVER || type == MouseEvent.ROLL_OUT) {
 				var box:Box = list.getCell(index);
 				var label:Label = box.getChildByName("label") as Label;
@@ -257,7 +258,7 @@ package morn.core.components {
 		}
 		
 		protected function removeList(e:Event):void {
-			if (e == null || (!_button.contains(e.target as DisplayObject) && !_list.contains(e.target as DisplayObject))) {
+			if (e == null || e.target == _list.content || (!_button.contains(e.target as DisplayObject) && !_list.contains(e.target as DisplayObject))) {
 				isOpen = false;
 			}
 		}

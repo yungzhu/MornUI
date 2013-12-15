@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 2.5.1215 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -49,7 +49,7 @@ package morn.core.managers {
 		private var _lastLoaded:Number;
 		
 		public function ResLoader() {
-			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
+			//_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
 			_loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, onStatus);
