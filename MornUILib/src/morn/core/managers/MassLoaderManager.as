@@ -33,7 +33,7 @@ package morn.core.managers {
 			resInfo.type = type;
 			resInfo.completeHandlers.push(complete);
 			resInfo.progressHandlers.push(progress);
-			resInfo.progressHandlers.push(error);
+			resInfo.errorHandlers.push(error);
 			resInfo.isCacheContent = isCacheContent;
 			
 			var content:* = ResLoader.getResLoaded(resInfo.url);
@@ -49,6 +49,7 @@ package morn.core.managers {
 				} else {
 					info.completeHandlers.push(complete);
 					info.progressHandlers.push(progress);
+					info.errorHandlers.push(error);
 				}
 			}
 		}
@@ -106,7 +107,7 @@ package morn.core.managers {
 					return;
 				} else {
 					App.log.warn("mass load error:", resInfo.url);
-					for each (var error:Handler in resInfo.completeHandlers) {
+					for each (var error:Handler in resInfo.errorHandlers) {
 						if (error != null) {
 							error.executeWith([resInfo.url]);
 						}
