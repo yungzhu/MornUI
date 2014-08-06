@@ -1,93 +1,108 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <uiComp>
 	<!-- drag:0-不能拖动，1-水平，2-垂直，3-全部 -->
-	<Base>
-		<prop name="var" tips="命名" type="string" default="" />
-		<prop name="name" tips="名称" type="string" default="" />
-		<prop name="x" tips="x坐标" type="int" default="0" />
-		<prop name="y" tips="y坐标" type="int" default="0" />
-		<prop name="width" tips="宽度" type="int" default="" />
-		<prop name="height" tips="高度" type="int" default="" />
-	</Base>
-	<Component className="morn.core.components.Component" drag="3">
+	<Component className="morn.core.components.Component">
+		<prop name="var" tips="命名,页面内的全局引用" type="string" default="" group="公用" />
+		<prop name="name" tips="名称" type="string" default="" group="公用" />
+		<prop name="x" tips="x坐标" type="number" default="" group="宽高及位置" />
+		<prop name="y" tips="y坐标" type="number" default="" group="宽高及位置" />
+		<prop name="width" tips="宽度" type="number" default="" group="宽高及位置" />
+		<prop name="height" tips="高度" type="number" default="" group="宽高及位置" />
+		<prop name="left" tips="居父容器左边的距离" type="number" default="" group="宽高及位置" />
+		<prop name="right" tips="居父容器右边的距离" type="number" default="" group="宽高及位置" />
+		<prop name="top" tips="居父容器上边的距离" type="number" default="" group="宽高及位置" />
+		<prop name="bottom" tips="居父容器底边的距离" type="number" default="" group="宽高及位置" />
+		<prop name="centerX" tips="水平剧中偏移位置" type="number" default="" group="宽高及位置" />
+		<prop name="centerY" tips="垂直剧中偏移位置" type="number" default="" group="宽高及位置" />		
 		<prop name="alpha" tips="透明度" type="number" default="" />		
 		<prop name="disabled" tips="是否禁用" type="bool" default="false" />
-		<prop name="mouseChildren" tips="子对象是否接收鼠标" type="bool" default="" />
-		<prop name="mouseEnabled" tips="是否接收鼠标" type="bool" default="" />
-		<prop name="scale" tips="缩放" type="int" default="" />
-		<prop name="scaleX" tips="缩放x" type="int" default="" />
-		<prop name="scaleY" tips="缩放y" type="int" default="" />
+		<prop name="mouseChildren" tips="子对象是否接收鼠标" type="bool" default="false" />
+		<prop name="mouseEnabled" tips="是否接收鼠标" type="bool" default="true" />
+		<prop name="scale" tips="缩放,等同于同时设置scaleX,scaleY" type="number" default="" />
+		<prop name="scaleX" tips="缩放x" type="number" default="" />
+		<prop name="scaleY" tips="缩放y" type="number" default="" />
 		<prop name="toolTip" tips="鼠标提示" type="string" default="" />
 		<prop name="visible" tips="是否显示" type="bool" default="true" />
-		<prop name="buttonMode" tips="鼠标是否是按钮模式" type="bool" default="" />
-		<prop name="rotationX" tips="X旋转" type="number" default="" />
-		<prop name="rotationY" tips="Y旋转" type="number" default="" />
+		<prop name="buttonMode" tips="鼠标是否是按钮模式" type="bool" default="false" />
 		<prop name="rotation" tips="旋转" type="number" default="" />
 	</Component>
-	<Box className="morn.core.components.Box" inherit="Component" resName="box" icon="Box" drag="3" />
-	<Container className="morn.core.components.Container" inherit="Box" resName="container" icon="Canvas" drag="3">
-		<prop name="left" tips="居父容器左边的距离" type="number" default="" />
-		<prop name="right" tips="居父容器右边的距离" type="number" default="" />
-		<prop name="top" tips="居父容器上边的距离" type="number" default="" />
-		<prop name="bottom" tips="居父容器底边的距离" type="number" default="" />
-		<prop name="centerX" tips="水平剧中偏移位置" type="number" default="" />
-		<prop name="centerY" tips="垂直剧中偏移位置" type="number" default="" />
+	<Box className="morn.core.components.Box" inherit="Component" resName="box" icon="Box" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="mouseChildren" tips="子对象是否接收鼠标" type="bool" default="true" />
+	</Box>
+	<Container className="morn.core.components.Container" inherit="Box" resName="container" icon="Canvas" groups="公用,常用,宽高及位置" drag="3">
 	</Container>
-	<View className="morn.core.components.View" inherit="Container" drag="3" />
-	<Dialog className="morn.core.components.Dialog" inherit="View" drag="3">
+	<View className="morn.core.components.View" inherit="Container" icon="View" groups="公用,常用,宽高及位置" drag="3" />
+	<Dialog className="morn.core.components.Dialog" inherit="View" icon="Panel" groups="公用,常用,宽高及位置" drag="3">
 		<prop name="dragArea" tips="拖动区域(格式:x, y, width, height)" type="string" default="" />
 	</Dialog>
-	<Image className="morn.core.components.Image" inherit="Component" skinLabel="url" icon="Image" drag="3">
+	<Image className="morn.core.components.Image" inherit="Component" skinLabel="skin" icon="Image" groups="公用,常用,宽高及位置" drag="3">
 		<prop name="url" tips="地址" type="string" default="" />
-		<prop name="sizeGrid" tips="9宫格(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="skin" tips="地址,同url" type="string" default="" group="常用" />
+		<prop name="sizeGrid" tips="9宫格(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
 		<prop name="smoothing" tips="是否对位图进行平滑处理" type="bool" default="false" />
+		<prop name="anchorX" tips="X锚点，值为0-1" type="Number" default="" />
+		<prop name="anchorY" tips="Y锚点，值为0-1" type="Number" default="" />
 	</Image>
-	<Clip className="morn.core.components.Clip" inherit="Component" skinLabel="url" resName="clip" icon="Tile" drag="3">
+	<Clip className="morn.core.components.Clip" inherit="Component" skinLabel="skin" resName="clip" icon="Grid" groups="公用,常用,宽高及位置" drag="3">
 		<prop name="url" tips="地址" type="string" default="" />
-		<prop name="clipX" tips="切片X轴数量" type="int" default="" />
-		<prop name="clipY" tips="切片Y轴数量" type="int" default="" />
-		<prop name="clipWidth" tips="单切片宽度(优先级高于clipX)" type="number" default="" />
-		<prop name="clipHeight" tips="单切片高度(优先级高于clipY)" type="number" default="" />
+		<prop name="skin" tips="地址,同url" type="string" default="" group="常用" />
+		<prop name="clipX" tips="切片X轴数量" type="int" default="" group="常用" />
+		<prop name="clipY" tips="切片Y轴数量" type="int" default="" group="常用" />
+		<prop name="clipWidth" tips="单切片宽度(优先级高于clipX)" type="number" default="" group="常用" />
+		<prop name="clipHeight" tips="单切片高度(优先级高于clipY)" type="number" default="" group="常用" />
 		<prop name="frame" tips="当前帧" type="int" default="" />		
+		<prop name="index" tips="当前帧,同frame" type="int" default="" group="常用"/>		
 		<prop name="interval" tips="动画播放间隔(单位毫秒)" type="int" default="" />
 		<prop name="autoPlay" tips="自动播放" type="bool" default="false" />
-		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
 		<prop name="smoothing" tips="是否对位图进行平滑处理" type="bool" default="false" />
+		<prop name="anchorX" tips="X锚点，值为0-1" type="Number" default="" />
+		<prop name="anchorY" tips="Y锚点，值为0-1" type="Number" default="" />
 	</Clip>
-	<Label className="morn.core.components.Label" inherit="Component" defaultValue="text='label'" resName="label" icon="Label" drag="3">
-		<prop name="text" tips="文本" type="string" default="" />
-		<prop name="align" tips="对齐" type="option" option="left,center,right" default="" />		
+	<Label className="morn.core.components.Label" inherit="Component" defaultValue="text='label'" resName="label" icon="Label" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="text" tips="文本" type="string" default="" group="常用" />
+		<prop name="align" tips="对齐" type="option" option="left,center,right" default="" group="常用" />		
 		<prop name="autoSize" tips="自适应" type="option" option="none,left,center,right" default=""/>
-		<prop name="bold" tips="是否粗体" type="bool" default="false" />
-		<prop name="color" tips="颜色" type="color" default="" />
-		<prop name="font" tips="字体" type="comboBox" option="Arial,SimSun,Microsoft YaHei" default="" />
-		<prop name="size" tips="大小" type="string" default="" />
+		<prop name="bold" tips="是否粗体" type="bool" default="false" group="常用" />
+		<prop name="color" tips="颜色" type="color" default="" group="常用" />
+		<prop name="font" tips="字体" type="comboBox" option="Arial,SimSun,Microsoft YaHei" default="" group="常用" />
+		<prop name="size" tips="大小" type="string" default="" group="常用" />
 		<prop name="stroke" tips="描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="isHtml" tips="是否是html" type="bool" default="false" />		
-		<prop name="multiline" tips="是否是多行" type="bool" default="false" />
-		<prop name="wordWrap" tips="是否自动换行" type="bool" default="false" />
+		<prop name="multiline" tips="是否是多行" type="bool" default="false" group="常用" />
+		<prop name="wordWrap" tips="是否自动换行" type="bool" default="false" group="常用" />
 		<prop name="skin" tips="背景皮肤" type="string" default="" />
 		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
-		<prop name="margin" tips="间距(格式:左边距,上边距,右边距,下边距)" type="int" default="" />
-		<prop name="selectable" tips="是否可选" type="bool" default="false" />		
+		<prop name="margin" tips="间距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="selectable" tips="是否可选" type="bool" default="" />		
 		<prop name="underline" tips="下划线" type="bool" default="false" />
 		<prop name="leading" tips="段落空行" type="int" default="" />
 		<prop name="indent" tips="第一个字符的缩进" type="int" default="" />
 		<prop name="asPassword" tips="是否是密码" type="bool" default="false" />
 		<prop name="letterSpacing" tips="字间距" type="int" default="" />
+		<prop name="background" tips="是否显示背景颜色" type="bool" default="false" />
+		<prop name="backgroundColor" tips="背景颜色" type="color" default="" />
 	</Label>
-	<TextInput className="morn.core.components.TextInput" inherit="Label" defaultValue="text='TextInput'" skinLabel="skin" resName="input" icon="TextInput" drag="3">
+	<TextInput className="morn.core.components.TextInput" inherit="Label" defaultValue="text='TextInput'" skinLabel="skin" resName="input" icon="TextInput" groups="公用,常用,宽高及位置" drag="3">
 		<prop name="restrict" tips="可以输入的文字" type="string" default="" />
 		<prop name="editable" tips="是否可编辑" type="bool" default="true" />
 		<prop name="maxChars" tips="最多可包含的字符数" type="int" default="" />
+		<prop name="mouseChildren" tips="子对象是否接收鼠标" type="bool" default="true" />
+		<prop name="skin" tips="背景皮肤" type="string" group="常用" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
+		<prop name="margin" tips="间距(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
 	</TextInput>
-	<TextArea className="morn.core.components.TextArea" inherit="TextInput" defaultValue="text='TextArea'" skinLabel="skin" resName="area" icon="TextArea"  drag="3">
-		<prop name="scrollBarSkin" tips="滚动条皮肤" type="string" default="" />
+	<TextArea className="morn.core.components.TextArea" inherit="TextInput" defaultValue="text='TextArea'" skinLabel="skin" resName="area" icon="TextArea" groups="公用,常用,宽高及位置"  drag="3">
+		<prop name="vScrollBarSkin" tips="垂直滚动条皮肤" type="string" default="" group="常用" />
+		<prop name="hScrollBarSkin" tips="水平滚动条皮肤" type="string" default="" group="常用" />
+		<prop name="multiline" tips="是否是多行" type="bool" default="true" />
+		<prop name="wordWrap" tips="是否自动换行" type="bool" default="true" />
 	</TextArea>
-	<Button className="morn.core.components.Button" inherit="Component" skinLabel="skin" defaultValue="label='label'" resName="btn" icon="Button" drag="3">
-		<prop name="skin" tips="皮肤" type="string" default="" />
-		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
-		<prop name="label" tips="按钮标签" type="string" default="" />
+	<Button className="morn.core.components.Button" inherit="Component" skinLabel="skin" defaultValue="label='label'" resName="btn" icon="Button" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />
+		<prop name="stateNum" tips="皮肤的状态数，支持单态，两态和三态按钮" type="option" option="1,2,3" default="3" group="常用" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
+		<prop name="label" tips="按钮标签" type="string" default="" group="常用" />
 		<prop name="labelFont" tips="字体" type="comboBox" option="Arial,SimSun,Microsoft YaHei" default="" />
 		<prop name="labelBold" tips="标签加粗" type="bool" default="false" />
 		<prop name="labelColors" tips="标签颜色(格式:upColor,overColor,downColor,disableColor)" type="string" default="" />
@@ -98,107 +113,132 @@
 		<prop name="toggle" tips="toggle" type="bool" default="false" />
 		<prop name="letterSpacing" tips="字间距" type="int" default="" />
 	</Button>
-	<LinkButton className="morn.core.components.LinkButton" inherit="Button" defaultValue="label='label'" resName="link" icon="LinkButton" />
-	<CheckBox className="morn.core.components.CheckBox" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="check" icon="CheckBox" />
-	<RadioButton className="morn.core.components.RadioButton" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="radio" icon="RadioButton">
-		<prop name="value" tips="用户定义值" type="string" default="" />
+	<LinkButton className="morn.core.components.LinkButton" inherit="Button" defaultValue="label='label'" resName="link" icon="LinkButton" groups="公用,常用,宽高及位置" />
+	<CheckBox className="morn.core.components.CheckBox" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="check" icon="CheckBox" groups="公用,常用,宽高及位置" >
+		<prop name="toggle" tips="toggle" type="bool" default="true" />
+	</CheckBox>
+	<RadioButton className="morn.core.components.RadioButton" inherit="Button" skinLabel="skin" defaultValue="label='label'" resName="radio" icon="RadioButton" groups="公用,常用,宽高及位置">
+		<prop name="value" tips="用户定义值" type="string" default="" group="常用" />
 	</RadioButton>
-	<Tab className="morn.core.components.Tab" inherit="Box" skinLabel="skin" defaultValue="labels='label1,label2'" resName="tab" icon="TabBar">
-		<prop name="skin" tips="皮肤" type="string" default="" />
-		<prop name="labels" tips="标签集合" type="string" default="" />
-		<prop name="selectedIndex" tips="选择索引" type="int" default="" />
+	<Tab className="morn.core.components.Tab" inherit="Box" skinLabel="skin" defaultValue="labels='label1,label2'" resName="tab" icon="TabBar" groups="公用,常用,宽高及位置">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用"/>
+		<prop name="labels" tips="标签集合" type="string" default="" group="常用" />
+		<prop name="space" tips="间隔" type="Number" default="" group="常用" />
+		<prop name="direction" tips="排列方向" type="option" option="horizontal,vertical" default="horizontal" group="常用" />
+		<prop name="selectedIndex" tips="选择索引，默认-1" type="int" default="" group="常用" />
 		<prop name="labelBold" tips="标签加粗" type="bool" default="false" />
 		<prop name="labelColors" tips="标签颜色(格式:upColor,overColor,downColor,disableColor)" type="string" default="" />
 		<prop name="labelSize" tips="标签大小" type="int" default="" />
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="labelMargin" tips="按钮标签边距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
-		<prop name="direction" tips="排列方向" type="option" option="horizontal,vertical" default="horizontal" />
 	</Tab>
-	<RadioGroup className="morn.core.components.RadioGroup" inherit="Box" skinLabel="skin" defaultValue="labels='label1,label2'" resName="radiogroup" icon="RadioButtonGroup">
+	<RadioGroup className="morn.core.components.RadioGroup" inherit="Box" skinLabel="skin" defaultValue="labels='label1,label2'" resName="radiogroup" icon="RadioButtonGroup" groups="公用,常用,宽高及位置">
 		<prop name="skin" tips="皮肤" type="string" default="" />
 		<prop name="labels" tips="标签集合" type="string" default="" />
+		<prop name="space" tips="间隔" type="Number" default="" group="常用" />
+		<prop name="direction" tips="排列方向" type="option" option="horizontal,vertical" default="horizontal" group="常用" />
 		<prop name="selectedValue" tips="被选择单选按钮的值" type="string" default="" />
-		<prop name="selectedIndex" tips="选择索引" type="int" default="" />
+		<prop name="selectedIndex" tips="选择索引" type="int" default="" group="常用" />
 		<prop name="labelBold" tips="标签加粗" type="bool" default="false" />
 		<prop name="labelColors" tips="标签颜色(格式:upColor,overColor,downColor,disableColor)" type="string" default="" />
 		<prop name="labelSize" tips="标签大小" type="int" default="" />
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 		<prop name="labelMargin" tips="按钮标签边距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
-		<prop name="direction" tips="排列方向" type="option" option="horizontal,vertical" default="horizontal" />
 	</RadioGroup>
-	<ViewStack className="morn.core.components.ViewStack" inherit="Box" icon="ViewStack">
-		<prop name="selectedIndex" tips="选择索引" type="bool" default="" />
+	<ViewStack className="morn.core.components.ViewStack" inherit="Box" icon="ViewStack" groups="公用,常用,宽高及位置">
+		<prop name="selectedIndex" tips="选择索引" type="int" default="" group="常用" />
 	</ViewStack>
-	<List className="morn.core.components.List" inherit="Box" icon="List">
-		<prop name="repeatX" tips="X方向项数量" type="int" default="" />
-		<prop name="repeatY" tips="Y方向项数量" type="int" default="" />
-		<prop name="spaceX" tips="X方向项间隔" type="int" default="" />
-		<prop name="spaceY" tips="X方向项间隔" type="int" default="" />
+	<List className="morn.core.components.List" inherit="Box" defaultValue="width='100' height='100'" icon="List" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="vScrollBarSkin" tips="垂直滚动条皮肤" type="string" default="" group="常用" />
+		<prop name="hScrollBarSkin" tips="水平滚动条皮肤" type="string" default="" group="常用" />	
+		<prop name="repeatX" tips="X方向项数量" type="int" default="" group="常用" />
+		<prop name="repeatY" tips="Y方向项数量" type="int" default="" group="常用" />
+		<prop name="spaceX" tips="X方向项间隔" type="int" default="" group="常用" />
+		<prop name="spaceY" tips="X方向项间隔" type="int" default="" group="常用" />	
 		<prop name="selectEnable" tips="是否可以选中" type="bool" default="true" />
-	</List>	
-	<Slider className="morn.core.components.Slider" inherit="Component" skinLabel="skin">
-		<prop name="skin" tips="皮肤" type="string" default="" />		
-		<prop name="value" tips="当前值" type="number" default="" />
-		<prop name="min" tips="滑块上允许的最小值" type="number" default="" />
-		<prop name="max" tips="滑块上允许的最大值" type="number" default="" />
+	</List>
+	<Tree className="morn.core.components.Tree" inherit="Box" defaultValue="width='100' height='100'" icon="Tree" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="scrollBarSkin" tips="滚动条皮肤" type="string" default="" group="常用" />
+		<prop name="spaceLeft" tips="左侧缩进距离" type="Number" default="" group="常用" />
+		<prop name="spaceBottom" tips="项间隔距离" type="Number" default="" group="常用" />
+	</Tree>	
+	<Slider className="morn.core.components.Slider" inherit="Component" skinLabel="skin" groups="公用,常用,宽高及位置">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />		
+		<prop name="value" tips="当前值" type="number" default="" group="常用" />
+		<prop name="min" tips="滑块上允许的最小值" type="number" default="" group="常用" />
+		<prop name="max" tips="滑块上允许的最大值" type="number" default="" group="常用" />
 		<prop name="tick" tips="刻度值" type="number" default="" />
 		<prop name="showLabel" tips="是否显示标签" type="bool" default="true" />
-		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
 		<prop name="allowBackClick" tips="是否允许背景点击" type="bool" default="true" />		
 	</Slider>
-	<VSlider className="morn.core.components.VSlider" inherit="Slider" skinLabel="skin" resName="vslider" icon="VSlider" drag="2" />
-	<HSlider className="morn.core.components.HSlider" inherit="Slider" skinLabel="skin" resName="hslider" icon="HSlider" drag="1" />
-	<ScrollBar className="morn.core.components.ScrollBar" inherit="Component" skinLabel="skin">
-		<prop name="skin" tips="皮肤" type="string" default="" />	
+	<VSlider className="morn.core.components.VSlider" inherit="Slider" skinLabel="skin" resName="vslider" icon="VSlider" drag="2" groups="公用,常用,宽高及位置" />
+	<HSlider className="morn.core.components.HSlider" inherit="Slider" skinLabel="skin" resName="hslider" icon="HSlider" drag="1" groups="公用,常用,宽高及位置" />
+	<ScrollBar className="morn.core.components.ScrollBar" inherit="Component" skinLabel="skin" groups="公用,常用,宽高及位置">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />	
 		<prop name="value" tips="当前值" type="number" default="" />
 		<prop name="min" tips="最小滚动位置" type="number" default="" />
 		<prop name="max" tips="最大滚动位置" type="number" default="" />
 		<prop name="scrollSize" tips="点击按钮滚动量" type="number" default="" />
-		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
+		<prop name="mouseWheelEnable" tips="是否滚轮滚动，默认为true" type="bool" default="true" />
+		<prop name="touchScrollEnable" tips="是否触摸滚动，默认为true" type="bool" default="true" />
+		<prop name="autoHide" tips="是否自动隐藏滚动条(无需滚动时)，默认为true" type="bool" default="true" />
+		<prop name="showButtons" tips="是是否显示按钮，默认为true" type="bool" default="true" />
 	</ScrollBar>
-	<VScrollBar className="morn.core.components.VScrollBar" inherit="ScrollBar" skinLabel="skin" resName="vscroll" icon="VScrollBar" drag="2" />
-	<HScrollBar className="morn.core.components.HScrollBar" inherit="ScrollBar" skinLabel="skin" resName="hscroll" icon="HScrollBar" drag="1"/>
-	<UIView inherit="Container" >
-		<prop name="runtime" tips="运行时的逻辑类" type="string" default="" />
+	<VScrollBar className="morn.core.components.VScrollBar" inherit="ScrollBar" skinLabel="skin" resName="vscroll" icon="VScrollBar" groups="公用,常用,宽高及位置" drag="2" />
+	<HScrollBar className="morn.core.components.HScrollBar" inherit="ScrollBar" skinLabel="skin" resName="hscroll" icon="HScrollBar" groups="公用,常用,宽高及位置" drag="1"/>
+	<UIView inherit="Container" icon="View" groups="公用,常用,宽高及位置" >
+		<prop name="runtime" tips="运行时的逻辑类" type="string" default="" group="常用"/>
 	</UIView>
-	<FrameClip className="morn.core.components.FrameClip" inherit="Component" skinLabel="skin" resName="frame" icon="VideoDisplay" drag="3">
-		<prop name="skin" tips="皮肤" type="string" default="" />	
+	<FrameClip className="morn.core.components.FrameClip" inherit="Component" skinLabel="skin" resName="frame" icon="VideoDisplay" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />	
 		<prop name="autoPlay" tips="自动播放" type="bool" default="false" />
 		<prop name="frame" tips="当前帧" type="int" default="" />		
-		<prop name="interval" tips="动画播放间隔(单位毫秒)" type="int" default="" />
+		<prop name="index" tips="当前帧,同frame" type="int" default="" group="常用" />	
+		<prop name="interval" tips="动画播放间隔(单位毫秒)" type="int" default="" group="常用" />
 	</FrameClip>
-	<ProgressBar className="morn.core.components.ProgressBar" inherit="Component" skinLabel="skin" resName="progress" icon="ProgressBar" drag="1">
-		<prop name="skin" tips="皮肤" type="string" default="" />
+	<ProgressBar className="morn.core.components.ProgressBar" inherit="Component" skinLabel="skin" resName="progress" icon="ProgressBar" groups="公用,常用,宽高及位置" drag="1">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />
 		<prop name="value" tips="当前进度范围是0到1" type="number" default="" />
 		<prop name="label" tips="随进度栏显示的文本" type="string" default="" />		
-		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
 	</ProgressBar>
-	<ComboBox className="morn.core.components.ComboBox" inherit="Component" skinLabel="skin" defaultValue="labels='label1,label2'" resName="combo" icon="ComboBox" drag="1">
-		<prop name="skin" tips="皮肤" type="string" default="" />
-		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
-		<prop name="labels" tips="标签集合" type="string" default="" />
+	<ComboBox className="morn.core.components.ComboBox" inherit="Component" skinLabel="skin" defaultValue="labels='label1,label2'" resName="combo" icon="ComboBox" groups="公用,常用,宽高及位置" drag="1">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />
+		<prop name="sizeGrid" tips="九宫格信息(格式:左边距,上边距,右边距,下边距)" type="string" default="" group="常用" />
+		<prop name="labels" tips="标签集合" type="string" default="" group="常用" />
 		<prop name="itemSize" tips="项字体大小" type="int" default="" />
 		<prop name="itemColors" tips="项颜色(格式:overBgColor,overLabelColor,outLableColor,borderColor,bgColor)" type="string" default="" />
-		<prop name="scrollBarSkin" tips="滚动条" type="string" default="" />
-		<prop name="selectedIndex" tips="选择索引" type="int" default="" />
+		<prop name="scrollBarSkin" tips="滚动条" type="string" default="" group="常用" />
+		<prop name="selectedIndex" tips="选择索引" type="int" default="" group="常用" />
+		<prop name="selectedLabel" tips="选择标签" type="string" default="" group="常用" />
 		<prop name="visibleNum" tips="可见项数量" type="int" default="" />
-		<prop name="openDirection" tips="打开方向" type="option" option="up,down" default="" />
+		<prop name="labelFont" tips="字体" type="comboBox" option="Arial,SimSun,Microsoft YaHei" default="" />
 		<prop name="labelBold" tips="标签加粗" type="bool" default="false" />
 		<prop name="labelColors" tips="标签颜色(格式:upColor,overColor,downColor,disableColor)" type="string" default="" />
 		<prop name="labelMargin" tips="标签间距(格式:左边距,上边距,右边距,下边距)" type="string" default="" />
 		<prop name="labelSize" tips="标签大小" type="int" default="" />
 		<prop name="labelStroke" tips="标签描边(格式:color,alpha,blurX,blurY,strength,quality)" type="colorBox" default="" />
 	</ComboBox>
-	<Panel className="morn.core.components.Panel" inherit="Container" icon="Panel" drag="3">
-		<prop name="vScrollBarSkin" tips="垂直滚动条皮肤" type="string" default="" />
-		<prop name="hScrollBarSkin" tips="水平滚动条皮肤" type="string" default="" />
+	<Panel className="morn.core.components.Panel" inherit="Container" icon="Panel" groups="公用,常用,宽高及位置" drag="3">
+		<prop name="vScrollBarSkin" tips="垂直滚动条皮肤" type="string" default="" group="常用" />
+		<prop name="hScrollBarSkin" tips="水平滚动条皮肤" type="string" default="" group="常用" />
 	</Panel>
-	<HBox className="morn.core.components.HBox" inherit="Box" icon="HBox" drag="0">
-		<prop name="space" tips="子对象的间隔" type="int" default="" />
-		<prop name="align" tips="布局元素的垂直对齐" type="option" option="none,top,middle,bottom" default="" />
+	<HBox className="morn.core.components.HBox" inherit="Box" icon="HBox" groups="公用,常用,宽高及位置" drag="0">
+		<prop name="space" tips="子对象的间隔" type="int" default="" group="常用" />
+		<prop name="align" tips="布局元素的垂直对齐" type="option" option="none,top,middle,bottom" default="" group="常用" />
 	</HBox>
-	<VBox className="morn.core.components.VBox" inherit="Box" icon="VBox" drag="0">
-		<prop name="space" tips="子对象的间隔" type="int" default="" />
-		<prop name="align" tips="布局元素的水平对齐" type="option" option="none,left,center,right" default="" />
+	<VBox className="morn.core.components.VBox" inherit="Box" icon="VBox" groups="公用,常用,宽高及位置" drag="0">
+		<prop name="space" tips="子对象的间隔" type="int" default="" group="常用" />
+		<prop name="align" tips="布局元素的水平对齐" type="option" option="none,left,center,right" default="" group="常用" />
 	</VBox>
+	<ColorPicker className="morn.core.components.ColorPicker" inherit="Component" icon="ColorPicker" groups="公用,常用,宽高及位置" drag="0">
+		<prop name="skin" tips="皮肤" type="string" default="" group="常用" />
+		<prop name="selectedColor" tips="选择的颜色" type="int" default="" group="常用" />
+		<prop name="panelBgColor" tips="面板背景颜色" type="int" default="" group="常用" />
+		<prop name="panelBorderColor" tips="面板边框颜色" type="int" default="" group="常用" />
+		<prop name="panelTextColor" tips="面板文本字体颜色" type="int" default="" group="常用" />
+		<prop name="panelTextBgColor" tips="面板文本背景颜色" type="int" default="" group="常用" />
+	</ColorPicker>
 </uiComp>

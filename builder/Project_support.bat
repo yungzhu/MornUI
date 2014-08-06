@@ -9,6 +9,6 @@ SET mornmaindir=%mornmaindir:\=\\%
 >>".\morn.reg" ECHO @="morn_auto_file"
 >>".\morn.reg" ECHO.
 >>".\morn.reg" ECHO [HKEY_CLASSES_ROOT\morn_auto_file\shell\open\command]
->>".\morn.reg" ECHO @="\"%mornmaindir%\\Main.exe\" \"%%1\""
+>>".\morn.reg" ECHO @="\"%mornmaindir%\\MornBuilder.exe\" \"%%1\""
 morn.reg
 del /F /Q morn.reg
