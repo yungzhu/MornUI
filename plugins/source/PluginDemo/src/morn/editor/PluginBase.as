@@ -164,9 +164,13 @@ package morn.editor {
 		
 		}
 		
-		/**内置的提示弹框*/
-		public static function alert(title:String, text:String, flags:uint = 0x4, closeHandler:Function = null):void {
+		/**警示弹框*/
+		public static function alert(title:String, text:String):void {
+		}
 		
+		/**确认弹框
+		 * @param	closeHandler 关闭回调，返回参数(sure:Boolean)*/
+		public static function confirm(title:String, text:String, closeHandler:Function = null):void {
 		}
 		
 		/**日志，方便调试，在编辑器内(ctrl+L)可见*/
