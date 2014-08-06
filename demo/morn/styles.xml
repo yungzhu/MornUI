@@ -5,4 +5,13 @@
   <item name="png.comp.clip_selectBox" compress="0" quality="80" props="clipY=2"/>
   <item name="png.comp.progress_blue" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
   <item name="png.comp.bg2" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
+  <item name="png.comp2.panel" compress="0" quality="80" props="sizeGrid=4,35,4,4"/>
+  <item name="png.comp2.progress" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
+  <item name="png.comp2.textinput" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
+  <item name="png.comp2.textarea" compress="0" quality="80" props="sizeGrid=4,4,4,4"/>
+  <item name="png.comp2.combobox" compress="0" quality="80" props="sizeGrid=4,4,20,4"/>
+  <item name="png.comp2.hslider" compress="0" quality="80" props="sizeGrid=3,3,3,3"/>
+  <item name="png.comp2.vslider" compress="0" quality="80" props="sizeGrid=3,3,3,3"/>
+  <item name="assets.frameclip_Bear" type="Image" compress="0" quality="80" props=""/>
+  <item name="png.test.Window" type="Clip" compress="0" quality="80" props=""/>
 </res>

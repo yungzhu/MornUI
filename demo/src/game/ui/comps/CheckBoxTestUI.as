@@ -3,7 +3,7 @@ package game.ui.comps {
 	import morn.core.components.*;
 	public class CheckBoxTestUI extends Dialog {
 		public var check:CheckBox;
-		protected var uiXML:XML =
+		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="235" height="179"/>
 			  <Button skin="png.comp.btn_close" x="198" y="3" name="close"/>
@@ -14,6 +14,7 @@ package game.ui.comps {
 			</Dialog>;
 		public function CheckBoxTestUI(){}
 		override protected function createChildren():void {
+			super.createChildren();
 			createView(uiXML);
 		}
 	}

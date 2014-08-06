@@ -4,7 +4,7 @@ package game.ui.comps {
 	public class TextAreaTestUI extends Dialog {
 		public var area1:TextArea;
 		public var area2:TextArea;
-		protected var uiXML:XML =
+		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="400" height="350"/>
 			  <Button skin="png.comp.btn_close" x="365" y="3" name="close"/>
@@ -14,6 +14,7 @@ package game.ui.comps {
 			</Dialog>;
 		public function TextAreaTestUI(){}
 		override protected function createChildren():void {
+			super.createChildren();
 			createView(uiXML);
 		}
 	}

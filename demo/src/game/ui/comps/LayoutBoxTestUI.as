@@ -8,7 +8,7 @@ package game.ui.comps {
 		public var vbox2:VBox;
 		public var hbox2:HBox;
 		public var hbox3:HBox;
-		protected var uiXML:XML =
+		protected static var uiXML:XML =
 			<Dialog space="10">
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="600" height="580"/>
 			  <Button skin="png.comp.btn_close" x="560" y="3" name="close"/>
@@ -51,6 +51,7 @@ package game.ui.comps {
 			</Dialog>;
 		public function LayoutBoxTestUI(){}
 		override protected function createChildren():void {
+			super.createChildren();
 			createView(uiXML);
 		}
 	}

@@ -3,7 +3,7 @@ package game.ui.comps {
 	import morn.core.components.*;
 	public class FrameClipTestUI extends Dialog {
 		public var mc:FrameClip;
-		protected var uiXML:XML =
+		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="300" height="289"/>
 			  <Button skin="png.comp.btn_close" x="265" y="3" name="close"/>
@@ -12,6 +12,7 @@ package game.ui.comps {
 			</Dialog>;
 		public function FrameClipTestUI(){}
 		override protected function createChildren():void {
+			super.createChildren();
 			createView(uiXML);
 		}
 	}

@@ -7,7 +7,7 @@ package view {
 		
 		public function ComboBoxTest() {
 			var arr:Array = [];
-			for (var i:int = 0; i < 53; i++) {
+			for (var i:int = 0; i < 2; i++) {
 				arr.push("这是第 " + i + " 项");
 			}
 			combo1.labels = arr.join(",");

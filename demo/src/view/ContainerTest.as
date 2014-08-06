@@ -13,7 +13,7 @@ package view {
 		}
 		
 		private function onRemovedFromStage(e:Event):void {
-			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);		
 		}
 		
 		private function onEnterFrame(e:Event):void {

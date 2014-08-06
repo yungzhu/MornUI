@@ -2,7 +2,7 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class ContainerTestUI extends Dialog {
-		protected var uiXML:XML =
+		protected static var uiXML:XML =
 			<Dialog width="600" height="400">
 			  <Container x="263" y="88" right="10" top="5">
 			    <Button skin="png.comp.btn_close" name="close"/>
@@ -22,6 +22,7 @@ package game.ui.comps {
 			</Dialog>;
 		public function ContainerTestUI(){}
 		override protected function createChildren():void {
+			super.createChildren();
 			createView(uiXML);
 		}
 	}

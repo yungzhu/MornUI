@@ -12,7 +12,7 @@ package game.ui.comps {
 		public var prePage:Button;
 		public var nextPage:Button;
 		public var renderList:List;
-		protected var uiXML:XML =
+		protected static var uiXML:XML =
 			<Dialog space="10">
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="600" height="600"/>
 			  <Button skin="png.comp.btn_close" x="560" y="3" name="close"/>
@@ -84,6 +84,7 @@ package game.ui.comps {
 		public function ListTestUI(){}
 		override protected function createChildren():void {
 			viewClassMap["game.ui.comps.ListItemRenderUI"] = ListItemRenderUI;
+			super.createChildren();
 			createView(uiXML);
 		}
 	}
