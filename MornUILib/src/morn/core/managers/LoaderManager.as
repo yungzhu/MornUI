@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -143,6 +143,13 @@ package morn.core.managers {
 			}
 		}
 		
+		/**停止并清理当前未完成的加载*/
+		public function stopAndClearLoad():void {
+			_resInfos.length = 0;
+			_resLoader.tryToCloseLoad();
+			_isLoading = false;
+		}
+		
 		/**加载出错后的重试次数，默认重试一次*/
 		public function get retryNum():int {
 			return _retryNum;
@@ -190,7 +197,8 @@ package morn.core.managers {
 import morn.core.handlers.Handler;
 
 class ResInfo {
-	public function ResInfo() {}
+	public function ResInfo() {
+	}
 	public var url:String;
 	public var type:int;
 	public var complete:Handler;

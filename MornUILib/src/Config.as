@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {
@@ -22,5 +22,7 @@ package {
 		public static var tipFollowMove:Boolean = true;
 		/**是否开启触摸*/
 		public static var touchScrollEnable:Boolean = true;
+		/**是否支持鼠标滚轴滚动*/
+		public static var mouseWheelEnable:Boolean = true;
 	}
 }

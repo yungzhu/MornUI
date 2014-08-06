@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -23,7 +23,7 @@ package morn.core.components {
 		protected var _stroke:String;
 		protected var _skin:String;
 		protected var _bitmap:AutoBitmap;
-		protected var _margin:Array = [0, 0, 0, 0];
+		protected var _margin:Array = Styles.labelMargin;
 		
 		public function Label(text:String = "", skin:String = null) {
 			this.text = text;
@@ -32,7 +32,6 @@ package morn.core.components {
 		
 		override protected function preinitialize():void {
 			mouseEnabled = false;
-			mouseChildren = true;
 		}
 		
 		override protected function createChildren():void {
@@ -48,7 +47,7 @@ package morn.core.components {
 			_textField.selectable = false;
 			_textField.autoSize = TextFieldAutoSize.LEFT;
 			_textField.embedFonts = Styles.embedFonts;
-			_bitmap.sizeGrid = [2, 2, 2, 2];
+			_bitmap.sizeGrid = Styles.defaultSizeGrid;
 		}
 		
 		/**显示的文本*/
@@ -59,6 +58,7 @@ package morn.core.components {
 		public function set text(value:String):void {
 			if (_text != value) {
 				_text = value || "";
+				_text = _text.replace(/\\n/g, "\n");
 				//callLater(changeText);
 				changeText();
 				sendEvent(Event.CHANGE);
@@ -319,12 +319,14 @@ package morn.core.components {
 			if (_skin != value) {
 				_skin = value;
 				_bitmap.bitmapData = App.asset.getBitmapData(_skin);
-				_contentWidth = _bitmap.bitmapData.width;
-				_contentHeight = _bitmap.bitmapData.height;
+				if (_bitmap.bitmapData) {
+					_contentWidth = _bitmap.bitmapData.width;
+					_contentHeight = _bitmap.bitmapData.height;
+				}
 			}
 		}
 		
-		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		/**九宫格信息，格式：左边距,上边距,右边距,下边距,是否重复填充(值为0或1)，例如：4,4,4,4,1*/
 		public function get sizeGrid():String {
 			return _bitmap.sizeGrid.join(",");
 		}

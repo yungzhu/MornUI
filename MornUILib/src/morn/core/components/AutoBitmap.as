@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -7,39 +7,19 @@ package morn.core.components {
 	import flash.display.BitmapData;
 	import morn.core.utils.BitmapUtils;
 	
-	/**增强的Bitmap，封装了位置，宽高及9宫格的处理，供组件使用*/
+	/**增强的Bitmap，封装了位置，宽高及九宫格的处理，供组件使用*/
 	public final class AutoBitmap extends Bitmap {
-		private var _x:Number = 0;
-		private var _y:Number = 0;
 		private var _width:Number;
 		private var _height:Number;
 		private var _sizeGrid:Array;
 		private var _source:Vector.<BitmapData>;
 		private var _clips:Vector.<BitmapData>;
 		private var _index:int;
-		private var _smoothing:Boolean;
+		private var _smoothing:Boolean = Styles.smoothing;
+		private var _anchorX:Number;
+		private var _anchorY:Number;
 		
 		public function AutoBitmap() {
-		}
-		
-		/**X坐标(显示时四舍五入)*/
-		override public function get x():Number {
-			return _x;
-		}
-		
-		override public function set x(value:Number):void {
-			_x = value;
-			super.x = Math.round(value);
-		}
-		
-		/**Y坐标(显示时四舍五入)*/
-		override public function get y():Number {
-			return _y;
-		}
-		
-		override public function set y(value:Number):void {
-			_y = value;
-			super.y = Math.round(value);
 		}
 		
 		/**宽度(显示时四舍五入)*/
@@ -66,7 +46,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**9宫格(格式：左间距,上间距,右间距,下间距)*/
+		/**九宫格信息，格式：左边距,上边距,右边距,下边距,是否重复填充(值为0或1)，例如：4,4,4,4,1*/
 		public function get sizeGrid():Array {
 			return _sizeGrid;
 		}
@@ -80,7 +60,6 @@ package morn.core.components {
 			if (value) {
 				clips = new <BitmapData>[value];
 			} else {
-				//清理
 				disposeTempBitmapdata();
 				_source = _clips = null;
 				super.bitmapData = null;
@@ -135,6 +114,12 @@ package morn.core.components {
 				super.width = w;
 				super.height = h;
 			}
+			if (!isNaN(_anchorX)) {
+				super.x = -Math.round(_anchorX * width);
+			}
+			if (!isNaN(_anchorY)) {
+				super.y = -Math.round(_anchorY * height);
+			}
 		}
 		
 		/**销毁临时位图*/
@@ -156,6 +141,29 @@ package morn.core.components {
 		
 		override public function set smoothing(value:Boolean):void {
 			super.smoothing = _smoothing = value;
+		}
+		
+		/**X锚点，值为0-1*/
+		public function get anchorX():Number {
+			return _anchorX;
+		}
+		
+		public function set anchorX(value:Number):void {
+			_anchorX = value;
+		}
+		
+		/**Y锚点，值为0-1*/
+		public function get anchorY():Number {
+			return _anchorY;
+		}
+		
+		public function set anchorY(value:Number):void {
+			_anchorY = value;
+		}
+		
+		/**销毁*/
+		public function dispose():void {
+			bitmapData = null;
 		}
 	}
 }

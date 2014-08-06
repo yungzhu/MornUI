@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package {

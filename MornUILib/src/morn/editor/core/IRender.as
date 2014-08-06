@@ -4,7 +4,8 @@
  */
 package morn.editor.core {
 	
-	/**容器接口，实现了编辑器容器类型*/
-	public interface IBox extends IComponent {
+	/**render接口，实现了编辑器render类型*/
+	public interface IRender {
+		function set itemRender(value:*):void;
 	}
 }

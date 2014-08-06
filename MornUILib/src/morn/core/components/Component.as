@@ -1,9 +1,10 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
+	import flash.display.InteractiveObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -12,16 +13,17 @@ package morn.core.components {
 	import morn.core.utils.ObjectUtils;
 	import morn.editor.core.IComponent;
 	
-	/**重置大小后触发*/
+	/**大小变化后触发*/
 	[Event(name="resize",type="flash.events.Event")]
-	/**移动组件后触发*/
+	/**位置变化后触发*/
 	[Event(name="move",type="morn.core.events.UIEvent")]
 	/**显示鼠标提示时触发*/
 	[Event(name="showTip",type="morn.core.events.UIEvent")]
 	/**隐藏鼠标提示时触发*/
 	[Event(name="hideTip",type="morn.core.events.UIEvent")]
 	
-	/**组件基类*/
+	/**组件基类
+	 * 组件的生命周期：preinitialize > createChildren > initialize > 组件构造函数*/
 	public class Component extends Sprite implements IComponent {
 		protected var _width:Number;
 		protected var _height:Number;
@@ -33,6 +35,13 @@ package morn.core.components {
 		protected var _dataSource:Object;
 		protected var _toolTip:Object;
 		protected var _mouseChildren:Boolean;
+		protected var _top:Number;
+		protected var _bottom:Number;
+		protected var _left:Number;
+		protected var _right:Number;
+		protected var _centerX:Number;
+		protected var _centerY:Number;
+		protected var _layOutEabled:Boolean;
 		
 		public function Component() {
 			mouseChildren = tabEnabled = tabChildren = false;
@@ -61,12 +70,12 @@ package morn.core.components {
 			App.render.callLater(method, args);
 		}
 		
-		/**执行延迟调用*/
+		/**立即执行延迟调用*/
 		public function exeCallLater(method:Function):void {
 			App.render.exeCallLater(method);
 		}
 		
-		/**派发事件，可以携带数据*/
+		/**派发事件，data为事件携带数据*/
 		public function sendEvent(type:String, data:* = null):void {
 			if (hasEventListener(type)) {
 				dispatchEvent(new UIEvent(type, data));
@@ -106,6 +115,7 @@ package morn.core.components {
 		
 		/**宽度(值为NaN时，宽度为自适应大小)*/
 		override public function get width():Number {
+			exeCallLater(resetPosition);
 			if (!isNaN(_width)) {
 				return _width;
 			} else if (_contentWidth != 0) {
@@ -136,11 +146,15 @@ package morn.core.components {
 			if (_width != value) {
 				_width = value;
 				callLater(changeSize);
+				if (_layOutEabled) {
+					callLater(resetPosition);
+				}
 			}
 		}
 		
 		/**高度(值为NaN时，高度为自适应大小)*/
 		override public function get height():Number {
+			exeCallLater(resetPosition);
 			if (!isNaN(_height)) {
 				return _height;
 			} else if (_contentHeight != 0) {
@@ -171,7 +185,22 @@ package morn.core.components {
 			if (_height != value) {
 				_height = value;
 				callLater(changeSize);
+				if (_layOutEabled) {
+					callLater(resetPosition);
+				}
 			}
+		}
+		
+		/**获取X坐标*/
+		override public function get x():Number {
+			exeCallLater(resetPosition);
+			return super.x;
+		}
+		
+		/**获取Y坐标*/
+		override public function get y():Number {
+			exeCallLater(resetPosition);
+			return super.y;
 		}
 		
 		override public function set scaleX(value:Number):void {
@@ -186,7 +215,6 @@ package morn.core.components {
 		
 		/**执行影响宽高的延迟函数*/
 		public function commitMeasure():void {
-		
 		}
 		
 		protected function changeSize():void {
@@ -245,7 +273,7 @@ package morn.core.components {
 			addChild(border);
 		}
 		
-		/**组件xml结构(高级用法：动态更改XML，然后通过页面重新渲染)*/
+		/**组件xml结构(高级用法：可以动态更改XML，然后通过页面重新渲染)*/
 		public function get comXml():XML {
 			return _comXml;
 		}
@@ -254,8 +282,8 @@ package morn.core.components {
 			_comXml = value;
 		}
 		
-		/**数据赋值
-		 * 简单赋值更改组件的默认属性，使用大括号可以指定组件的任意属性进行赋值
+		/**数据赋值，通过对UI赋值来控制UI显示逻辑
+		 * 简单赋值会更改组件的默认属性，使用大括号可以指定组件的任意属性进行赋值
 		 * @example label1和checkbox1分别为组件实例的name属性
 		 * <listing version="3.0">
 		 * //默认属性赋值(更改了label1的text属性，更改checkbox1的selected属性)
@@ -277,7 +305,7 @@ package morn.core.components {
 		}
 		
 		/**鼠标提示
-		 * 可以赋值为文本及函数，以实现自定义鼠标提示和参数携带等
+		 * 可以赋值为文本及函数，以实现自定义样式的鼠标提示和参数携带等
 		 * @example 下面例子展示了三种鼠标提示
 		 * <listing version="3.0">
 		 *	private var _testTips:TestTipsUI = new TestTipsUI();
@@ -315,8 +343,144 @@ package morn.core.components {
 			}
 		}
 		
-		protected function onRollMouse(e:MouseEvent):void {
+		private function onRollMouse(e:MouseEvent):void {
 			dispatchEvent(new UIEvent(e.type == MouseEvent.ROLL_OVER ? UIEvent.SHOW_TIP : UIEvent.HIDE_TIP, _toolTip, true));
+		}
+		
+		/**居父容器顶部的距离*/
+		public function get top():Number {
+			return _top;
+		}
+		
+		public function set top(value:Number):void {
+			_top = value;
+			layOutEabled = true;
+		}
+		
+		/**居父容器底部的距离*/
+		public function get bottom():Number {
+			return _bottom;
+		}
+		
+		public function set bottom(value:Number):void {
+			_bottom = value;
+			layOutEabled = true;
+		}
+		
+		/**居父容器左边的距离*/
+		public function get left():Number {
+			return _left;
+		}
+		
+		public function set left(value:Number):void {
+			_left = value;
+			layOutEabled = true;
+		}
+		
+		/**居父容器右边的距离*/
+		public function get right():Number {
+			return _right;
+		}
+		
+		public function set right(value:Number):void {
+			_right = value;
+			layOutEabled = true;
+		}
+		
+		/**居父容器水平居中位置的偏移*/
+		public function get centerX():Number {
+			return _centerX;
+		}
+		
+		public function set centerX(value:Number):void {
+			_centerX = value;
+			layOutEabled = true;
+		}
+		
+		/**居父容器垂直居中位置的偏移*/
+		public function get centerY():Number {
+			return _centerY;
+		}
+		
+		public function set centerY(value:Number):void {
+			_centerY = value;
+			layOutEabled = true;
+		}
+		
+		private function set layOutEabled(value:Boolean):void {
+			if (_layOutEabled != value) {
+				_layOutEabled = value;
+				addEventListener(Event.ADDED, onAdded);
+				addEventListener(Event.REMOVED, onRemoved);
+			}
+			callLater(resetPosition);
+		}
+		
+		private function onRemoved(e:Event):void {
+			if (e.target == this) {
+				parent.removeEventListener(Event.RESIZE, onResize);
+			}
+		}
+		
+		private function onAdded(e:Event):void {
+			if (e.target == this) {
+				parent.addEventListener(Event.RESIZE, onResize);
+				callLater(resetPosition);
+			}
+		}
+		
+		private function onResize(e:Event):void {
+			callLater(resetPosition);
+		}
+		
+		/**重置位置*/
+		protected function resetPosition():void {
+			if (parent) {
+				if (!isNaN(_centerX)) {
+					x = (parent.width - displayWidth) * 0.5 + _centerX;
+				} else if (!isNaN(_left)) {
+					x = _left;
+					if (!isNaN(_right)) {
+						width = (parent.width - _left - _right) / scaleX;
+					}
+				} else if (!isNaN(_right)) {
+					x = parent.width - displayWidth - _right;
+				}
+				if (!isNaN(_centerY)) {
+					y = (parent.height - displayHeight) * 0.5 + _centerY;
+				} else if (!isNaN(_top)) {
+					y = _top;
+					if (!isNaN(_bottom)) {
+						height = (parent.height - _top - _bottom) / scaleY;
+					}
+				} else if (!isNaN(_bottom)) {
+					y = parent.height - displayHeight - _bottom;
+				}
+			}
+		}
+		
+		override public function set doubleClickEnabled(value:Boolean):void {
+			super.doubleClickEnabled = value;
+			for (var i:int = numChildren - 1; i > -1; i--) {
+				var display:InteractiveObject = getChildAt(i) as InteractiveObject;
+				if (display) {
+					display.doubleClickEnabled = value;
+				}
+			}
+		}
+		
+		override public function addChild(child:DisplayObject):DisplayObject {
+			if (doubleClickEnabled && child is InteractiveObject) {
+				InteractiveObject(child).doubleClickEnabled = true;
+			}
+			return super.addChild(child);
+		}
+		
+		override public function addChildAt(child:DisplayObject, index:int):DisplayObject {
+			if (doubleClickEnabled && child is InteractiveObject) {
+				InteractiveObject(child).doubleClickEnabled = true;
+			}
+			return super.addChildAt(child, index);
 		}
 	}
 }

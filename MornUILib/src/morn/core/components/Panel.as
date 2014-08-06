@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -11,7 +11,7 @@ package morn.core.components {
 	import morn.editor.core.IContent;
 	
 	/**面板*/
-	public class Panel extends Container implements IContent {
+	public class Panel extends Box implements IContent {
 		protected var _content:Box;
 		protected var _vScrollBar:VScrollBar;
 		protected var _hScrollBar:HScrollBar;
@@ -25,21 +25,29 @@ package morn.core.components {
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {
+			child.addEventListener(Event.RESIZE, onResize);
 			callLater(changeScroll);
 			return _content.addChild(child);
 		}
 		
+		private function onResize(e:Event):void {
+			callLater(changeScroll);
+		}
+		
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject {
+			child.addEventListener(Event.RESIZE, onResize);
 			callLater(changeScroll);
 			return _content.addChildAt(child, index);
 		}
 		
 		override public function removeChild(child:DisplayObject):DisplayObject {
+			child.removeEventListener(Event.RESIZE, onResize);
 			callLater(changeScroll);
 			return _content.removeChild(child);
 		}
 		
 		override public function removeChildAt(index:int):DisplayObject {
+			getChildAt(index).removeEventListener(Event.RESIZE, onResize);
 			callLater(changeScroll);
 			return _content.removeChildAt(index);
 		}
@@ -70,41 +78,58 @@ package morn.core.components {
 		}
 		
 		private function changeScroll():void {
-			var vShow:Boolean = _vScrollBar && _content.height > _height;
-			var hShow:Boolean = _hScrollBar && _content.width > _width;
-			var contentWidth:Number = vShow ? _width - _vScrollBar.width : _width;
-			var contentHeight:Number = hShow ? _height - _hScrollBar.height : _height;
-			_content.scrollRect = new Rectangle(0, 0, contentWidth, contentHeight);
+			var contentW:Number = contentWidth;
+			var contentH:Number = contentHeight;
+			var vShow:Boolean = _vScrollBar && contentH > _height;
+			var hShow:Boolean = _hScrollBar && contentW > _width;
+			var showWidth:Number = vShow ? _width - _vScrollBar.width : _width;
+			var showHeight:Number = hShow ? _height - _hScrollBar.height : _height;
+			setContentSize(showWidth, showHeight);
 			if (_vScrollBar) {
-				_vScrollBar.visible = _content.height > _height;
-				if (_vScrollBar.visible) {
-					_vScrollBar.x = _width - _vScrollBar.width;
-					_vScrollBar.y = 0;
-					_vScrollBar.height = _height - (hShow ? _hScrollBar.height : 0);
-					_vScrollBar.scrollSize = _content.height * 0.1;
-					_vScrollBar.thumbPercent = contentHeight / _content.height;
-					_vScrollBar.setScroll(0, _content.height - contentHeight, _vScrollBar.value);
-				}
+				_vScrollBar.x = _width - _vScrollBar.width;
+				_vScrollBar.y = 0;
+				_vScrollBar.height = _height - (hShow ? _hScrollBar.height : 0);
+				_vScrollBar.scrollSize = Math.max(_height * 0.033, 1);
+				_vScrollBar.thumbPercent = showHeight / contentH;
+				_vScrollBar.setScroll(0, contentH - showHeight, _vScrollBar.value);
 			}
 			if (_hScrollBar) {
-				_hScrollBar.visible = _content.width > _width;
-				if (_hScrollBar.visible) {
-					_hScrollBar.x = 0;
-					_hScrollBar.y = _height - _hScrollBar.height;
-					_hScrollBar.width = _width - (vShow ? _vScrollBar.width : 0);
-					_hScrollBar.thumbPercent = contentWidth / _content.width;
-					_hScrollBar.setScroll(0, _content.width - contentWidth, _hScrollBar.value);
-				}
+				_hScrollBar.x = 0;
+				_hScrollBar.y = _height - _hScrollBar.height;
+				_hScrollBar.width = _width - (vShow ? _vScrollBar.width : 0);
+				_hScrollBar.scrollSize = Math.max(_width * 0.033, 1);
+				_hScrollBar.thumbPercent = showWidth / contentW;
+				_hScrollBar.setScroll(0, contentW - showWidth, _hScrollBar.value);
 			}
-			createContentBg();
 		}
 		
-		private function createContentBg():void {
-			var g:Graphics = _content.graphics;
+		private function get contentWidth():Number {
+			var max:Number = 0;
+			for (var i:int = _content.numChildren - 1; i > -1; i--) {
+				var comp:DisplayObject = _content.getChildAt(i);
+				max = Math.max(comp.x + comp.width * comp.scaleX, max);
+			}
+			return max;
+		}
+		
+		private function get contentHeight():Number {
+			var max:Number = 0;
+			for (var i:int = _content.numChildren - 1; i > -1; i--) {
+				var comp:DisplayObject = _content.getChildAt(i);
+				max = Math.max(comp.y + comp.height * comp.scaleY, max);
+			}
+			return max;
+		}
+		
+		private function setContentSize(width:Number, height:Number):void {
+			var g:Graphics = graphics;
 			g.clear();
 			g.beginFill(0xffff00, 0);
-			g.drawRect(0, 0, _content.width, _content.height);
+			g.drawRect(0, 0, width, height);
 			g.endFill();
+			_content.width = width;
+			_content.height = height;
+			_content.scrollRect = new Rectangle(0, 0, width, height);
 		}
 		
 		override public function set width(value:Number):void {
@@ -141,6 +166,7 @@ package morn.core.components {
 			if (_hScrollBar == null) {
 				super.addChild(_hScrollBar = new HScrollBar());
 				_hScrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
+				_hScrollBar.mouseWheelEnable = false;
 				_hScrollBar.target = this;
 				callLater(changeScroll);
 			}
@@ -185,6 +211,10 @@ package morn.core.components {
 			if (hScrollBar) {
 				hScrollBar.value = x;
 			}
+		}
+		
+		public function refresh():void {
+			changeScroll();
 		}
 	}
 }

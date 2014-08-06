@@ -1,17 +1,16 @@
 /**
- * Morn UI Version 2.0.0526 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
-package morn.editor{
+package morn.editor {
 	import flash.display.BitmapData;
-	
 	import morn.core.managers.AssetManager;
 	import morn.core.utils.BitmapUtils;
-
+	
 	/**重置加载器(对MornUI库的AssetsManager进行重置，通过Sys提供的方法，调用编辑器内的资源)*/
-	public class BuilderResManager extends AssetManager{
-		public function BuilderResManager(){
-			
+	public class BuilderResManager extends AssetManager {
+		public function BuilderResManager() {
+		
 		}
 		
 		override public function hasClass(name:String):Boolean {
@@ -31,7 +30,7 @@ package morn.editor{
 		}
 		
 		/**获取切片资源*/
-		override public function getClips(name:String, xNum:int, yNum:int, cache:Boolean = true):Vector.<BitmapData> {
+		override public function getClips(name:String, xNum:int, yNum:int, cache:Boolean = true, source:BitmapData = null):Vector.<BitmapData> {
 			var bmd:BitmapData = getBitmapData(name, false);
 			var clips:Vector.<BitmapData> = BitmapUtils.createClips(bmd, xNum, yNum);
 			return clips;

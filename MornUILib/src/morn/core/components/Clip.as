@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -62,7 +62,8 @@ package morn.core.components {
 			}
 		}
 		
-		/**位图剪辑地址*/
+		/**位图剪辑地址，如果值为已加载资源，会马上显示，否则会先加载后显示
+		 * 举例：url="png.comp.clip" 或者 url="assets/img/clip.png"*/
 		public function get url():String {
 			return _url;
 		}
@@ -72,6 +73,15 @@ package morn.core.components {
 				_url = value;
 				callLater(changeClip);
 			}
+		}
+		
+		/**图片地址，等同于url*/
+		public function get skin():String {
+			return _url;
+		}
+		
+		public function set skin(value:String):void {
+			url = value;
 		}
 		
 		/**切片X轴数量*/
@@ -120,13 +130,13 @@ package morn.core.components {
 		
 		protected function changeClip():void {
 			if (App.asset.hasClass(_url)) {
-				loadComplete(_url, App.asset.getBitmapData(_url, false));
+				loadComplete(_url, false, App.asset.getBitmapData(_url, false));
 			} else {
-				App.loader.loadBMD(_url, new Handler(loadComplete, [_url]));
+				App.mloader.loadBMD(_url, 1, new Handler(loadComplete, [_url, true]));
 			}
 		}
 		
-		protected function loadComplete(url:String, bmd:BitmapData):void {
+		protected function loadComplete(url:String, isLoad:Boolean, bmd:BitmapData):void {
 			if (url == _url && bmd) {
 				if (!isNaN(_clipWidth)) {
 					_clipX = Math.ceil(bmd.width / _clipWidth);
@@ -134,9 +144,7 @@ package morn.core.components {
 				if (!isNaN(_clipHeight)) {
 					_clipY = Math.ceil(bmd.height / _clipHeight);
 				}
-				App.asset.cacheBitmapData(url, bmd);
-				clips = App.asset.getClips(url, _clipX, _clipY);
-				App.asset.disposeBitmapData(url);
+				clips = App.asset.getClips(url, _clipX, _clipY, true, isLoad ? bmd.clone() : bmd);
 			}
 		}
 		
@@ -168,7 +176,7 @@ package morn.core.components {
 			exeCallLater(changeClip);
 		}
 		
-		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		/**九宫格信息，格式：左边距,上边距,右边距,下边距,是否重复填充(值为0或1)，例如：4,4,4,4,1*/
 		public function get sizeGrid():String {
 			if (_bitmap.sizeGrid) {
 				return _bitmap.sizeGrid.join(",");
@@ -199,8 +207,18 @@ package morn.core.components {
 			}
 		}
 		
+		/**当前帧，等同于frame*/
+		public function get index():int {
+			return _bitmap.index;
+		}
+		
+		public function set index(value:int):void {
+			frame = value;
+		}
+		
 		/**切片帧的总数*/
 		public function get totalFrame():int {
+			exeCallLater(changeClip);
 			return _bitmap.clips ? _bitmap.clips.length : 0;
 		}
 		
@@ -305,6 +323,24 @@ package morn.core.components {
 			_bitmap.smoothing = value;
 		}
 		
+		/**X锚点，值为0-1*/
+		public function get anchorX():Number {
+			return _bitmap.anchorX;
+		}
+		
+		public function set anchorX(value:Number):void {
+			_bitmap.anchorX = value;
+		}
+		
+		/**Y锚点，值为0-1*/
+		public function get anchorY():Number {
+			return _bitmap.anchorY;
+		}
+		
+		public function set anchorY(value:Number):void {
+			_bitmap.anchorY = value;
+		}
+		
 		/**位图实体*/
 		public function get bitmap():AutoBitmap {
 			return _bitmap;
@@ -316,7 +352,7 @@ package morn.core.components {
 			_bitmap.bitmapData = null;
 			App.asset.destroyClips(_url);
 			if (clearFromLoader) {
-				App.loader.clearResLoaded(_url);
+				App.mloader.clearResLoaded(_url);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -11,11 +11,14 @@ package morn.core.managers {
 	public class RenderManager {
 		private var _methods:Dictionary = new Dictionary();
 		
+		public function RenderManager() {
+		}
+		
 		private function invalidate():void {
-			App.stage.addEventListener(Event.RENDER, onValidate);
-			//render有一定几率无法触发，这里加上保险处理
-			App.stage.addEventListener(Event.ENTER_FRAME, onValidate);
 			if (App.stage) {
+				//render有一定几率无法触发，这里加上保险处理
+				App.stage.addEventListener(Event.ENTER_FRAME, onValidate);
+				App.stage.addEventListener(Event.RENDER, onValidate);
 				App.stage.invalidate();
 			}
 		}
@@ -31,6 +34,9 @@ package morn.core.managers {
 		public function renderAll():void {
 			for (var method:Object in _methods) {
 				exeCallLater(method as Function);
+			}
+			for each (method in _methods) {
+				return renderAll();
 			}
 		}
 		

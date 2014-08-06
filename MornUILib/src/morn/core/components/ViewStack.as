@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.1.0623 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -11,6 +11,9 @@ package morn.core.components {
 		protected var _items:Vector.<DisplayObject>;
 		protected var _setIndexHandler:Handler = new Handler(setIndex);
 		protected var _selectedIndex:int;
+		
+		public function ViewStack() {
+		}
 		
 		/**批量设置视图*/
 		public function setItems(views:Array):void {
@@ -98,11 +101,7 @@ package morn.core.components {
 			if (value is int || value is String) {
 				selectedIndex = int(value);
 			} else {
-				for (var prop:String in _dataSource) {
-					if (hasOwnProperty(prop)) {
-						this[prop] = _dataSource[prop];
-					}
-				}
+				super.dataSource = value;
 			}
 		}
 	}

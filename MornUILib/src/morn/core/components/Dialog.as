@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.1027 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -21,6 +21,9 @@ package morn.core.components {
 		protected var _dragArea:Rectangle;
 		protected var _popupCenter:Boolean = true;
 		protected var _closeHandler:Handler;
+		
+		public function Dialog() {
+		}
 		
 		override protected function initialize():void {
 			var dragTarget:DisplayObject = getChildByName("drag");

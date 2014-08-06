@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -8,16 +8,30 @@ package morn.core.components {
 	
 	/**布局容器*/
 	public class LayoutBox extends Box {
-		protected var _space:int = 0;
+		protected var _space:Number = 0;
 		protected var _align:String = "none";
+		protected var _maxX:Number = 0;
+		protected var _maxY:Number = 0;
 		
 		public function LayoutBox() {
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {
+			setChild(child);
 			child.addEventListener(Event.RESIZE, onResize);
 			callLater(changeItems);
 			return super.addChild(child);
+		}
+		
+		private function setChild(child:DisplayObject):void {
+			if (child is Component) {
+				if (child.x == 0) {
+					child.x = ++_maxX;
+				}
+				if (child.y == 0) {
+					child.y = ++_maxY;
+				}
+			}
 		}
 		
 		private function onResize(e:Event):void {
@@ -25,6 +39,7 @@ package morn.core.components {
 		}
 		
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject {
+			setChild(child);
 			child.addEventListener(Event.RESIZE, onResize);
 			callLater(changeItems);
 			return super.addChildAt(child, index);
@@ -52,15 +67,14 @@ package morn.core.components {
 		}
 		
 		protected function changeItems():void {
-		
 		}
 		
 		/**子对象的间隔*/
-		public function get space():int {
+		public function get space():Number {
 			return _space;
 		}
 		
-		public function set space(value:int):void {
+		public function set space(value:Number):void {
 			_space = value;
 			callLater(changeItems);
 		}

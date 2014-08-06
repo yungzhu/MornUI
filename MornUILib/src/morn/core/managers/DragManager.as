@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -29,24 +29,26 @@ package morn.core.managers {
 			_dragImage = dragImage ? dragImage : dragInitiator;
 			_data = data;
 			if (_dragImage != _dragInitiator) {
-				if (offset) {
-					_dragImage.x = App.stage.mouseX - offset.x;
-					_dragImage.y = App.stage.mouseY - offset.y;
-				} else {
-					var p:Point = _dragInitiator.localToGlobal(new Point());
-					_dragImage.x = p.x;
-					_dragImage.y = p.y;
+				if (!_dragImage.parent) {
+					App.stage.addChild(_dragImage);
 				}
-				App.stage.addChild(_dragImage);
+				offset = offset || new Point();
+				var p:Point = _dragImage.globalToLocal(new Point(App.stage.mouseX, App.stage.mouseY));
+				_dragImage.x = p.x - offset.x;
+				_dragImage.y = p.y - offset.y;
+				_dragImage.visible = false;
 			}
-			_dragImage.startDrag();
-			_dragInitiator.dispatchEvent(new DragEvent(DragEvent.DRAG_START, dragInitiator, data));
 			App.stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMouseMove);
 			App.stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 		}
 		
 		/**放置把拖动条拖出显示区域*/
 		private function onStageMouseMove(e:MouseEvent):void {
+			if (!_dragImage.visible) {
+				_dragImage.visible = true;
+				_dragImage.startDrag();
+				_dragInitiator.dispatchEvent(new DragEvent(DragEvent.DRAG_START, _dragInitiator, _data));
+			}
 			if (e.stageX <= 0 || e.stageX >= App.stage.stageWidth || e.stageY <= 0 || e.stageY >= App.stage.stageHeight) {
 				_dragImage.stopDrag();
 			} else {
@@ -63,10 +65,8 @@ package morn.core.managers {
 				dropTarget.dispatchEvent(new DragEvent(DragEvent.DRAG_DROP, _dragInitiator, _data));
 			}
 			_dragInitiator.dispatchEvent(new DragEvent(DragEvent.DRAG_COMPLETE, _dragInitiator, _data));
-			if (_dragInitiator != _dragImage) {
-				if (App.stage.contains(_dragImage)) {
-					App.stage.removeChild(_dragImage);
-				}
+			if (_dragInitiator != _dragImage && _dragImage.parent) {
+				_dragImage.parent.removeChild(_dragImage);
 			}
 			_dragInitiator = null;
 			_data = null;

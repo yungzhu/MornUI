@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -138,13 +138,14 @@ package morn.core.components {
 			}
 		}
 		
-		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		/**九宫格信息，格式：左边距,上边距,右边距,下边距,是否重复填充(值为0或1)，例如：4,4,4,4,1*/
 		public function get sizeGrid():String {
 			return _back.sizeGrid;
 		}
 		
 		public function set sizeGrid(value:String):void {
 			_back.sizeGrid = value;
+			_bar.sizeGrid = value;
 		}
 		
 		protected function changeValue():void {

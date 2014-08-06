@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -7,8 +7,8 @@ package morn.core.components {
 	/**组件默认样式*/
 	public class Styles {
 		
-		/**默认九宫格信息[左边距,上边距,右边距,下边距]*/
-		public static var defaultSizeGrid:Array = [4, 4, 4, 4];
+		/**默认九宫格信息[左边距,上边距,右边距,下边距,是否重复填充]*/
+		public static var defaultSizeGrid:Array = [4, 4, 4, 4, 0];
 		
 		//-----------------文本-----------------
 		/**字体名称*/
@@ -23,8 +23,12 @@ package morn.core.components {
 		public static var labelColor:uint = 0x000000;
 		/**标签描边[color,alpha,blurX,blurY,strength,quality]*/
 		public static var labelStroke:Array = [0x170702, 0.8, 2, 2, 10, 1];
+		/**按钮标签边缘[左距离,上距离,又距离,下距离]*/
+		public static var labelMargin:Array = [0, 0, 0, 0];
 		
 		//-----------------Button-----------------
+		/**按钮皮肤的状态数，支持1,2,3三种状态值*/
+		public static var buttonStateNum:int = 3;
 		/**按钮标签颜色[upColor,overColor,downColor,disableColor]*/
 		public static var buttonLabelColors:Array = [0x32556b, 0x32556b, 0x32556b, 0xC0C0C0];
 		/**按钮标签边缘[左距离,上距离,又距离,下距离]*/
@@ -53,5 +57,8 @@ package morn.core.components {
 		public static var tipBorderColor:uint = 0xC0C0C0;
 		/**默认鼠标提示背景颜色*/
 		public static var tipBgColor:uint = 0xFFFFFF;
+		
+		/**默认图片是否平滑处理*/
+		public static var smoothing:Boolean = false;
 	}
 }

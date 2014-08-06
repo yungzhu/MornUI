@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -147,7 +147,7 @@ package morn.core.managers {
 			print("warn", args, 0xFFFF80);
 		}
 		
-		private function print(type:String, args:Array, color:uint):void {
+		public function print(type:String, args:Array, color:uint):void {
 			var msg:String = "<p><font color='#" + color.toString(16) + "'><b>[" + type + "]</b></font> <font color='#EEEEEE'>" + args.join(" ") + "</font></p>";
 			trace("[" + type + "]", args.join(" "));
 			if (_msgs.length > 500) {

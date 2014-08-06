@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -13,8 +13,9 @@ package morn.core.components {
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
 	
-	/**选择项改变后触发*/
-	[Event(name="select",type="flash.events.Event")]
+	
+	/**selectedIndex属性变化时调度*/
+	[Event(name="change",type="flash.events.Event")]
 	
 	/**下拉框*/
 	public class ComboBox extends Component {
@@ -32,7 +33,6 @@ package morn.core.components {
 		protected var _labels:Array = [];
 		protected var _selectedIndex:int = -1;
 		protected var _selectHandler:Handler;
-		protected var _openDirection:String = DOWN;
 		protected var _itemHeight:Number;
 		protected var _listHeight:Number;
 		
@@ -58,7 +58,7 @@ package morn.core.components {
 			_button.labelMargin = "5";
 			_button.addEventListener(MouseEvent.MOUSE_DOWN, onButtonMouseDown);
 			
-			_list.addEventListener(Event.SELECT, onListSelect);
+			_list.addEventListener(Event.CHANGE, onListChange);
 			_scrollBar.name = "scrollBar";
 			_scrollBar.y = 1;
 		}
@@ -67,7 +67,7 @@ package morn.core.components {
 			callLater(changeOpen);
 		}
 		
-		protected function onListSelect(e:Event):void {
+		protected function onListChange(e:Event):void {
 			selectedIndex = _list.selectedIndex;
 		}
 		
@@ -89,8 +89,8 @@ package morn.core.components {
 			var labelWidth:Number = width - 2;
 			var labelColor:Number = _itemColors[2];
 			_itemHeight = ObjectUtils.getTextField(new TextFormat(Styles.fontName, _itemSize)).height + 3;
-			list.itemRender = new XML("<Box><Label name='label' width='" + labelWidth + "' size='" + _itemSize + "' height='" + _itemHeight + "' color='" + labelColor + "' x='1' /></Box>");
-			list.repeatY = _visibleNum;
+			_list.itemRender = new XML("<Box><Label name='label' width='" + labelWidth + "' size='" + _itemSize + "' height='" + _itemHeight + "' color='" + labelColor + "' x='1' /></Box>");
+			_list.repeatY = _visibleNum;
 			_scrollBar.x = width - _scrollBar.width - 1;
 			_list.refresh();
 		}
@@ -98,7 +98,7 @@ package morn.core.components {
 		protected function onlistItemMouse(e:MouseEvent, index:int):void {
 			var type:String = e.type;
 			if (type == MouseEvent.CLICK || type == MouseEvent.ROLL_OVER || type == MouseEvent.ROLL_OUT) {
-				var box:Box = list.getCell(index);
+				var box:Box = _list.getCell(index);
 				var label:Label = box.getChildByName("label") as Label;
 				if (type == MouseEvent.ROLL_OVER) {
 					label.background = true;
@@ -121,6 +121,7 @@ package morn.core.components {
 		override public function set width(value:Number):void {
 			super.width = value;
 			_button.width = _width;
+			callLater(changeItem);
 			callLater(changeList);
 		}
 		
@@ -149,7 +150,6 @@ package morn.core.components {
 		protected function changeItem():void {
 			//赋值之前需要先初始化列表
 			exeCallLater(changeList);
-			
 			//显示边框
 			_listHeight = _labels.length > 0 ? Math.min(_visibleNum, _labels.length) * _itemHeight : _itemHeight;
 			_scrollBar.height = _listHeight - 2;
@@ -177,10 +177,12 @@ package morn.core.components {
 			if (_selectedIndex != value) {
 				_list.selectedIndex = _selectedIndex = value;
 				_button.label = selectedLabel;
+				sendEvent(Event.CHANGE);
+				//兼容老版本
+				sendEvent(Event.SELECT);
 				if (_selectHandler != null) {
 					_selectHandler.executeWith([_selectedIndex]);
 				}
-				sendEvent(Event.SELECT);
 			}
 		}
 		
@@ -243,16 +245,16 @@ package morn.core.components {
 				_button.selected = _isOpen;
 				if (_isOpen) {
 					var p:Point = localToGlobal(new Point());
-					_list.setPosition(p.x, p.y + (_openDirection == DOWN ? height : -_listHeight));
+					var py:Number = p.y + _button.height;
+					py = py + _listHeight <= App.stage.stageHeight ? py : p.y - _listHeight;
+					_list.setPosition(p.x, py);
 					App.stage.addChild(_list);
 					App.stage.addEventListener(MouseEvent.MOUSE_DOWN, removeList);
-					App.stage.addEventListener(Event.REMOVED_FROM_STAGE, removeList);
 					//处理定位
 					_list.scrollTo((_selectedIndex + _visibleNum) < _list.length ? _selectedIndex : _list.length - _visibleNum);
 				} else {
 					_list.remove();
 					App.stage.removeEventListener(MouseEvent.MOUSE_DOWN, removeList);
-					App.stage.removeEventListener(Event.REMOVED_FROM_STAGE, removeList);
 				}
 			}
 		}
@@ -272,7 +274,7 @@ package morn.core.components {
 			_scrollBar.skin = value;
 		}
 		
-		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		/**九宫格信息，格式：左边距,上边距,右边距,下边距,是否重复填充(值为0或1)，例如：4,4,4,4,1*/
 		public function get sizeGrid():String {
 			return _button.sizeGrid;
 		}
@@ -307,15 +309,6 @@ package morn.core.components {
 			}
 		}
 		
-		/**打开方向*/
-		public function get openDirection():String {
-			return _openDirection;
-		}
-		
-		public function set openDirection(value:String):void {
-			_openDirection = value;
-		}
-		
 		/**标签颜色(格式:upColor,overColor,downColor,disableColor)*/
 		public function get labelColors():String {
 			return _button.labelColors;
@@ -327,38 +320,56 @@ package morn.core.components {
 		
 		/**按钮标签边距(格式:左边距,上边距,右边距,下边距)*/
 		public function get labelMargin():String {
-			return _button.labelMargin;
+			return _button.btnLabel.margin;
 		}
 		
 		public function set labelMargin(value:String):void {
-			_button.labelMargin = value;
+			_button.btnLabel.margin = value;
 		}
 		
 		/**按钮标签描边(格式:color,alpha,blurX,blurY,strength,quality)*/
 		public function get labelStroke():String {
-			return _button.labelStroke;
+			return _button.btnLabel.stroke;
 		}
 		
 		public function set labelStroke(value:String):void {
-			_button.labelStroke = value;
+			_button.btnLabel.stroke = value;
 		}
 		
 		/**按钮标签大小*/
 		public function get labelSize():Object {
-			return _button.labelSize;
+			return _button.btnLabel.size;
 		}
 		
 		public function set labelSize(value:Object):void {
-			_button.labelSize = value
+			_button.btnLabel.size = value
 		}
 		
 		/**按钮标签粗细*/
 		public function get labelBold():Object {
-			return _button.labelBold;
+			return _button.btnLabel.bold;
 		}
 		
 		public function set labelBold(value:Object):void {
-			_button.labelBold = value
+			_button.btnLabel.bold = value
+		}
+		
+		/**按钮标签字体*/
+		public function get labelFont():String {
+			return _button.btnLabel.font;
+		}
+		
+		public function set labelFont(value:String):void {
+			_button.btnLabel.font = value
+		}
+		
+		/**按钮状态数，支持单态，两态和三态按钮，分别对应1,2,3值，默认是三态*/
+		public function get stateNum():int {
+			return _button.stateNum;
+		}
+		
+		public function set stateNum(value:int):void {
+			_button.stateNum = value
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -32,7 +32,7 @@ package morn.core.managers {
 					var method:Function = handler.method;
 					var args:Array = handler.args;
 					if (handler.repeat) {
-						while (t >= handler.exeTime && key in _handlers) {
+						while (t >= handler.exeTime && key in _handlers && handler.repeat) {
 							handler.exeTime += handler.delay;
 							method.apply(null, args);
 						}
@@ -133,6 +133,8 @@ package morn.core.managers {
 
 /**定时处理器*/
 class TimerHandler {
+	public function TimerHandler() {
+	}
 	/**执行间隔*/
 	public var delay:int;
 	/**是否重复执行*/

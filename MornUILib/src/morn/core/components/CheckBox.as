@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -24,6 +24,7 @@ package morn.core.components {
 		}
 		
 		override protected function changeLabelSize():void {
+			exeCallLater(changeClips);
 			_btnLabel.x = _bitmap.width + _labelMargin[0];
 			_btnLabel.y = (_bitmap.height - _btnLabel.height) * 0.5 + _labelMargin[1];
 		}

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -17,6 +17,7 @@ package morn.core.managers {
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	
 	import morn.core.handlers.Handler;
 	import morn.core.utils.ObjectUtils;
 	
@@ -34,6 +35,8 @@ package morn.core.managers {
 		public static const DB:uint = 4;
 		/**加载未压缩的ByteArray，返回ByteArray*/
 		public static const BYTE:uint = 5;
+		/**5秒钟加载的最小字节数，如果小于此字节数，则停止加载(LoaderManager内会进行重试加载)，默认为5秒钟最少下载1K*/
+		public static var minBytePre5Second:int = 1024;
 		private static var _loadedMap:Object = {};
 		private var _loader:Loader = new Loader();
 		private var _urlLoader:URLLoader = new URLLoader();
@@ -172,7 +175,7 @@ package morn.core.managers {
 		
 		/**如果5秒钟下载小于1k，则停止下载*/
 		private function checkLoad():void {
-			if (_loaded - _lastLoaded < 1024) {
+			if (_loaded - _lastLoaded < minBytePre5Second) {
 				App.log.warn("load time out:" + _url);
 				tryToCloseLoad();
 				endLoad(null);

@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -9,10 +9,11 @@ package morn.core.components {
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
 	
-	/**选择改变后触发*/
-	[Event(name="select",type="flash.events.Event")]
 	
-	/**按钮类*/
+	/**selected属性变化时调度*/
+	[Event(name="change",type="flash.events.Event")]
+	
+	/**按钮类，可以是单态，两态和三态，默认三态(up,over,down)*/
 	public class Button extends Component implements ISelect {
 		protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
 		protected var _bitmap:AutoBitmap;
@@ -25,6 +26,7 @@ package morn.core.components {
 		protected var _selected:Boolean;
 		protected var _skin:String;
 		protected var _autoSize:Boolean = true;
+		protected var _stateNum:int = Styles.buttonStateNum;
 		
 		public function Button(skin:String = null, label:String = "") {
 			this.skin = skin;
@@ -57,7 +59,6 @@ package morn.core.components {
 				if (_clickHandler) {
 					_clickHandler.execute();
 				}
-				sendEvent(Event.SELECT);
 				return;
 			}
 			if (_selected == false) {
@@ -77,7 +78,7 @@ package morn.core.components {
 			}
 		}
 		
-		/**皮肤*/
+		/**皮肤，支持单态，两态和三态，用stateNum属性设置*/
 		public function get skin():String {
 			return _skin;
 		}
@@ -85,16 +86,25 @@ package morn.core.components {
 		public function set skin(value:String):void {
 			if (_skin != value) {
 				_skin = value;
-				_bitmap.clips = App.asset.getClips(_skin, 1, 3);
-				if (_autoSize) {
-					_contentWidth = _bitmap.width;
-					_contentHeight = _bitmap.height;
-				}
+				callLater(changeClips);
 				callLater(changeLabelSize);
 			}
 		}
 		
+		protected function changeClips():void {
+			_bitmap.clips = App.asset.getClips(_skin, 1, _stateNum);
+			if (_autoSize) {
+				_contentWidth = _bitmap.width;
+				_contentHeight = _bitmap.height;
+			}
+		}
+		
+		override public function commitMeasure():void {
+			exeCallLater(changeClips);
+		}
+		
 		protected function changeLabelSize():void {
+			exeCallLater(changeClips);
 			_btnLabel.width = width - _labelMargin[0] - _labelMargin[2];
 			_btnLabel.height = ObjectUtils.getTextField(_btnLabel.format).height;
 			_btnLabel.x = _labelMargin[0];
@@ -110,6 +120,9 @@ package morn.core.components {
 			if (_selected != value) {
 				_selected = value;
 				state = _selected ? stateMap["selected"] : stateMap["rollOut"];
+				sendEvent(Event.CHANGE);
+				//兼容老版本
+				sendEvent(Event.SELECT);
 			}
 		}
 		
@@ -123,7 +136,13 @@ package morn.core.components {
 		}
 		
 		protected function changeState():void {
-			_bitmap.index = _state;
+			var index:int = _state;
+			if (_stateNum == 2) {
+				index = index < 2 ? index : 1;
+			} else if (_stateNum == 1) {
+				index = 0;
+			}
+			_bitmap.index = index;
 			_btnLabel.color = _labelColors[_state];
 		}
 		
@@ -138,20 +157,9 @@ package morn.core.components {
 		
 		override public function set disabled(value:Boolean):void {
 			if (_disabled != value) {
-				super.disabled = value;
 				state = _selected ? stateMap["selected"] : stateMap["rollOut"];
-				ObjectUtils.gray(this, _disabled);
+				super.disabled = value;
 			}
-		}
-		
-		/**按钮标签字体*/
-		public function get labelFont():String {
-			return _btnLabel.font;
-		}
-		
-		public function set labelFont(value:String):void {
-			_btnLabel.font = value
-			callLater(changeLabelSize);
 		}
 		
 		/**按钮标签颜色(格式:upColor,overColor,downColor,disableColor)*/
@@ -213,6 +221,16 @@ package morn.core.components {
 			callLater(changeLabelSize);
 		}
 		
+		/**按钮标签字体*/
+		public function get labelFont():String {
+			return _btnLabel.font;
+		}
+		
+		public function set labelFont(value:String):void {
+			_btnLabel.font = value;
+			callLater(changeLabelSize);
+		}
+		
 		/**点击处理器(无默认参数)*/
 		public function get clickHandler():Handler {
 			return _clickHandler;
@@ -227,7 +245,7 @@ package morn.core.components {
 			return _btnLabel;
 		}
 		
-		/**九宫格信息(格式:左边距,上边距,右边距,下边距)*/
+		/**九宫格信息，格式：左边距,上边距,右边距,下边距,是否重复填充(值为0或1)，例如：4,4,4,4,1*/
 		public function get sizeGrid():String {
 			if (_bitmap.sizeGrid) {
 				return _bitmap.sizeGrid.join(",");
@@ -261,6 +279,18 @@ package morn.core.components {
 				label = String(value);
 			} else {
 				super.dataSource = value;
+			}
+		}
+		
+		/**皮肤的状态数，支持单态，两态和三态按钮，分别对应1,2,3值，默认是三态*/
+		public function get stateNum():int {
+			return _stateNum;
+		}
+		
+		public function set stateNum(value:int):void {
+			if (_stateNum != value) {
+				_stateNum = value < 1 ? 1 : value > 3 ? 3 : value;
+				callLater(changeClips);
 			}
 		}
 	}

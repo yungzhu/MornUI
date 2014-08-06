@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.4.1020 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -105,7 +105,7 @@ package morn.core.components {
 				_frame = (_frame < _mc.totalFrames && _frame > -1) ? _frame : 0;
 				_mc.gotoAndStop(_frame + 1);
 				sendEvent(UIEvent.FRAME_CHANGED);
-				if (_to && (_mc.currentFrame - 1 == _to || _mc.currentLabel == _to)) {
+				if (_to && (_frame == _to || _mc.currentLabel == _to)) {
 					stop();
 					_to = null;
 					if (_complete != null) {
@@ -115,6 +115,15 @@ package morn.core.components {
 					}
 				}
 			}
+		}
+		
+		/**当前帧，等同于frame*/
+		public function get index():int {
+			return _frame;
+		}
+		
+		public function set index(value:int):void {
+			frame = value;
 		}
 		
 		/**切片帧的总数*/

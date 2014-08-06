@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.0.0526 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.editor {
@@ -34,6 +34,11 @@ package morn.editor {
 		/**获取资源位图*/
 		public static function getResBitmapData(name:String):BitmapData {
 			return null;
+		}
+		
+		/**在编辑器中输入日志*/
+		public static function log(... args):void {
+			trace(args.join(","));
 		}
 	}
 }

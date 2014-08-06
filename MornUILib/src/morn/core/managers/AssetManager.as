@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.managers {
@@ -12,6 +12,9 @@ package morn.core.managers {
 		private var _bmdMap:Object = {};
 		private var _clipsMap:Object = {};
 		private var _domain:ApplicationDomain = ApplicationDomain.currentDomain;
+		
+		public function AssetManager() {
+		}
 		
 		/**判断是否有类的定义*/
 		public function hasClass(name:String):Boolean {
@@ -41,30 +44,30 @@ package morn.core.managers {
 			var bmd:BitmapData = _bmdMap[name];
 			if (bmd == null) {
 				var bmdClass:Class = getClass(name);
-				if (bmdClass == null) {
-					return null;
-				}
-				bmd = new bmdClass(1, 1);
-				if (cache) {
-					_bmdMap[name] = bmd;
+				if (bmdClass != null) {
+					bmd = new bmdClass(1, 1);
+					if (cache) {
+						_bmdMap[name] = bmd;
+					}
 				}
 			}
 			return bmd;
 		}
 		
-		/**获取切片资源*/
-		public function getClips(name:String, xNum:int, yNum:int, cache:Boolean = true):Vector.<BitmapData> {
+		/**获取切片资源,source会被自动*/
+		public function getClips(name:String, xNum:int, yNum:int, cache:Boolean = true, source:BitmapData = null):Vector.<BitmapData> {
 			var clips:Vector.<BitmapData> = _clipsMap[name];
 			if (clips == null) {
-				var bmd:BitmapData = getBitmapData(name, false);
-				if (bmd == null) {
-					return null;
+				var bmd:BitmapData = source || getBitmapData(name, false);
+				if (bmd) {
+					clips = BitmapUtils.createClips(bmd, xNum, yNum);
+					if (cache) {
+						_clipsMap[name] = clips;
+					}
 				}
-				clips = BitmapUtils.createClips(bmd, xNum, yNum);
+			}
+			if (bmd) {
 				bmd.dispose();
-				if (cache) {
-					_clipsMap[name] = clips;
-				}
 			}
 			return clips;
 		}

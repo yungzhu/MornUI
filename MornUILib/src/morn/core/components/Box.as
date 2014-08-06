@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.3.0810 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -8,8 +8,10 @@ package morn.core.components {
 	
 	/**容器类*/
 	public class Box extends Component implements IBox {
-		
 		public function Box() {
+		}
+		
+		override protected function preinitialize():void {
 			mouseChildren = true;
 		}
 		
@@ -52,14 +54,18 @@ package morn.core.components {
 			}
 		}
 		
-		/**增加显示对象到某对象上面*/
+		/**增加显示对象到某对象上面
+		   @param element 要插入的对象
+		 @param compare 参考的对象*/
 		public function insertAbove(element:DisplayObject, compare:DisplayObject):void {
 			removeElement(element);
 			var index:int = getChildIndex(compare);
 			addChildAt(element, Math.min(index + 1, numChildren));
 		}
 		
-		/**增加显示对象到某对象下面*/
+		/**增加显示对象到某对象下面
+		   @param element 要插入的对象
+		 @param compare 参考的对象*/
 		public function insertBelow(element:DisplayObject, compare:DisplayObject):void {
 			removeElement(element);
 			var index:int = getChildIndex(compare);
@@ -72,6 +78,10 @@ package morn.core.components {
 				var comp:Component = getChildByName(name) as Component;
 				if (comp) {
 					comp.dataSource = value[name];
+				} else {
+					if (hasOwnProperty(name)) {
+						this[name] = value[name];
+					}
 				}
 			}
 		}

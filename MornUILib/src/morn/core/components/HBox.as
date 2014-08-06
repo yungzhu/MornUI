@@ -1,5 +1,5 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
@@ -29,7 +29,7 @@ package morn.core.components {
 			items.sortOn(["x"], Array.NUMERIC);
 			var left:Number = 0;
 			for each (item in items) {
-				item.x = left;
+				item.x = _maxX = left;
 				left += item.displayWidth + _space;
 				if (_align == TOP) {
 					item.y = 0;

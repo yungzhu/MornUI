@@ -1,27 +1,21 @@
 /**
- * Morn UI Version 2.4.1027 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
 	import flash.events.Event;
 	import morn.core.events.UIEvent;
-	import morn.core.utils.ObjectUtils;
 	
 	/**当滚动内容时调用*/
 	[Event(name="scroll",type="morn.core.events.UIEvent")]
 	
 	/**文本域*/
 	public class TextArea extends TextInput {
-		protected var _scrollBar:VScrollBar;
-		protected var _lineHeight:Number;
+		protected var _vScrollBar:VScrollBar;
+		protected var _hScrollBar:HScrollBar;
 		
-		public function TextArea(text:String = null) {
+		public function TextArea(text:String = "") {
 			super(text);
-		}
-		
-		override protected function createChildren():void {
-			super.createChildren();
-			addChild(_scrollBar = new VScrollBar());
 		}
 		
 		override protected function initialize():void {
@@ -31,69 +25,141 @@ package morn.core.components {
 			_textField.wordWrap = true;
 			_textField.multiline = true;
 			_textField.addEventListener(Event.SCROLL, onTextFieldScroll);
-			_scrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
 		}
 		
-		override protected function changeSize():void {
-			_textField.width = _width - _margin[0] - _margin[2];
-			_textField.height = _height - _margin[1] - _margin[3];
-			if (Boolean(_scrollBar.skin)) {
-				_textField.width = _textField.width - _scrollBar.width - 2;
-				_scrollBar.height = _height - _margin[1] - _margin[3];
-				_scrollBar.x = _width - _scrollBar.width - _margin[2];
-				_scrollBar.y = _margin[1];
-				App.timer.doFrameOnce(1, onTextFieldScroll, [null]);
-			}
+		override public function set width(value:Number):void {
+			super.width = value;
+			callLater(changeScroll);
 		}
 		
-		override protected function changeText():void {
-			super.changeText();
-			_lineHeight = ObjectUtils.getTextField(_format).textHeight;
-		}
-		
-		protected function onScrollBarChange(e:Event):void {
-			var scrollValue:int = _scrollBar.value / _lineHeight;
-			if (_textField.scrollV != scrollValue) {
-				_textField.removeEventListener(Event.SCROLL, onTextFieldScroll);
-				_textField.scrollV = scrollValue;
-				_textField.addEventListener(Event.SCROLL, onTextFieldScroll);
-				sendEvent(UIEvent.SCROLL);
-			}
+		override public function set height(value:Number):void {
+			super.height = value;
+			callLater(changeScroll);
 		}
 		
 		protected function onTextFieldScroll(e:Event):void {
-			if (Boolean(_scrollBar.skin)) {
-				if (_textField.maxScrollV < 2) {
-					_scrollBar.visible = false;
-				} else {
-					_scrollBar.visible = true;
-					_scrollBar.target = this;
-					_scrollBar.thumbPercent = (_textField.numLines - _textField.maxScrollV + 1) / _textField.numLines;
-					_scrollBar.scrollSize = _lineHeight;
-					_scrollBar.setScroll(_lineHeight, _textField.maxScrollV * _lineHeight, _textField.scrollV * _lineHeight);
-				}
-			}
+			changeScroll();
 			sendEvent(UIEvent.SCROLL);
 		}
 		
-		/**滚动条皮肤*/
+		/**垂直滚动条皮肤(兼容老版本，建议使用vScrollBarSkin)*/
 		public function get scrollBarSkin():String {
-			return _scrollBar.skin;
+			return _vScrollBar.skin;
 		}
 		
 		public function set scrollBarSkin(value:String):void {
-			_scrollBar.skin = value;
-			callLater(changeSize);
+			vScrollBarSkin = value;
 		}
 		
-		/**滚动条实体*/
+		/**垂直滚动条皮肤*/
+		public function get vScrollBarSkin():String {
+			return _vScrollBar.skin;
+		}
+		
+		public function set vScrollBarSkin(value:String):void {
+			if (_vScrollBar == null) {
+				addChild(_vScrollBar = new VScrollBar());
+				_vScrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
+				_vScrollBar.target = _textField;
+				callLater(changeScroll);
+			}
+			_vScrollBar.skin = value;
+		}
+		
+		/**水平滚动条皮肤*/
+		public function get hScrollBarSkin():String {
+			return _hScrollBar.skin;
+		}
+		
+		public function set hScrollBarSkin(value:String):void {
+			if (_hScrollBar == null) {
+				addChild(_hScrollBar = new HScrollBar());
+				_hScrollBar.addEventListener(Event.CHANGE, onScrollBarChange);
+				_hScrollBar.mouseWheelEnable = false;
+				_hScrollBar.target = _textField;
+				callLater(changeScroll);
+			}
+			_hScrollBar.skin = value;
+		}
+		
+		/**垂直滚动条实体，(兼容老版本，建议用vScrollBar)*/
 		public function get scrollBar():VScrollBar {
-			return _scrollBar;
+			return _vScrollBar;
+		}
+		
+		/**垂直滚动条实体*/
+		public function get vScrollBar():VScrollBar {
+			return _vScrollBar;
+		}
+		
+		/**水平滚动条实体*/
+		public function get hScrollBar():HScrollBar {
+			return _hScrollBar;
 		}
 		
 		/**垂直滚动最大值*/
 		public function get maxScrollV():int {
 			return _textField.maxScrollV;
+		}
+		
+		/**垂直滚动值*/
+		public function get scrollV():int {
+			return _textField.scrollV;
+		}
+		
+		/**水平滚动最大值*/
+		public function get maxScrollH():int {
+			return _textField.maxScrollH;
+		}
+		
+		/**水平滚动值*/
+		public function get scrollH():int {
+			return _textField.scrollH;
+		}
+		
+		protected function onScrollBarChange(e:Event):void {
+			if (e.currentTarget == _vScrollBar) {
+				if (_textField.scrollV != _vScrollBar.value) {
+					_textField.removeEventListener(Event.SCROLL, onTextFieldScroll);
+					_textField.scrollV = _vScrollBar.value;
+					_textField.addEventListener(Event.SCROLL, onTextFieldScroll);
+					sendEvent(UIEvent.SCROLL);
+				}
+			} else {
+				if (_textField.scrollH != _hScrollBar.value) {
+					_textField.removeEventListener(Event.SCROLL, onTextFieldScroll);
+					_textField.scrollH = _hScrollBar.value;
+					_textField.addEventListener(Event.SCROLL, onTextFieldScroll);
+					sendEvent(UIEvent.SCROLL);
+				}
+			}
+		}
+		
+		private function changeScroll():void {
+			var vShow:Boolean = _vScrollBar && _textField.maxScrollV > 1;
+			var hShow:Boolean = _hScrollBar && _textField.maxScrollH > 0;
+			var showWidth:Number = vShow ? _width - _vScrollBar.width : _width;
+			var showHeight:Number = hShow ? _height - _hScrollBar.height : _height;
+			
+			_textField.width = showWidth - _margin[0] - _margin[2];
+			_textField.height = showHeight - _margin[1] - _margin[3];
+			
+			if (_vScrollBar) {
+				_vScrollBar.x = _width - _vScrollBar.width - _margin[2];
+				_vScrollBar.y = _margin[1];
+				_vScrollBar.height = _height - (hShow ? _hScrollBar.height : 0) - _margin[1] - _margin[3];
+				_vScrollBar.scrollSize = 1;
+				_vScrollBar.thumbPercent = (_textField.numLines - _textField.maxScrollV + 1) / _textField.numLines;
+				_vScrollBar.setScroll(1, _textField.maxScrollV, _textField.scrollV)
+			}
+			if (_hScrollBar) {
+				_hScrollBar.x = _margin[0];
+				_hScrollBar.y = _height - _hScrollBar.height - _margin[3];
+				_hScrollBar.width = _width - (vShow ? _vScrollBar.width : 0) - _margin[0] - _margin[2];
+				_hScrollBar.scrollSize = Math.max(showWidth * 0.033, 1);
+				_hScrollBar.thumbPercent = showWidth / Math.max(_textField.textWidth, showWidth);
+				_hScrollBar.setScroll(0, maxScrollH, scrollH);
+			}
 		}
 		
 		/**滚动到某个位置，单位是行*/

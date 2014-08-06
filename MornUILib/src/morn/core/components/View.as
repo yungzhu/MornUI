@@ -1,15 +1,15 @@
 /**
- * Morn UI Version 2.5.1215 http://www.mornui.com/
+ * Morn UI Version 3.0 http://www.mornui.com/
  * Feedback yungzhu@gmail.com http://weibo.com/newyung
  */
 package morn.core.components {
-	import morn.editor.core.IList;
+	import morn.editor.core.IRender;
 	
 	/**视图*/
-	public class View extends Container {
-		/**加载模式使用，存储uixml*/
+	public class View extends Box {
+		/**存储UIXML(用于加载模式)*/
 		public static var xmlMap:Object = {};
-		protected static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "ComboBox": ComboBox, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "Panel": Panel, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider, "HBox": HBox, "VBox": VBox};
+		protected static var uiClassMap:Object = {"Box": Box, "Button": Button, "CheckBox": CheckBox, "Clip": Clip, "ComboBox": ComboBox, "Component": Component, "Container": Container, "FrameClip": FrameClip, "HScrollBar": HScrollBar, "HSlider": HSlider, "Image": Image, "Label": Label, "LinkButton": LinkButton, "List": List, "Panel": Panel, "ProgressBar": ProgressBar, "RadioButton": RadioButton, "RadioGroup": RadioGroup, "ScrollBar": ScrollBar, "Slider": Slider, "Tab": Tab, "TextArea": TextArea, "TextInput": TextInput, "View": View, "ViewStack": ViewStack, "VScrollBar": VScrollBar, "VSlider": VSlider, "HBox": HBox, "VBox": VBox, "Tree": Tree};
 		protected static var viewClassMap:Object = {};
 		
 		protected function createView(xml:XML):void {
@@ -33,8 +33,8 @@ package morn.core.components {
 			comp.comXml = xml;
 			for (var i:int = 0, m:int = xml.children().length(); i < m; i++) {
 				var node:XML = xml.children()[i];
-				if (comp is List && node.@name == "render") {
-					List(comp).itemRender = node;
+				if (comp is IRender && node.@name == "render") {
+					IRender(comp).itemRender = node;
 				} else {
 					comp.addChild(createComp(node, null, view));
 				}
@@ -76,6 +76,11 @@ package morn.core.components {
 		/**注册组件(用于扩展组件及修改组件对应关系)*/
 		public static function registerComponent(key:String, compClass:Class):void {
 			uiClassMap[key] = compClass;
+		}
+		
+		/**注册runtime解析*/
+		public static function registerViewRuntime(key:String, compClass:Class):void {
+			viewClassMap[key] = compClass;
 		}
 	}
 }
