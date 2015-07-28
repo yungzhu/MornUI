@@ -1,4 +1,5 @@
-## Morn UI是flash轻量级，高性能，可视化UI解决方案
+## MornUI是Flash轻量级，高性能，可视化UI解决方案
+## MornUI全面支持HTML5，基于LayaBox方法
 
 官方地址：http://www.mornui.com/
 
@@ -22,9 +23,7 @@
 
 9.Morn比flex轻量高效，比flash IDE组件化开发更为方便
 
-![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main.jpg "screenshot")
-	
-![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main1.jpg "screenshot")
+![screenshot](http://yungzhu.github.io/MornUI/images/morn.jpg "screenshot")
 
 如果遇到BUG欢迎反馈
 反馈方式: QQ群:51451081
