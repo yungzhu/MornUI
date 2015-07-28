@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -9,19 +9,19 @@ package morn.core.components {
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
 	
-	
 	/**selected属性变化时调度*/
 	[Event(name="change",type="flash.events.Event")]
 	
 	/**按钮类，可以是单态，两态和三态，默认三态(up,over,down)*/
 	public class Button extends Component implements ISelect {
-		protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
+		/*[IF-FLASH]*/protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
+		//[IF-SCRIPT]protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mousedown": 2, "mouseup": 1, "selected": 2};
 		protected var _bitmap:AutoBitmap;
 		protected var _btnLabel:Label;
 		protected var _clickHandler:Handler;
 		protected var _labelColors:Array = Styles.buttonLabelColors;
 		protected var _labelMargin:Array = Styles.buttonLabelMargin;
-		protected var _state:int;
+		protected var _state:int = 0;
 		protected var _toggle:Boolean;
 		protected var _selected:Boolean;
 		protected var _skin:String;
@@ -31,6 +31,18 @@ package morn.core.components {
 		public function Button(skin:String = null, label:String = "") {
 			this.skin = skin;
 			this.label = label;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_bitmap && _bitmap.dispose();
+			_btnLabel && _btnLabel.dispose();
+			_bitmap = null;
+			_btnLabel = null;
+			_clickHandler = null;
+			_labelColors = null;
+			_labelMargin = null;
 		}
 		
 		override protected function createChildren():void {
@@ -168,7 +180,7 @@ package morn.core.components {
 		}
 		
 		public function set labelColors(value:String):void {
-			_labelColors = StringUtils.fillArray(_labelColors, value);
+			_labelColors = StringUtils.fillArray(_labelColors, value, uint);
 			callLater(changeState);
 		}
 		
@@ -254,7 +266,7 @@ package morn.core.components {
 		}
 		
 		public function set sizeGrid(value:String):void {
-			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value);
+			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value, int);
 		}
 		
 		override public function set width(value:Number):void {

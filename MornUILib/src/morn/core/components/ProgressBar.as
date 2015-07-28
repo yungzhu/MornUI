@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -21,6 +21,18 @@ package morn.core.components {
 		
 		public function ProgressBar(skin:String = null) {
 			this.skin = skin;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_bg && _bg.dispose();
+			_bar && _bar.dispose();
+			_barLabel && _barLabel.dispose();
+			_bg = null;
+			_bar = null;
+			_barLabel = null;
+			_changeHandler = null;
 		}
 		
 		override protected function createChildren():void {
@@ -79,8 +91,8 @@ package morn.core.components {
 		protected function changeValue():void {
 			if (sizeGrid) {
 				var grid:Array = sizeGrid.split(",");
-				var left:Number = grid[0];
-				var right:Number = grid[2];
+				var left:Number = Number(grid[0]);
+				var right:Number = Number(grid[2]);
 				var max:Number = width - left - right;
 				var sw:Number = max * _value;
 				_bar.width = left + right + sw;

@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.managers {
 	import flash.display.Shape;
@@ -32,12 +32,13 @@ package morn.core.managers {
 					var method:Function = handler.method;
 					var args:Array = handler.args;
 					if (handler.repeat) {
-						while (t >= handler.exeTime && key in _handlers && handler.repeat) {
+						while (t >= handler.exeTime && (key in _handlers) && handler.repeat) {
 							handler.exeTime += handler.delay;
 							method.apply(null, args);
 						}
 					} else {
-						clearTimer(key);
+						/*[IF-FLASH]*/clearTimer(key);
+						//[IF-SCRIPT]clearTimer(iflash.method.DICKEY(key));
 						method.apply(null, args);
 					}
 				}
@@ -66,7 +67,8 @@ package morn.core.managers {
 			handler.method = method;
 			handler.args = args;
 			handler.exeTime = delay + (useFrame ? _currFrame : _currTimer);
-			_handlers[key] = handler;
+			/*[IF-FLASH]*/_handlers[key] = handler;
+			//[IF-SCRIPT]_handlers[iflash.method.DIC(key)] = handler;
 			_count++;
 			return key;
 		}
@@ -120,7 +122,8 @@ package morn.core.managers {
 		 * @param	method 创建时的cover=true时method为回调函数本身，否则method为返回的唯一ID
 		 */
 		public function clearTimer(method:Object):void {
-			var handler:TimerHandler = _handlers[method];
+			/*[IF-FLASH]*/var handler:TimerHandler = _handlers[method];
+			//[IF-SCRIPT]var handler:TimerHandler = _handlers[iflash.method.DICKEY(method)];
 			if (handler != null) {
 				delete _handlers[method];
 				handler.clear();

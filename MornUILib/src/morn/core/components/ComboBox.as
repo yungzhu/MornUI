@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -12,7 +12,6 @@ package morn.core.components {
 	import morn.core.handlers.Handler;
 	import morn.core.utils.ObjectUtils;
 	import morn.core.utils.StringUtils;
-	
 	
 	/**selectedIndex属性变化时调度*/
 	[Event(name="change",type="flash.events.Event")]
@@ -39,6 +38,20 @@ package morn.core.components {
 		public function ComboBox(skin:String = null, labels:String = null) {
 			this.skin = skin;
 			this.labels = labels;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_button && _button.dispose();
+			_list && _list.dispose();
+			_scrollBar && _scrollBar.dispose();
+			_button = null;
+			_list = null;
+			_scrollBar = null;
+			_itemColors = null;
+			_labels = null;
+			_selectHandler = null;
 		}
 		
 		override protected function preinitialize():void {
@@ -89,7 +102,7 @@ package morn.core.components {
 			var labelWidth:Number = width - 2;
 			var labelColor:Number = _itemColors[2];
 			_itemHeight = ObjectUtils.getTextField(new TextFormat(Styles.fontName, _itemSize)).height + 3;
-			_list.itemRender = new XML("<Box><Label name='label' width='" + labelWidth + "' size='" + _itemSize + "' height='" + _itemHeight + "' color='" + labelColor + "' x='1' /></Box>");
+			_list.itemRender = new XML("<Box><Label mouseEnabled='true' name='label' width='" + labelWidth + "' size='" + _itemSize + "' height='" + _itemHeight + "' color='" + labelColor + "' x='1' /></Box>");
 			_list.repeatY = _visibleNum;
 			_scrollBar.x = width - _scrollBar.width - 1;
 			_list.refresh();
@@ -166,6 +179,10 @@ package morn.core.components {
 				a.push({label: _labels[i]});
 			}
 			_list.array = a;
+			//重新设置selectindex
+			//var index:int = _selectedIndex;
+			//_selectedIndex = -2;
+			//selectedIndex = index;
 		}
 		
 		/**选择索引*/
@@ -220,7 +237,7 @@ package morn.core.components {
 		}
 		
 		public function set itemColors(value:String):void {
-			_itemColors = StringUtils.fillArray(_itemColors, value);
+			_itemColors = StringUtils.fillArray(_itemColors, value, int);
 			callLater(changeList);
 		}
 		
@@ -260,7 +277,8 @@ package morn.core.components {
 		}
 		
 		protected function removeList(e:Event):void {
-			if (e == null || e.target == _list.content || (!_button.contains(e.target as DisplayObject) && !_list.contains(e.target as DisplayObject))) {
+			//if (e == null || e.target == _list.content || (!_button.contains(e.target as DisplayObject) && !_list.contains(e.target as DisplayObject))) {
+			if (e == null || (!_button.contains(e.target as DisplayObject) && !_list.contains(e.target as DisplayObject))) {
 				isOpen = false;
 			}
 		}

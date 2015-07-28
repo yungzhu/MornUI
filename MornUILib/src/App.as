@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package {
 	import flash.display.Sprite;
@@ -46,7 +46,7 @@ package {
 		public static var mloader:MassLoaderManager = new MassLoaderManager();
 		
 		public static function init(main:Sprite):void {
-			stage = main.stage;
+			stage = main.stage;			
 			stage.frameRate = Config.GAME_FPS;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -74,12 +74,13 @@ package {
 		}
 		
 		private static function onUIloadComplete(content:*):void {
-			View.xmlMap = content;
+			View.uiMap = content;
 		}
 		
 		/**获得资源路径(此处可以加上资源版本控制)*/
+		private static var urlRes:RegExp = new RegExp("^http:\/\/","g");
 		public static function getResPath(url:String):String {
-			return /^http:\/\//g.test(url) ? url : Config.resPath + url;
+			return urlRes.test(url) ? url : Config.resPath + url;
 		}
 	}
 }

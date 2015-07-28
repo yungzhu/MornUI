@@ -1,9 +1,10 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.editor {
 	import flash.display.BitmapData;
+	import flash.display.Sprite;
 	import flash.display.Stage;
 	
 	/**编辑器系统类，提供扩展插件使用(不要修改此类)*/
@@ -37,8 +38,13 @@ package morn.editor {
 		}
 		
 		/**在编辑器中输入日志*/
-		public static function log(... args):void {
+		public static function log(... args:Array):void {
 			trace(args.join(","));
+		}
+		
+		/**根据xml获得组件实例*/
+		public static function getCompInstance(xml:XML):Sprite {
+			return null;
 		}
 	}
 }

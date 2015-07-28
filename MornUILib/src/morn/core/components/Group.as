@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -28,6 +28,16 @@ package morn.core.components {
 		public function Group(labels:String = null, skin:String = null) {
 			this.skin = skin;
 			this.labels = labels;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			if (_items) {
+				_items.length = 0;
+			}
+			_items = null;
+			_selectHandler = null;
 		}
 		
 		/**增加项，返回索引id
@@ -150,7 +160,7 @@ package morn.core.components {
 				removeAllChild();
 				callLater(changeLabels);
 				if (Boolean(_labels)) {
-					var a:Array = _labels.split(",");
+					var a:Array = App.lang.getLang(_labels).split(",");
 					for (var i:int = 0, n:int = a.length; i < n; i++) {
 						var item:DisplayObject = createItem(_skin, a[i]);
 						item.name = "item" + i;

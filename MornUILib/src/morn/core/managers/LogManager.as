@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.managers {
 	import flash.display.Sprite;
@@ -8,7 +8,6 @@ package morn.core.managers {
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.filters.GlowFilter;
 	import flash.system.System;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -24,6 +23,7 @@ package morn.core.managers {
 		private var _filters:Array = [];
 		private var _canScroll:Boolean = true;
 		private var _scroll:TextField;
+		private var _maxMsg:int = 300;
 		
 		public function LogManager() {
 			//容器
@@ -33,37 +33,39 @@ package morn.core.managers {
 			addChild(_box);
 			//筛选栏
 			_filter = new TextField();
-			_filter.width = 270;
+			_filter.y = 3;
+			_filter.x = 3;
+			_filter.width = 250;
 			_filter.height = 20;
 			_filter.type = "input";
 			_filter.textColor = 0xffffff;
 			_filter.border = true;
 			_filter.borderColor = 0xBFBFBF;
-			_filter.defaultTextFormat = new TextFormat("Arial", 12);
+			_filter.defaultTextFormat = new TextFormat("Microsoft YaHei,Arial", 12);
 			_filter.addEventListener(KeyboardEvent.KEY_DOWN, onFilterKeyDown);
 			_filter.addEventListener(FocusEvent.FOCUS_OUT, onFilterFocusOut);
 			_box.addChild(_filter);
 			//控制按钮			
 			var clear:TextField = createLinkButton("Clear");
 			clear.addEventListener(MouseEvent.CLICK, onClearClick);
-			clear.x = 280;
+			clear.x = 260;
 			_box.addChild(clear);
-			_scroll = createLinkButton("Pause");
-			_scroll.addEventListener(MouseEvent.CLICK, onScrollClick);
-			_scroll.x = 315;
-			_box.addChild(_scroll);
 			var copy:TextField = createLinkButton("Copy");
 			copy.addEventListener(MouseEvent.CLICK, onCopyClick);
-			copy.x = 350;
+			copy.x = 300;
 			_box.addChild(copy);
+			_scroll = createLinkButton("Pause");
+			_scroll.addEventListener(MouseEvent.CLICK, onScrollClick);
+			_scroll.x = 340;
+			_box.addChild(_scroll);
 			//信息栏
 			_textField = new TextField();
 			_textField.width = 400;
 			_textField.height = 280;
-			_textField.y = 20;
+			_textField.y = 25;
 			_textField.multiline = true;
 			_textField.wordWrap = true;
-			_textField.defaultTextFormat = new TextFormat("微软雅黑,Arial");
+			_textField.defaultTextFormat = new TextFormat("Microsoft YaHei,Arial");
 			_box.addChild(_textField);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -77,8 +79,7 @@ package morn.core.managers {
 			var tf:TextField = new TextField();
 			tf.selectable = false;
 			tf.autoSize = "left";
-			tf.textColor = 0x0080C0;
-			tf.filters = [new GlowFilter(0xffffff, 0.8, 2, 2, 10)];
+			tf.defaultTextFormat = new TextFormat("Microsoft YaHei,Arial", 14, 0x0080C0, false, null, true);
 			tf.text = text;
 			return tf;
 		}
@@ -111,7 +112,8 @@ package morn.core.managers {
 		}
 		
 		private function onStageKeyDown(e:KeyboardEvent):void {
-			if (e.ctrlKey && e.keyCode == Keyboard.L) {
+			if ((e.ctrlKey || e.shiftKey) && e.keyCode == Keyboard.L) {
+				trace("toggle");
 				toggle();
 			}
 		}
@@ -123,34 +125,35 @@ package morn.core.managers {
 		}
 		
 		/**信息*/
-		public function info(... args):void {
+		public function info(... args:Array):void {
 			print("info", args, 0x3EBDF4);
 		}
 		
 		/**消息*/
-		public function echo(... args):void {
+		public function echo(... args:Array):void {
 			print("echo", args, 0x00C400);
 		}
 		
 		/**调试*/
-		public function debug(... args):void {
+		public function debug(... args:Array):void {
 			print("debug", args, 0xdddd00);
 		}
 		
 		/**错误*/
-		public function error(... args):void {
+		public function error(... args:Array):void {
 			print("error", args, 0xFF4646);
 		}
 		
 		/**警告*/
-		public function warn(... args):void {
+		public function warn(... args:Array):void {
 			print("warn", args, 0xFFFF80);
 		}
 		
 		public function print(type:String, args:Array, color:uint):void {
-			var msg:String = "<p><font color='#" + color.toString(16) + "'><b>[" + type + "]</b></font> <font color='#EEEEEE'>" + args.join(" ") + "</font></p>";
-			trace("[" + type + "]", args.join(" "));
-			if (_msgs.length > 500) {
+			var str:String = args.join(" ");
+			var msg:String = "<p><font color='#" + color.toString(16) + "'><b>[" + type + "]</b></font> <font color='#EEEEEE'>" + str + "</font></p>";
+			trace("[" + type + "]" + str);
+			if (_msgs.length > _maxMsg) {
 				_msgs.length = 0;
 			}
 			_msgs.push(msg);
@@ -172,20 +175,28 @@ package morn.core.managers {
 			var msg:String = "";
 			if (newMsg != null) {
 				if (isFilter(newMsg)) {
+					if (_textField.numLines > 500) {
+						_textField.htmlText = "";
+					}
 					msg = (_textField.htmlText || "") + newMsg;
 					_textField.htmlText = msg;
 				}
 			} else {
-				for each (var item:String in _msgs) {
-					if (isFilter(item)) {
-						msg += item;
-					}
-				}
-				_textField.htmlText = msg;
+				_textField.htmlText = getMsgFromCache();
 			}
 			if (_canScroll) {
 				_textField.scrollV = _textField.maxScrollV;
 			}
+		}
+		
+		private function getMsgFromCache():String {
+			var msg:String = "";
+			for each (var item:String in _msgs) {
+				if (isFilter(item)) {
+					msg += item;
+				}
+			}
+			return msg;
 		}
 		
 		/**是否是筛选属性*/

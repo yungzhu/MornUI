@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.MovieClip;
@@ -17,7 +17,7 @@ package morn.core.components {
 		protected var _autoStopAtRemoved:Boolean = true;
 		protected var _mc:MovieClip;
 		protected var _skin:String;
-		protected var _frame:int;
+		protected var _frame:int = 0;
 		protected var _autoPlay:Boolean;
 		protected var _interval:int = Config.MOVIE_INTERVAL;
 		protected var _to:Object;
@@ -26,6 +26,14 @@ package morn.core.components {
 		
 		public function FrameClip(skin:String = null) {
 			this.skin = skin;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_mc = null;
+			_to = null;
+			_complete = null;
 		}
 		
 		override protected function initialize():void {

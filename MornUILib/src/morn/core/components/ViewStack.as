@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -10,9 +10,19 @@ package morn.core.components {
 	public class ViewStack extends Box implements IItem {
 		protected var _items:Vector.<DisplayObject>;
 		protected var _setIndexHandler:Handler = new Handler(setIndex);
-		protected var _selectedIndex:int;
+		protected var _selectedIndex:int = 0;
 		
 		public function ViewStack() {
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			if (_items) {
+				_items.length = 0;
+			}
+			_items = null;
+			_setIndexHandler = null;
 		}
 		
 		/**批量设置视图*/

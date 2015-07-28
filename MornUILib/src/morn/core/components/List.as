@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -8,9 +8,12 @@ package morn.core.components {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	
 	import morn.core.events.DragEvent;
 	import morn.core.events.UIEvent;
 	import morn.core.handlers.Handler;
+	import morn.editor.Builder;
+	import morn.editor.Sys;
 	import morn.editor.core.IRender;
 	
 	/**selectedIndex属性变化时调度*/
@@ -23,26 +26,41 @@ package morn.core.components {
 		protected var _content:Box;
 		protected var _scrollBar:ScrollBar;
 		protected var _itemRender:*;
-		protected var _repeatX:int;
-		protected var _repeatY:int;
-		protected var _repeatX2:int;
-		protected var _repeatY2:int;
-		protected var _spaceX:int;
-		protected var _spaceY:int;
+		protected var _repeatX:int = 0;
+		protected var _repeatY:int = 0;
+		protected var _repeatX2:int = 0;
+		protected var _repeatY2:int = 0;
+		protected var _spaceX:int = 0;
+		protected var _spaceY:int = 0;
 		protected var _cells:Vector.<Box> = new Vector.<Box>();
 		protected var _array:Array;
-		protected var _startIndex:int;
+		protected var _startIndex:int = 0;
 		protected var _selectedIndex:int = -1;
 		protected var _selectHandler:Handler;
 		protected var _renderHandler:Handler;
 		protected var _mouseHandler:Handler;
-		protected var _page:int;
-		protected var _totalPage:int;
+		protected var _page:int = 0;
+		protected var _totalPage:int = 0;
 		protected var _selectEnable:Boolean = true;
 		protected var _isVerticalLayout:Boolean = true;
 		protected var _cellSize:Number = 20;
 		
 		public function List() {
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_content && _content.dispose();
+			_scrollBar && _scrollBar.dispose();
+			_content = null;
+			_scrollBar = null;
+			_itemRender = null;
+			_cells = null;
+			_array = null;
+			_selectHandler = null;
+			_renderHandler = null;
+			_mouseHandler = null;
 		}
 		
 		override protected function createChildren():void {
@@ -95,7 +113,7 @@ package morn.core.components {
 		}
 		
 		public function set repeatX(value:int):void {
-			_repeatX = value;
+			_repeatX = int(value);
 			callLater(changeCells);
 		}
 		
@@ -105,7 +123,7 @@ package morn.core.components {
 		}
 		
 		public function set repeatY(value:int):void {
-			_repeatY = value;
+			_repeatY = int(value);
 			callLater(changeCells);
 		}
 		
@@ -115,7 +133,7 @@ package morn.core.components {
 		}
 		
 		public function set spaceX(value:int):void {
-			_spaceX = value;
+			_spaceX = int(value);
 			callLater(changeCells);
 		}
 		
@@ -125,7 +143,7 @@ package morn.core.components {
 		}
 		
 		public function set spaceY(value:int):void {
-			_spaceY = value;
+			_spaceY = int(value);
 			callLater(changeCells);
 		}
 		
@@ -145,21 +163,24 @@ package morn.core.components {
 				scrollBar = getChildByName("scrollBar") as ScrollBar;
 				
 				//自适应宽高
-				cell = _itemRender is XML ? View.createComp(_itemRender) as Box : new _itemRender();
+				cell = createItem();
 				
+				var cellWidth:Number = cell.width + _spaceX;
 				if (_repeatX < 1 && !isNaN(_width)) {
-					_repeatX2 = Math.round(_width / (cell.width + _spaceX));
+					_repeatX2 = Math.round(_width / cellWidth);
 				}
+				var cellHeight:Number = cell.height + _spaceY;
 				if (_repeatY < 1 && !isNaN(_height)) {
-					_repeatY2 = Math.round(_height / (cell.height + _spaceY));
+					_repeatY2 = Math.round(_height / cellHeight);
 				}
 				
-				var listWidth:Number = isNaN(_width) ? ((cell.width + _spaceX) * repeatX - _spaceX) : _width;
-				var listHeight:Number = isNaN(_height) ? ((cell.height + _spaceY) * repeatY - _spaceY) : _height;
+				var listWidth:Number = isNaN(_width) ? (cellWidth * repeatX - _spaceX) : _width;
+				var listHeight:Number = isNaN(_height) ? (cellHeight * repeatY - _spaceY) : _height;
+				_cellSize = _isVerticalLayout ? cellHeight : cellWidth;
 				
 				if (_isVerticalLayout && _scrollBar) {
 					_scrollBar.height = listHeight;
-				} else if (_isVerticalLayout && _scrollBar) {
+				} else if (!_isVerticalLayout && _scrollBar) {
 					_scrollBar.width = listWidth;
 				}
 				setContentSize(listWidth, listHeight);
@@ -169,7 +190,7 @@ package morn.core.components {
 				var numY:int = (_isVerticalLayout ? repeatY : repeatX) + (_scrollBar ? 1 : 0);
 				for (var k:int = 0; k < numY; k++) {
 					for (var l:int = 0; l < numX; l++) {
-						cell = _itemRender is XML ? View.createComp(_itemRender) as Box : new _itemRender();
+						cell = createItem();
 						cell.x = (_isVerticalLayout ? l : k) * (_spaceX + cell.width);
 						cell.y = (_isVerticalLayout ? k : l) * (_spaceY + cell.height);
 						cell.name = "item" + (k * numX + l);
@@ -182,6 +203,17 @@ package morn.core.components {
 					array = _array;
 					exeCallLater(renderItems);
 				}
+			}
+		}
+		
+		private function createItem():Box {
+			if (!Builder.isEditor) {
+				return _itemRender is Class ? new _itemRender() : View.createComp(_itemRender) as Box;
+			} else {
+				var display:DisplayObject = Sys.getCompInstance(_itemRender);
+				var box:Box = new Box();
+				box.addChild(display);
+				return box;
 			}
 		}
 		
@@ -262,6 +294,12 @@ package morn.core.components {
 			exeCallLater(changeCells);
 			var rect:Rectangle = _content.scrollRect;
 			var scrollValue:Number = _scrollBar.value;
+			
+			if(isNaN(scrollValue)){
+				_scrollBar.value = 0;
+				return;
+			}
+			
 			var index:int = int(scrollValue / _cellSize) * (_isVerticalLayout ? repeatX : repeatY);
 			if (index != _startIndex) {
 				startIndex = index;
@@ -461,7 +499,7 @@ package morn.core.components {
 		
 		/**滚动条皮肤*/
 		public function get vScrollBarSkin():String {
-			return _scrollBar.skin;
+			return _scrollBar?_scrollBar.skin:null;
 		}
 		
 		public function set vScrollBarSkin(value:String):void {
@@ -476,7 +514,7 @@ package morn.core.components {
 		
 		/**滚动条皮肤*/
 		public function get hScrollBarSkin():String {
-			return _scrollBar.skin;
+			return _scrollBar?_scrollBar.skin:null;
 		}
 		
 		public function set hScrollBarSkin(value:String):void {

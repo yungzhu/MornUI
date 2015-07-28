@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -78,7 +78,7 @@ package morn.core.components {
 		
 		public function set dragArea(value:String):void {
 			if (Boolean(value)) {
-				var a:Array = StringUtils.fillArray([0, 0, 0, 0], value);
+				var a:Array = StringUtils.fillArray([0, 0, 0, 0], value, int);
 				_dragArea = new Rectangle(a[0], a[1], a[2], a[3]);
 				addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			} else {

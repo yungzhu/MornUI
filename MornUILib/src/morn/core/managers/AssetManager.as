@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.managers {
 	import flash.display.BitmapData;
@@ -54,7 +54,7 @@ package morn.core.managers {
 			return bmd;
 		}
 		
-		/**获取切片资源,source会被自动*/
+		/**获取切片资源*/
 		public function getClips(name:String, xNum:int, yNum:int, cache:Boolean = true, source:BitmapData = null):Vector.<BitmapData> {
 			var clips:Vector.<BitmapData> = _clipsMap[name];
 			if (clips == null) {
@@ -66,9 +66,9 @@ package morn.core.managers {
 					}
 				}
 			}
-			if (bmd) {
-				bmd.dispose();
-			}
+			/*if (bmd) {
+			   bmd.dispose();
+			 }*/
 			return clips;
 		}
 		

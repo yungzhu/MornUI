@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -16,6 +16,15 @@ package morn.core.components {
 		
 		public function TextArea(text:String = "") {
 			super(text);
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_vScrollBar && _vScrollBar.dispose();
+			_hScrollBar && _hScrollBar.dispose();
+			_vScrollBar = null;
+			_hScrollBar = null;
 		}
 		
 		override protected function initialize():void {
@@ -44,7 +53,7 @@ package morn.core.components {
 		
 		/**垂直滚动条皮肤(兼容老版本，建议使用vScrollBarSkin)*/
 		public function get scrollBarSkin():String {
-			return _vScrollBar.skin;
+			return _vScrollBar ? _vScrollBar.skin : null;
 		}
 		
 		public function set scrollBarSkin(value:String):void {
@@ -53,7 +62,7 @@ package morn.core.components {
 		
 		/**垂直滚动条皮肤*/
 		public function get vScrollBarSkin():String {
-			return _vScrollBar.skin;
+			return _vScrollBar ? _vScrollBar.skin : null;
 		}
 		
 		public function set vScrollBarSkin(value:String):void {
@@ -68,7 +77,7 @@ package morn.core.components {
 		
 		/**水平滚动条皮肤*/
 		public function get hScrollBarSkin():String {
-			return _hScrollBar.skin;
+			return _hScrollBar ? _hScrollBar.skin : null;
 		}
 		
 		public function set hScrollBarSkin(value:String):void {

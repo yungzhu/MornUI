@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.managers {
 	
@@ -24,7 +24,7 @@ package morn.core.managers {
 		/**获取语言
 		 * @param code 索引key
 		 * @param ...args 参数*/
-		public function getLang(code:String, ... args):String {
+		public function getLang(code:String, ... args:Array):String {
 			var str:String = _data[code] || code;
 			if (args.length > 0) {
 				for (var i:int = 0, n:int = args.length; i < n; i++) {

@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.managers {
 	import flash.display.Graphics;
@@ -102,7 +102,7 @@ package morn.core.managers {
 			g.lineStyle(1, Styles.tipBorderColor);
 			g.beginFill(Styles.tipBgColor);
 			g.drawRoundRect(0, 0, _tipText.width + 10, _tipText.height + 10, 4, 4);
-			g.endFill();
+			g.endFill();			
 			addChild(_tipBox);
 		}
 		

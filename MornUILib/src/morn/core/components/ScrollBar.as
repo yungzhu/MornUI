@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -33,9 +33,24 @@ package morn.core.components {
 		protected var _lastOffset:Number = 0;
 		protected var _autoHide:Boolean = true;
 		protected var _showButtons:Boolean = true;
+		protected var _scaleBar:Boolean = true;
 		
 		public function ScrollBar(skin:String = null):void {
 			this.skin = skin;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_upButton && _upButton.dispose();
+			_downButton && _downButton.dispose();
+			_slider && _slider.dispose();
+			_upButton = null;
+			_downButton = null;
+			_slider = null;
+			_changeHandler = null;
+			_target = null;
+			_lastPoint = null;
 		}
 		
 		override protected function preinitialize():void {
@@ -225,10 +240,12 @@ package morn.core.components {
 		public function set thumbPercent(value:Number):void {
 			exeCallLater(changeSize);
 			_thumbPercent = value;
-			if (_slider.direction == VERTICAL) {
-				_slider.bar.height = Math.max(int(_slider.height * value), Styles.scrollBarMinNum);
-			} else {
-				_slider.bar.width = Math.max(int(_slider.width * value), Styles.scrollBarMinNum);
+			if (_scaleBar) {
+				if (_slider.direction == VERTICAL) {
+					_slider.bar.height = Math.max(int(_slider.height * value), Styles.scrollBarMinNum);
+				} else {
+					_slider.bar.width = Math.max(int(_slider.width * value), Styles.scrollBarMinNum);
+				}
 			}
 		}
 		
@@ -300,6 +317,15 @@ package morn.core.components {
 			_changeHandler = value;
 		}
 		
+		/**是否缩放滑条*/
+		public function get scaleBar():Boolean {
+			return _scaleBar;
+		}
+		
+		public function set scaleBar(value:Boolean):void {
+			_scaleBar = value;
+		}
+		
 		protected function onTargetMouseDown(e:MouseEvent):void {
 			//_target.mouseChildren = true;
 			App.timer.clearTimer(tweenMove);
@@ -325,7 +351,7 @@ package morn.core.components {
 			App.stage.removeEventListener(Event.ENTER_FRAME, onStageEnterFrame);
 			_lastOffset = _slider.direction == VERTICAL ? App.stage.mouseY - _lastPoint.y : App.stage.mouseX - _lastPoint.x;
 			if (Math.abs(_lastOffset) > 50) {
-				_lastOffset = 50 * (_lastOffset > 0 ? 1 : -1);
+				_lastOffset = _lastOffset > 0 ? 50 : -50;
 			}
 			App.timer.doFrameLoop(1, tweenMove);
 		}
@@ -340,7 +366,7 @@ package morn.core.components {
 		}
 		
 		protected function onMouseWheel(e:MouseEvent):void {
-			value += (e.delta < 0 ? 1 : -1) * _scrollSize * 3;
+			value += (e.delta < 0 ? 3 : -3) * _scrollSize;
 			if (value < max && value > min) {
 				e.stopPropagation();
 			}

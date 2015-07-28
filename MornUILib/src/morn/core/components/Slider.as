@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -32,6 +32,18 @@ package morn.core.components {
 		
 		public function Slider(skin:String = null):void {
 			this.skin = skin;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_back && _back.dispose();
+			_bar && _bar.dispose();
+			_label && _label.dispose();
+			_back = null;
+			_bar = null;
+			_label = null;
+			_changeHandler = null;
 		}
 		
 		override protected function preinitialize():void {

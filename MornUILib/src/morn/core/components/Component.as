@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.DisplayObject;
@@ -25,22 +25,23 @@ package morn.core.components {
 	/**组件基类
 	 * 组件的生命周期：preinitialize > createChildren > initialize > 组件构造函数*/
 	public class Component extends Sprite implements IComponent {
-		protected var _width:Number;
-		protected var _height:Number;
+		protected var _width:Number = Number.NaN;
+		protected var _height:Number = Number.NaN;
 		protected var _contentWidth:Number = 0;
 		protected var _contentHeight:Number = 0;
 		protected var _disabled:Boolean;
 		protected var _tag:Object;
 		protected var _comXml:XML;
+		protected var _comJSON:Object;
 		protected var _dataSource:Object;
 		protected var _toolTip:Object;
 		protected var _mouseChildren:Boolean;
-		protected var _top:Number;
-		protected var _bottom:Number;
-		protected var _left:Number;
-		protected var _right:Number;
-		protected var _centerX:Number;
-		protected var _centerY:Number;
+		protected var _top:Number = Number.NaN;
+		protected var _bottom:Number = Number.NaN;
+		protected var _left:Number = Number.NaN;
+		protected var _right:Number = Number.NaN;
+		protected var _centerX:Number = Number.NaN;
+		protected var _centerY:Number = Number.NaN;
 		protected var _layOutEabled:Boolean;
 		
 		public function Component() {
@@ -48,6 +49,15 @@ package morn.core.components {
 			preinitialize();
 			createChildren();
 			initialize();
+		}
+		
+		/**销毁*/
+		public function dispose():void {
+			_tag = null;
+			_comXml = null;
+			_comJSON = null;
+			_dataSource = null;
+			_toolTip = null;
 		}
 		
 		/**预初始化，在此可以修改属性默认值*/
@@ -265,21 +275,32 @@ package morn.core.components {
 		
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void {
+			/*[IF-FLASH-BEGIN]*/
 			removeChildByName("border");
 			var border:Shape = new Shape();
 			border.name = "border";
 			border.graphics.lineStyle(1, color);
 			border.graphics.drawRect(0, 0, width, height);
 			addChild(border);
+			/*[IF-FLASH-END]*/
 		}
 		
-		/**组件xml结构(高级用法：可以动态更改XML，然后通过页面重新渲染)*/
+		/**组件的XML类型数据结构*/
 		public function get comXml():XML {
 			return _comXml;
 		}
 		
 		public function set comXml(value:XML):void {
 			_comXml = value;
+		}
+		
+		/**组件的JSON类型数据结构*/
+		public function get comJSON():Object {
+			return _comJSON;
+		}
+		
+		public function set comJSON(value:Object):void {
+			_comJSON = value;
 		}
 		
 		/**数据赋值，通过对UI赋值来控制UI显示逻辑
@@ -402,7 +423,7 @@ package morn.core.components {
 			return _centerY;
 		}
 		
-		public function set centerY(value:Number):void {
+		public function set centerY(value:Number):void {	
 			_centerY = value;
 			layOutEabled = true;
 		}
@@ -418,18 +439,18 @@ package morn.core.components {
 		
 		private function onRemoved(e:Event):void {
 			if (e.target == this) {
-				parent.removeEventListener(Event.RESIZE, onResize);
+				parent.removeEventListener(Event.RESIZE, onCompResize);
 			}
 		}
 		
 		private function onAdded(e:Event):void {
 			if (e.target == this) {
-				parent.addEventListener(Event.RESIZE, onResize);
+				parent.addEventListener(Event.RESIZE, onCompResize);
 				callLater(resetPosition);
 			}
 		}
 		
-		private function onResize(e:Event):void {
+		private function onCompResize(e:Event):void {
 			callLater(resetPosition);
 		}
 		

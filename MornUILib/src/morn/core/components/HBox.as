@@ -1,6 +1,6 @@
 /**
  * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import morn.core.utils.StringUtils;
@@ -19,6 +19,7 @@ package morn.core.components {
 			var items:Array = [];
 			var maxHeight:Number = 0;
 			for (var i:int = 0, n:int = numChildren; i < n; i++) {
+				//TODO:LAYA.JS
 				var item:Component = getChildAt(i) as Component;
 				if (item) {
 					items.push(item);

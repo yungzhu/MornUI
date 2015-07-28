@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.events.Event;
@@ -16,18 +16,29 @@ package morn.core.components {
 	
 	/**文字标签*/
 	public class Label extends Component {
+		private static var reg:RegExp = new RegExp("\\n","g");
 		protected var _textField:TextField;
 		protected var _format:TextFormat;
 		protected var _text:String = "";
 		protected var _isHtml:Boolean;
 		protected var _stroke:String;
-		protected var _skin:String;
+		protected var _skin:String = null;
 		protected var _bitmap:AutoBitmap;
 		protected var _margin:Array = Styles.labelMargin;
 		
 		public function Label(text:String = "", skin:String = null) {
 			this.text = text;
 			this.skin = skin;
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_bitmap && _bitmap.dispose();			
+			_textField = null;
+			_format = null;
+			_bitmap = null;
+			_margin = null;
 		}
 		
 		override protected function preinitialize():void {
@@ -58,11 +69,21 @@ package morn.core.components {
 		public function set text(value:String):void {
 			if (_text != value) {
 				_text = value || "";
-				_text = _text.replace(/\\n/g, "\n");
+				_text = _text.replace(reg, "\n");
 				//callLater(changeText);
 				changeText();
 				sendEvent(Event.CHANGE);
 			}
+		}
+		
+		/**Html文本*/
+		public function get htmlText():String {
+			return _text;
+		}
+		
+		public function set htmlText(value:String):void {
+			_isHtml = true;
+			text = value;
 		}
 		
 		protected function changeText():void {

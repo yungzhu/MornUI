@@ -1,6 +1,6 @@
 /**
- * Morn UI Version 3.0 http://www.mornui.com/
- * Feedback yungzhu@gmail.com http://weibo.com/newyung
+ * Morn UI Version 3.2 http://www.mornui.com/
+ * Feedback yungvip@163.com weixin:yungzhu
  */
 package morn.core.components {
 	import flash.display.BitmapData;
@@ -93,7 +93,7 @@ package morn.core.components {
 		}
 		
 		public function set sizeGrid(value:String):void {
-			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value);
+			_bitmap.sizeGrid = StringUtils.fillArray(Styles.defaultSizeGrid, value, int);
 		}
 		
 		/**位图控件实例*/
@@ -139,12 +139,19 @@ package morn.core.components {
 		
 		/**销毁资源，从位图缓存中销毁掉
 		 * @param	clearFromLoader 是否同时删除加载缓存*/
-		public function dispose(clearFromLoader:Boolean = false):void {
-			_bitmap.bitmapData = null;
+		public function destory(clearFromLoader:Boolean = false):void {
 			App.asset.disposeBitmapData(_url);
 			if (clearFromLoader) {
 				App.mloader.clearResLoaded(_url);
 			}
+			dispose();
+		}
+		
+		/**销毁*/
+		override public function dispose():void {
+			super.dispose();
+			_bitmap && _bitmap.dispose();
+			_bitmap = null;
 		}
 	}
 }
