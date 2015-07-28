@@ -29,7 +29,7 @@
 如果遇到BUG欢迎反馈
 反馈方式: QQ群:51451081
 	
-github托管地址：https://github.com/yungzhu/morn
+github托管地址：https://github.com/yungzhu/MornUI
 
 	
 目录结构:

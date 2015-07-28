@@ -14,9 +14,8 @@
 9.Morn比flex轻量高效，比flash IDE组件化开发更为方便
 
 如果遇到BUG欢迎反馈
-反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081	
-google code 托管地址：http://code.google.com/p/morn/	
-github托管地址：https://github.com/yungzhu/morn
+反馈方式: QQ群:51451081
+github托管地址：https://github.com/yungzhu/MornUI
 
 目录结构:
 builder-----UI编辑器
