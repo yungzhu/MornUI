@@ -1,5 +1,5 @@
 ## MornUI是Flash轻量级，高性能，可视化UI解决方案
-## MornUI全面支持HTML5，基于LayaBox方法
+## MornUI全面支持HTML5，基于LayaBox
 
 官方地址：http://www.mornui.com/
 
