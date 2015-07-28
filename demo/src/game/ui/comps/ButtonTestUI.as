@@ -2,8 +2,8 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class ButtonTestUI extends Dialog {
-		public var btn1:Button;
-		public var btn2:Button;
+		public var btn1:Button = null;
+		public var btn2:Button = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="300" height="310"/>

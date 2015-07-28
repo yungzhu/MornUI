@@ -2,8 +2,8 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class RadioGroupTestUI extends Dialog {
-		public var radioGroup1:RadioGroup;
-		public var radioGroup2:RadioGroup;
+		public var radioGroup1:RadioGroup = null;
+		public var radioGroup2:RadioGroup = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="400" height="350"/>

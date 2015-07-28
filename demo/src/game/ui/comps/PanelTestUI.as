@@ -2,7 +2,7 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class PanelTestUI extends Dialog {
-		public var panel:Panel;
+		public var panel:Panel = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="399" height="446"/>

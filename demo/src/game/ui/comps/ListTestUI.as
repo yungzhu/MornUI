@@ -3,15 +3,15 @@ package game.ui.comps {
 	import morn.core.components.*;
 	import game.ui.comps.ListItemRenderUI;
 	public class ListTestUI extends Dialog {
-		public var pageList:List;
-		public var boxList:List;
-		public var autoList:List;
-		public var vlist:List;
-		public var hlist:List;
-		public var checkList:List;
-		public var prePage:Button;
-		public var nextPage:Button;
-		public var renderList:List;
+		public var pageList:List = null;
+		public var boxList:List = null;
+		public var autoList:List = null;
+		public var vlist:List = null;
+		public var hlist:List = null;
+		public var checkList:List = null;
+		public var prePage:Button = null;
+		public var nextPage:Button = null;
+		public var renderList:List = null;
 		protected static var uiXML:XML =
 			<Dialog space="10">
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="600" height="600"/>

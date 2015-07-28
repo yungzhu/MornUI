@@ -1,5 +1,4 @@
 package {
-	import com.greensock.TweenLite;
 	import flash.events.MouseEvent;
 	import game.ui.GameStageUI;
 	import morn.core.components.Button;

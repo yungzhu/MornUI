@@ -2,7 +2,7 @@
 package game.ui.other {
 	import morn.core.components.*;
 	public class MyToolTipUI extends View {
-		public var label:Label;
+		public var label:Label = null;
 		protected static var uiXML:XML =
 			<View>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="133" height="105"/>

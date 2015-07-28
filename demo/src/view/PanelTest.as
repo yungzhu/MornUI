@@ -6,7 +6,7 @@ package view {
 		
 		public function PanelTest() {
 			panel.scrollTo(0, 20);
-			panel.vScrollBar.touchScrollEnable = false;
+			//panel.vScrollBar.touchScrollEnable = false;
 		}
 	}
 }

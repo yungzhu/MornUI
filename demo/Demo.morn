@@ -12,4 +12,5 @@
   <boxTypes>Box,Container,List,Tab,RadioGroup,ViewStack,Panel,HBox,VBox</boxTypes>
   <pageTypes>View,Dialog,MyView</pageTypes>
   <shareResPath/>
+  <codeType>1</codeType>
 </project>

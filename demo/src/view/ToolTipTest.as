@@ -12,7 +12,8 @@ package view {
 			image.toolTip = "这是个图像，<b>粗体</b><br><font color='#ff0000'>换行</font><br>鼠标提示，鼠标提示，鼠标提示";
 			
 			//自定义的鼠标提示
-			check.toolTip = showTips1;
+			/*[IF-FLASH]*/check.toolTip = showTips1;
+			//[IF-JS]check.toolTip = iflash.method.bind(this,showTips1);
 			
 			//携带参数
 			clip.toolTip = new Handler(showTips2, ["Morn UI"]);

@@ -2,10 +2,10 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class ClipTestUI extends Dialog {
-		public var clip1:Clip;
-		public var btn1:Button;
-		public var clip2:Clip;
-		public var btn2:Button;
+		public var clip1:Clip = null;
+		public var btn1:Button = null;
+		public var clip2:Clip = null;
+		public var btn2:Button = null;
 		protected static var uiXML:XML =
 			<Dialog label="点我播放停止">
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="300" height="289"/>

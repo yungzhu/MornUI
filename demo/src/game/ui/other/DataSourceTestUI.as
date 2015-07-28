@@ -2,10 +2,10 @@
 package game.ui.other {
 	import morn.core.components.*;
 	public class DataSourceTestUI extends Dialog {
-		public var box1:Box;
-		public var box2:Box;
-		public var list:List;
-		public var btn:Button;
+		public var box1:Box = null;
+		public var box2:Box = null;
+		public var list:List = null;
+		public var btn:Button = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="398" height="500"/>

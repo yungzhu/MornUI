@@ -1,12 +1,21 @@
 package {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import morn.core.handlers.Handler;
 	
 	/**Morn UI测试demo
 	 * Morn UI官网：http://www.mornui.com*/
+	
 	public class Main extends Sprite {
 		
 		public function Main() {
+			if (stage)
+				init();
+			else
+				addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		private function init():void {
 			//初始化组件
 			App.init(this);
 			//加载资源			

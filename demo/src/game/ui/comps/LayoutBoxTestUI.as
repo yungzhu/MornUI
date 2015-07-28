@@ -2,12 +2,12 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class LayoutBoxTestUI extends Dialog {
-		public var vbox1:VBox;
-		public var vbox3:VBox;
-		public var hbox1:HBox;
-		public var vbox2:VBox;
-		public var hbox2:HBox;
-		public var hbox3:HBox;
+		public var vbox1:VBox = null;
+		public var vbox3:VBox = null;
+		public var hbox1:HBox = null;
+		public var vbox2:VBox = null;
+		public var hbox2:HBox = null;
+		public var hbox3:HBox = null;
 		protected static var uiXML:XML =
 			<Dialog space="10">
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="600" height="580"/>

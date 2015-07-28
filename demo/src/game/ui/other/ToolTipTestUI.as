@@ -2,9 +2,9 @@
 package game.ui.other {
 	import morn.core.components.*;
 	public class ToolTipTestUI extends Dialog {
-		public var clip:Clip;
-		public var image:Image;
-		public var check:CheckBox;
+		public var clip:Clip = null;
+		public var image:Image = null;
+		public var check:CheckBox = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="400" height="350"/>

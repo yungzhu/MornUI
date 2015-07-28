@@ -2,9 +2,9 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class ComboBoxTestUI extends Dialog {
-		public var combo2:ComboBox;
-		public var combo1:ComboBox;
-		public var label:Label;
+		public var combo2:ComboBox = null;
+		public var combo1:ComboBox = null;
+		public var label:Label = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="300" height="289"/>

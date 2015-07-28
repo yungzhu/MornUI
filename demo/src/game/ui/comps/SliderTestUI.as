@@ -2,7 +2,7 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class SliderTestUI extends Dialog {
-		public var slider:HSlider;
+		public var slider:HSlider = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="400" height="350"/>

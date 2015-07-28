@@ -7,10 +7,10 @@ package view {
 		
 		public function ComboBoxTest() {
 			var arr:Array = [];
-			for (var i:int = 0; i < 2; i++) {
+			for (var i:int = 0; i < 100; i++) {
 				arr.push("这是第 " + i + " 项");
 			}
-			combo1.labels = arr.join(",");
+			//combo1.labels = arr.join(",");
 			combo2.labels = arr.join(",");
 			
 			combo2.selectHandler = new Handler(onCombo1Select);

@@ -8,7 +8,7 @@ package view {
 	public class TextAreaTest extends TextAreaTestUI {
 		public function TextAreaTest() {
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-			App.timer.doLoop(1000, changeText);
+			//App.timer.doLoop(2000, changeText);
 			//保持在底部
 			area2.addEventListener(UIEvent.SCROLL, onArea2Scroll);
 		}

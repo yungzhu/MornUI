@@ -2,8 +2,8 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class TextAreaTestUI extends Dialog {
-		public var area1:TextArea;
-		public var area2:TextArea;
+		public var area1:TextArea = null;
+		public var area2:TextArea = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="400" height="350"/>

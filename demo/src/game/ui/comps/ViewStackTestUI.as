@@ -2,8 +2,8 @@
 package game.ui.comps {
 	import morn.core.components.*;
 	public class ViewStackTestUI extends Dialog {
-		public var tab:Tab;
-		public var viewStack:ViewStack;
+		public var tab:Tab = null;
+		public var viewStack:ViewStack = null;
 		protected static var uiXML:XML =
 			<Dialog>
 			  <Image url="png.comp.bg" x="0" y="0" sizeGrid="4,30,4,4" width="400" height="350"/>
