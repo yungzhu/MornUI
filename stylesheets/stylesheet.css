@@ -11,8 +11,7 @@ body {
 /* General & 'Reset' Stuff */
 
 .container {
-  width: 90%;
-  max-width: 600px;
+  max-width: 956px;
   margin: 0 auto;
 }
 
