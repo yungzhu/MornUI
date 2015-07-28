@@ -2,8 +2,6 @@
 
 官方地址：http://www.mornui.com/
 
-google code托管地址：http://code.google.com/p/morn/
-
 具有以下优势：
 
 1.轻量级，Morn UI库以精简，直观为设计理念，代码轻量，能快速上手，减少学习成本，Morn UI全部库总大小不到30K
@@ -29,9 +27,7 @@ google code托管地址：http://code.google.com/p/morn/
 ![screenshot](https://raw.github.com/yungzhu/morn/master/doc/help/images/main1.jpg "screenshot")
 
 如果遇到BUG欢迎反馈
-反馈方式: yungzhu@gmail.com 微博:http://weibo.com/newyung QQ群:51451081
-	
-google code 托管地址：http://code.google.com/p/morn/
+反馈方式: QQ群:51451081
 	
 github托管地址：https://github.com/yungzhu/morn
 
