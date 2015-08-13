@@ -65,16 +65,18 @@ package morn.core.components {
 		protected static function createCompByXML(xml:XML, comp:Component = null, view:View = null):Component {
 			comp = comp || getCompInstanceByXML(xml);
 			comp.comXml = xml;
-			//[IF-SCRIPT]for (var i:int = 0, m:int = xml.children().lengths(); i < m; i++) {			
-			/*[IF-FLASH]*/for (var i:int = 0, m:int = xml.children().length(); i < m; i++) {
-				var node:XML = xml.children()[i];
+			var list:XMLList = xml.children();
+			//[IF-SCRIPT]for (var i:int = 0, m:int = list.lengths(); i < m; i++) {			
+			/*[IF-FLASH]*/for (var i:int = 0, m:int = list.length(); i < m; i++) {
+				var node:XML = list[i];
 				if (comp is IRender && node.@name == "render") {
 					IRender(comp).itemRender = node;
 				} else {
 					comp.addChild(createComp(node, null, view));
 				}
 			}
-			for each (var attrs:XML in xml.attributes()) {
+			var list2:XMLList = xml.attributes();
+			for each (var attrs:XML in list2) {
 				var prop:String = attrs.name().toString();
 				var value:String = attrs.toString();
 				setCompValue(comp, prop, value, view);
@@ -88,7 +90,7 @@ package morn.core.components {
 		private static function setCompValue(comp:Component, prop:String, value:String, view:View = null):void {
 			if (comp.hasOwnProperty(prop)) {
 				/*[IF-SCRIPT-BEGIN]
-				   if (comp[prop] is Number) {
+				   if (prop=="width" || prop=="height" || comp[prop] is Number) {
 				   comp[prop]=Number(value);
 				   }else
 				 [IF-SCRIPT-END]*/
