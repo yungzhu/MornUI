@@ -14,8 +14,7 @@ package morn.core.components {
 	
 	/**按钮类，可以是单态，两态和三态，默认三态(up,over,down)*/
 	public class Button extends Component implements ISelect {
-		/*[IF-FLASH]*/protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
-		//[IF-SCRIPT]protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mousedown": 2, "mouseup": 1, "selected": 2};
+		protected static var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
 		protected var _bitmap:AutoBitmap;
 		protected var _btnLabel:Label;
 		protected var _clickHandler:Handler;
