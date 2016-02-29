@@ -445,7 +445,7 @@ package morn.core.components {
 				if (_scrollBar.visible) {
 					_scrollBar.scrollSize = _cellSize;
 					_scrollBar.thumbPercent = numY / lineCount;
-					_scrollBar.setScroll(0, (lineCount - numY) * _cellSize, _startIndex / numX * _cellSize);
+					_scrollBar.setScroll(0, (lineCount - numY) * _cellSize + (_isVerticalLayout?height:width) % _cellSize, _startIndex / numX * _cellSize);
 				} else {
 					_scrollBar.setScroll(0, 0, 0);
 				}
